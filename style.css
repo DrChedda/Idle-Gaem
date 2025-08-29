@@ -154,12 +154,11 @@ button[data-desc]::before{
   transition: opacity .12s ease;
 }
 button[data-desc]:hover::after,
-button[data-desc]:focus::after,
-button[data-desc]:hover::before,
-button[data-desc]:focus::before{
+button[data-desc]:hover::before {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%) translateY(5px); /* 👈 moved tooltip down */
 }
+
 
 .rps-display{
   text-align:center;
