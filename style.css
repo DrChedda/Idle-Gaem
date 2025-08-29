@@ -65,18 +65,18 @@ button:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.45)}
   z-index:40;
 }
 
-.upgrades .upgrade{
-  position:absolute;
-  transform:translate(-50%,-50%);
-  min-width:120px;
-  padding:10px 14px;
-  font-size:0.98rem;
-  z-index:50;
-  box-sizing:border-box;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  transition:transform .12s ease,box-shadow .12s;
+.upgrades {
+  position: fixed;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  width: min(60vw, 520px);
+  height: min(60vw, 520px);
+  margin: 0;
+  padding: 0;
+  display: block;
+  pointer-events: auto;
+  z-index: 40;
 }
 
 #buy-upgrade { left:50%; top:6%; }
@@ -96,9 +96,10 @@ button:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.45)}
   z-index:45;
 }
 
-.upgrades .upgrade:hover{
-  transform: translate(-50%,-50%) translateY(-6px);
-  box-shadow:0 12px 32px rgba(0,0,0,0.5);
+.upgrades .upgrade {
+  min-width: clamp(80px, 10vw, 140px);
+  padding: clamp(6px, 1vw, 14px);
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
 }
 
 .corner-group{
@@ -291,9 +292,21 @@ button[data-desc]:focus::before{
   #upgrade-lucky    { left:50%; top:76%; }
   .upgrades .upgrade{ min-width:100px; padding:8px 10px; font-size:0.92rem; }
   .corner-group{ right:10px; bottom:10px; flex-direction:row; }
-  h1 { font-size: 1.6rem; }
+  h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  letter-spacing: 1px;
+  color: #fff;
+  }
   .button-row button { min-width: 100px; padding: 8px 12px; font-size: 0.9rem; }
   .corner-group button { min-width: 80px; padding: 6px 10px; font-size: 0.85rem; }
   #collect-btn { min-width: 180px; padding: 12px 18px; font-size: 0.96rem; }
   .modal-content { padding: 16px; max-width: 90%; font-size: 0.9rem; }
+}
+
+button, .upgrades button, .corner-group button {
+  padding: clamp(6px, 1.2vw, 16px) clamp(8px, 2vw, 20px);
+  border-radius: clamp(6px, 1.2vw, 12px);
+  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  min-width: clamp(80px, 14vw, 160px);
 }
