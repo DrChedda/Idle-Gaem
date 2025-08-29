@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Idle Gaem</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Gaem</h1>
+    <div id="resource-display" aria-live="polite">Resources: 0</div>
+    <div id="rps-display" class="rps-display" aria-hidden="true">Resources/s: 0</div>
+  </header>
+
+  <main>
+    <div id="start-modal" class="start-modal" role="dialog" aria-modal="true" hidden>
+      <div class="modal-content">
+        <h2>Welcome to Gaem!</h2>
+        <p>Here’s some info to get you started:</p>
+        <ul style="text-align:left;">
+          <li><a href="https://example.com/guide" target="_blank">Full Guide</a><br /><a>(Trust me you will need it)</a></li>
+          <li><a href="https://example.com/discord" target="_blank">Join Discord</a></li>
+        </ul>
+        <label style="display:flex;align-items:center;gap:6px;justify-content:center;margin-top:12px;">
+          <input type="checkbox" id="dont-show-again"> Don't show this again
+        </label>
+        <button id="start-close-btn" class="upgrade">Close</button>
+      </div>
+    </div>
+
+
+
+    <div class="button-stack" style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+      <button id="collect-btn" aria-label="Collect resources">Collect</button>
+    </div>
+
+    <section class="upgrades" aria-label="Upgrades">
+      <button id="buy-upgrade" class="upgrade" aria-label="Upgrade gain">Upgrade Gain</button>
+      <button id="upgrade-auto" class="upgrade">Auto Collect</button>
+      <button id="upgrade-double" class="upgrade">Double Gain</button>
+      <button id="upgrade-triple" class="upgrade">Triple Gain</button>
+      <button id="upgrade-boost" class="upgrade">Boost</button>
+      <button id="upgrade-lucky" class="upgrade">Lucky Gain</button>
+      <button id="upgrade-new-age" class="upgrade">|</button>
+
+      <svg id="svg-lines" aria-hidden="true" preserveAspectRatio="none"></svg>
+    </section>
+
+    <div id="feedback" class="feedback" aria-live="polite"></div>
+  </main>
+
+  <div id="confirm-bar" class="confirm-bar" hidden>
+    <span>Are you sure you want to do that?</span>
+    <div class="confirm-actions">
+      <button id="confirm-yes">Yes</button>
+      <button id="confirm-no">No</button>
+    </div>
+  </div>
+
+  <div class="corner-group" role="region" aria-label="Save and options">
+    <button id="save-btn">Save</button>
+    <button id="load-btn">Load</button>
+    <button id="reset-btn">Reset</button>
+    <button id="options-btn">Options</button>
+  </div>
+
+  <script src="js/game.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/debugger.js"></script>
+</body>
+</html>
