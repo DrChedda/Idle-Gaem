@@ -347,8 +347,8 @@ window.addEventListener("load", () => {
     state.autoCollect = false; state.autoCollectCost = 150;
     state.doubleGain = false; state.doubleGainCost = 400;
     state.tripleGain = false; state.tripleGainCost = 1200;
-    state.boost = false; state.boostCost = 2000;
-    state.luckyGain = false; state.luckyGainCost = 4000;
+    state.boost = false; state.boostCost = 3000;
+    state.luckyGain = false; state.luckyGainCost = 10000;
     resourceSamples.length = 0; clickTimestamps.length = 0;
     pushResourceSample();
   }

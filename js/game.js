@@ -10,9 +10,9 @@ let state = {
   tripleGain: false,
   tripleGainCost: 1200,     // slightly later milestone
   boost: false,
-  boostCost: 2000,          // temporary multiplier, rarer
+  boostCost: 3000,          // temporary multiplier, rarer
   luckyGain: false,
-  luckyGainCost: 4000,      // rare, high reward
+  luckyGainCost: 10000,      // rare, high reward
   measuredRps: 0
 };
 
