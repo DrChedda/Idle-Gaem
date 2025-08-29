@@ -398,7 +398,7 @@ window.addEventListener("load", () => {
       "upgrade-lucky":"Small chance for a large bonus on gain.",
       "save-btn":"Save your game to local storage.",
       "load-btn":"Load the saved game state.",
-      "reset-btn":"Reset progress to default (requires confirmation).",
+      "reset-btn":"Reset progress to default.",
       "options-btn":"Open game options and settings."
     };
     for (const id in map) {
