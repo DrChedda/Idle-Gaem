@@ -387,7 +387,7 @@ window.addEventListener("load", () => {
         "And we are almost bankrupt...",
         "So.. time for a cheaper approach...",
         "Allow me to introduce...",
-        "AIEBJUG",
+        "The Multiverse!",
       ];
 
       // helper: glitchy text animation
