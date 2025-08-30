@@ -421,6 +421,8 @@ window.addEventListener("load", () => {
         let i = 0;
         const showNext = () => {
           if (i >= feedbackMessages.length) {
+            state.beginningfinished = true;
+            saveGame();
             window.location.href = "chapter1/index.html";
             return;
           }
