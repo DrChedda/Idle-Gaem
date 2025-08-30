@@ -335,7 +335,119 @@ window.addEventListener("load", () => {
   handlePurchase(luckyBtn, buyLuckyGain, () => state.luckyGain, state.luckyGainCost);
 
   if (newAgeBtn) {
-    newAgeBtn.addEventListener("click", () => { showFeedback("Haha does nothin yet!"); popButton(newAgeBtn); });
+    newAgeBtn.addEventListener("click", () => {
+      // wipe stats
+      state.resources = 0;
+      state.perClick = 0;
+      state.measuredRps = 0;
+
+      // glitch effect on Resources/s
+      if (measuredRpsEl) {
+        let glitchCount = 0;
+        const glitchInterval = setInterval(() => {
+          glitchCount++;
+          measuredRpsEl.textContent =
+            Math.random().toString(36).substring(2, 8).toUpperCase();
+
+          if (glitchCount > 10) {
+            clearInterval(glitchInterval);
+            measuredRpsEl.textContent = "Resources/s: 0";
+          }
+        }, 80);
+      }
+
+      // glitch effect on Resources count (with colors)
+      if (resourceDisplay) {
+        let glitchCount = 0;
+        const glitchInterval2 = setInterval(() => {
+          glitchCount++;
+          resourceDisplay.textContent =
+            Math.random().toString(36).substring(2, 10).toUpperCase();
+          resourceDisplay.style.color =
+            `hsl(${Math.floor(Math.random() * 360)}, 100%, 60%)`;
+
+          if (glitchCount > 10) {
+            clearInterval(glitchInterval2);
+            resourceDisplay.textContent = "Resources: 0";
+            resourceDisplay.style.color = ""; // reset to default
+          }
+        }, 80);
+      }
+
+      // disable all auto features
+      state.autoCollect = false;
+      state.doubleGain = false;
+      state.tripleGain = false;
+      state.boost = false;
+      state.luckyGain = false;
+
+      // custom feedback sequence
+      const feedbackMessages = [
+        "Eeotk",
+        "And we are almost bankrupt...",
+        "So.. time for a cheaper approach...",
+        "Allow me to introduce...",
+        "AIEBJUG",
+      ];
+
+      // helper: glitchy text animation
+      function showGlitchyMessage(el, text, duration = 2000, interval = 80) {
+        let chars = "!@#$%^&*()_+{}[]<>?/|ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let iterations = Math.floor(duration / interval);
+        let i = 0;
+
+        let glitch = setInterval(() => {
+          let glitched = text
+            .split("")
+            .map((ch, idx) =>
+              Math.random() > 0.5 && i < iterations
+                ? chars[Math.floor(Math.random() * chars.length)]
+                : ch
+            )
+            .join("");
+
+          el.textContent = glitched;
+
+          if (i >= iterations) {
+            clearInterval(glitch);
+            el.textContent = text; // final stable version
+          }
+
+          i++;
+        }, interval);
+      }
+
+      if (feedback) {
+        let i = 0;
+        const showNext = () => {
+          if (i >= feedbackMessages.length) {
+            window.location.href = "chapter1/index.html";
+            return;
+          }
+
+          if (i >= feedbackMessages.length) return;
+
+          feedback.classList.add("show");
+
+          if (i === feedbackMessages.length - 1) {
+            // last message glitchy
+            showGlitchyMessage(feedback, feedbackMessages[i]);
+          } else {
+            feedback.textContent = feedbackMessages[i];
+          }
+
+          i++;
+          setTimeout(() => {
+            feedback.classList.remove("show");
+            showNext();
+          }, 5000); // each stays for 5s
+        };
+        showNext();
+      }
+
+      popButton(newAgeBtn);
+      updateUI();
+    });
   }
 
   if (saveBtn) saveBtn.addEventListener("click", () => { saveGame(); showFeedback("Saved"); popButton(saveBtn); });
