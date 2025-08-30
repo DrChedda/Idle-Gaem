@@ -2,17 +2,17 @@
 let state = {
   resources: 0,
   perClick: 1,
-  upgradeCost: 50,          // base per-click upgrade cost
+  upgradeCost: 50,
   autoCollect: false,
-  autoCollectCost: 150,     // cheaper early-game auto-collect
+  autoCollectCost: 150,
   doubleGain: false,
-  doubleGainCost: 400,      // early affordable boost
+  doubleGainCost: 400,
   tripleGain: false,
-  tripleGainCost: 1200,     // slightly later milestone
+  tripleGainCost: 1200,
   boost: false,
-  boostCost: 3000,          // temporary multiplier, rarer
+  boostCost: 3000,
   luckyGain: false,
-  luckyGainCost: 10000,      // rare, high reward
+  luckyGainCost: 10000,
   measuredRps: 0
 };
 
