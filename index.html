@@ -70,5 +70,60 @@
   <script src="js/ui.js"></script>
   <script src="js/main.js"></script>
   <script src="js/debugger.js"></script>
+  <script>
+    window.onload = () => {
+    if (state && state.beginningfinished === true) {
+      // create overlay
+      const overlay = document.createElement("div");
+      overlay.style.position = "fixed";
+      overlay.style.top = "0";
+      overlay.style.left = "0";
+      overlay.style.width = "100vw";
+      overlay.style.height = "100vh";
+      overlay.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
+      overlay.style.display = "flex";
+      overlay.style.justifyContent = "center";
+      overlay.style.alignItems = "center";
+      overlay.style.zIndex = "999999";
+
+      const box = document.createElement("div");
+      box.style.background = "#222";
+      box.style.color = "#fff";
+      box.style.padding = "30px";
+      box.style.borderRadius = "15px";
+      box.style.textAlign = "center";
+      box.style.fontSize = "1.5rem";
+      box.style.maxWidth = "400px";
+      box.style.boxShadow = "0 0 15px rgba(0,0,0,0.6)";
+      box.textContent = "Ha! You're not spose to be here!";
+
+      const btn = document.createElement("button");
+      btn.textContent = "Go to Chapter 1";
+      btn.style.marginTop = "20px";
+      btn.style.padding = "10px 20px";
+      btn.style.fontSize = "1rem";
+      btn.style.border = "none";
+      btn.style.borderRadius = "8px";
+      btn.style.background = "#2f8ef7";
+      btn.style.color = "#fff";
+      btn.style.cursor = "pointer";
+      btn.onclick = () => {
+        window.location.href = "chapter1/index.html";
+      };
+
+      box.appendChild(document.createElement("br"));
+      box.appendChild(btn);
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+
+      // 🔹 Hide overlay only when Ctrl + [ is pressed
+      window.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === "[") {
+          overlay.style.display = "none";
+        }
+      });
+    }
+  };
+</script>
 </body>
 </html>
