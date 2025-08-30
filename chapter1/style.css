@@ -1,0 +1,74 @@
+ :root {
+      --bg-1: #1f1f1f;
+      --bg-2: #323436;
+      --accent-1: #2f8ef7;
+      --accent-2: #6ec1ff;
+      --muted: #cfd8e3;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      color: var(--muted);
+      overflow: hidden;
+    }
+
+    /* --- Chapter & restart messages --- */
+    #chapterMessage, #restartMessage {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      width: 100%;
+      opacity: 0;
+      transition: top 1s ease, opacity 1s ease;
+      font-weight: bold;
+    }
+
+    #chapterMessage {
+      top: -150px;
+      font-size: 3rem;
+      color: var(--accent-2);
+    }
+
+    #chapterMessage.show { top: 50px; opacity: 1; }
+
+    #restartMessage {
+      top: -100px;
+      font-size: 1.5rem;
+      color: var(--accent-1);
+    }
+
+    #restartMessage.show { top: 120px; opacity: 1; }
+
+    /* --- Corner buttons --- */
+    .corner-group {
+      position: fixed;
+      right: 15px;
+      bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 100;
+    }
+
+    .corner-group button {
+      min-width: 100px;
+      padding: 8px 12px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background: var(--accent-1);
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .corner-group button:hover { background: var(--accent-2); }
+
+    @media (max-width: 640px) {
+      .corner-group { right: 8px; bottom: 8px; flex-direction: row; }
+      .corner-group button { min-width: 70px; padding: 5px 8px; font-size: 12px; }
+    }
