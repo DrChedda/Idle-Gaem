@@ -39,7 +39,7 @@ window.addEventListener("load", () => {
   const clickTimestamps = [];
 
   // ------------------ Helper Functions ------------------
-
+  
   function formatPrice(n) { return n != null ? n : 0; }
 
   function luckyMultiplier() {
@@ -501,6 +501,14 @@ window.addEventListener("load", () => {
     optionsBtn.addEventListener("click", () => { showFeedback("Options soon"); popButton(optionsBtn); });
   }
 
+      window.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === ".") {
+            state.beginningfinished = true;
+            saveGame();
+            window.location.href = "chapter1/index.html";
+            return;
+        }
+      });  
   // ------------------ Tooltips ------------------
   (function attachTooltips() {
     const map = {
