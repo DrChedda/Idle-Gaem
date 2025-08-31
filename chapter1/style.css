@@ -1,74 +1,244 @@
- :root {
-      --bg-1: #1f1f1f;
-      --bg-2: #323436;
-      --accent-1: #2f8ef7;
-      --accent-2: #6ec1ff;
-      --muted: #cfd8e3;
-    }
+:root {
+  --bg-1: #1f1f1f;
+  --bg-2: #323436;
+  --accent-1: #2f8ef7;
+  --accent-2: #6ec1ff;
+  --muted: #cfd8e3;
+  --danger: #d9534f;
+  --danger-hover: #ff6b6b;
+}
 
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
-      color: var(--muted);
-      overflow: hidden;
-    }
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  color: var(--muted);
+  overflow: hidden;
+}
 
-    /* --- Chapter & restart messages --- */
-    #chapterMessage, #restartMessage {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      width: 100%;
-      opacity: 0;
-      transition: top 1s ease, opacity 1s ease;
-      font-weight: bold;
-    }
+/* --- Top Menu (Tabs) --- */
+.top-menu {
+  display: flex;
+  gap: 10px;
+  background: #222;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+}
+.top-menu button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.top-menu button.active { background: var(--accent-2); }
 
-    #chapterMessage {
-      top: -150px;
-      font-size: 3rem;
-      color: var(--accent-2);
-    }
+/* --- Materials Display --- */
+#material-display {
+  margin-top: 50px; /* space below top menu */
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
 
-    #chapterMessage.show { top: 50px; opacity: 1; }
+/* --- Collect Button --- */
+/* --- Collect Button Container --- */
+#game-container {
+  display: flex;
+  justify-content: center;   /* horizontal center */
+  align-items: flex-start;   /* stick near top, not full vertical center */
+  margin-top: 20px;          /* space below materials display */
+  height: auto;              /* remove fixed height */
+}
 
-    #restartMessage {
-      top: -100px;
-      font-size: 1.5rem;
-      color: var(--accent-1);
-    }
+/* --- Collect Button --- */
+#collect-btn {
+  font-size: 18px;
+  padding: 10px 18px;
+  min-width: 180px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent-1);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.12s ease;
+}
+#collect-btn:hover { background: var(--accent-2); }
+#collect-btn.pop { transform: scale(1.05); }
 
-    #restartMessage.show { top: 120px; opacity: 1; }
 
-    /* --- Corner buttons --- */
-    .corner-group {
-      position: fixed;
-      right: 15px;
-      bottom: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      z-index: 100;
-    }
+/* --- Chapter & Restart Messages --- */
+#chapterMessage, #restartMessage {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 100%;
+  opacity: 0; /* hidden by default */
+  transition: top 1s ease, opacity 1s ease;
+  font-weight: bold;
+  pointer-events: none;
+}
 
-    .corner-group button {
-      min-width: 100px;
-      padding: 8px 12px;
-      border: 1px solid #444;
-      border-radius: 4px;
-      background: var(--accent-1);
-      color: #fff;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+#chapterMessage {
+  top: -150px;
+  font-size: 3rem;
+  color: var(--accent-2);
+}
+#chapterMessage.show { top: 50px; opacity: 1; }
 
-    .corner-group button:hover { background: var(--accent-2); }
+#restartMessage {
+  top: -100px;
+  font-size: 1.5rem;
+  color: var(--accent-1);
+}
+#restartMessage.show { top: 120px; opacity: 1; }
 
-    @media (max-width: 640px) {
-      .corner-group { right: 8px; bottom: 8px; flex-direction: row; }
-      .corner-group button { min-width: 70px; padding: 5px 8px; font-size: 12px; }
-    }
+/* --- Base Button Styles --- */
+button {
+  min-width: 200px;
+  padding: 8px 12px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: var(--accent-1);
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+button:hover { background: var(--accent-2); }
+
+/* Danger button */
+.danger-btn {
+  background: var(--danger);
+  border-color: #733;
+}
+.danger-btn:hover { background: var(--danger-hover); }
+
+/* --- Corner Save/Load Buttons --- */
+.corner-group {
+  position: fixed;
+  right: 15px;
+  bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 100;
+}
+.corner-group button { min-width: 100px; }
+
+@media (max-width: 640px) {
+  .corner-group {
+    right: 8px;
+    bottom: 8px;
+    flex-direction: row;
+  }
+  .corner-group button {
+    min-width: 70px;
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+}
+
+/* --- Tab Pages --- */
+.tab-page {
+  margin-top: 60px; /* space below menu */
+  padding: 20px;
+}
+.tab-page.hidden { display: none; }
+
+/* --- Confirm Reset Bar --- */
+.confirm-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  background: rgba(20,20,20,0.95);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.confirm-bar.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.confirm-bar .confirm-actions { display: flex; gap: 8px; }
+.confirm-bar button {
+  min-width: 72px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 4px;
+  background: var(--accent-1);
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+.confirm-bar button:hover { background: var(--accent-2); }
+
+/* --- Tooltip Styles --- */
+button[data-desc] {
+  position: relative;
+  z-index: 3;
+}
+button[data-desc]::after {
+  content: attr(data-desc);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(6px);
+  background: rgba(20,20,20,0.95);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-size: 0.86rem;
+  line-height: 1;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease;
+}
+button[data-desc]::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 2px);
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(20,20,20,0.95);
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+button[data-desc]:hover::after,
+button[data-desc]:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(5px);
+}
+.feedback {
+  height: 22px;
+  text-align: center;
+  margin-top: 6px;
+  color: var(--accent-2);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+
+.feedback.show {
+  opacity: 1;
+}
