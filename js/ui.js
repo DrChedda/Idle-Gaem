@@ -333,19 +333,20 @@ window.addEventListener("load", () => {
 
   if (newAgeBtn) {
     newAgeBtn.addEventListener("click", () => {
-      // wipe stats
       state.resources = 0;
       state.perClick = 0;
       state.measuredRps = 0;
+      state.autoCollect = false;
+      state.doubleGain = false;
+      state.tripleGain = false;
+      state.boost = false;
+      state.luckyGain = false;
 
-      // glitch effect on Resources/s
       if (measuredRpsEl) {
         let glitchCount = 0;
         const glitchInterval = setInterval(() => {
           glitchCount++;
-          measuredRpsEl.textContent =
-            Math.random().toString(36).substring(2, 8).toUpperCase();
-
+          measuredRpsEl.textContent = Math.random().toString(36).substring(2, 8).toUpperCase();
           if (glitchCount > 10) {
             clearInterval(glitchInterval);
             measuredRpsEl.textContent = "Resources/s: 0";
@@ -353,114 +354,79 @@ window.addEventListener("load", () => {
         }, 80);
       }
 
-      // glitch effect on Resources count (with colors)
       if (resourceDisplay) {
         let glitchCount = 0;
         const glitchInterval2 = setInterval(() => {
           glitchCount++;
-          resourceDisplay.textContent =
-            Math.random().toString(36).substring(2, 10).toUpperCase();
-          resourceDisplay.style.color =
-            `hsl(${Math.floor(Math.random() * 360)}, 100%, 60%)`;
-
+          resourceDisplay.textContent = Math.random().toString(36).substring(2, 10).toUpperCase();
+          resourceDisplay.style.color = `hsl(${Math.floor(Math.random() * 360)}, 100%, 60%)`;
           if (glitchCount > 10) {
             clearInterval(glitchInterval2);
             resourceDisplay.textContent = "Resources: 0";
-            resourceDisplay.style.color = ""; // reset to default
+            resourceDisplay.style.color = "";
           }
         }, 80);
       }
 
-      // disable all auto features
-      state.autoCollect = false;
-      state.doubleGain = false;
-      state.tripleGain = false;
-      state.boost = false;
-      state.luckyGain = false;
-
-      // custom feedback sequence
       const feedbackMessages = [
         "Eeotk",
         "And we are almost bankrupt...",
         "So.. time for a cheaper approach...",
         "Allow me to introduce...",
-        "The Multiverse!",
+        "The Multiverse!"
       ];
 
-      // helper: glitchy text animation
-      function showGlitchyMessage(el, text, duration = 2000, interval = 80) {
-        let chars = "!@#$%^&*()_+{}[]<>?/|ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        let iterations = Math.floor(duration / interval);
-        let i = 0;
-
-        let glitch = setInterval(() => {
-          let glitched = text
-            .split("")
-            .map((ch, idx) =>
-              Math.random() > 0.5 && i < iterations
-                ? chars[Math.floor(Math.random() * chars.length)]
-                : ch
-            )
-            .join("");
-
-          el.textContent = glitched;
-
-          if (i >= iterations) {
-            clearInterval(glitch);
-            el.textContent = text; // final stable version
-          }
-
-          i++;
-        }, interval);
-      }
-
       if (feedback) {
-        let i = 0;
-        const showNext = () => {
-          if (i >= feedbackMessages.length) {
-            state.beginningfinished = true;
-            saveGame();
-            window.location.href = "chapter1/index.html";
-            return;
-          }
-
-          if (i >= feedbackMessages.length) return;
+        let msgIndex = 0;
+        const showNextMessage = () => {
+          if (msgIndex >= feedbackMessages.length) return;
 
           feedback.classList.add("show");
+          feedback.textContent = feedbackMessages[msgIndex];
+          msgIndex++;
 
-          if (i === feedbackMessages.length - 1) {
-            // last message glitchy
-            showGlitchyMessage(feedback, feedbackMessages[i]);
-          } else {
-            feedback.textContent = feedbackMessages[i];
-          }
-
-          i++;
+          const delay = msgIndex === feedbackMessages.length ? 2000 : 5000;
           setTimeout(() => {
             feedback.classList.remove("show");
-            showNext();
-          }, 5000); // each stays for 5s
+            setTimeout(showNextMessage, 200);
+          }, delay);
         };
-        showNext();
+        showNextMessage();
       }
 
-      popButton(newAgeBtn);
-      updateUI();
+      state.beginningfinished = true;
+      saveGame();
+
+      setTimeout(() => {
+        window.location.href = "chapter1/index.html";
+        popButton(newAgeBtn);
+        updateUI();
+      }, 3000); // short delay to let glitches/messages show
     });
   }
+
 
   if (saveBtn) saveBtn.addEventListener("click", () => { saveGame(); showFeedback("Saved"); popButton(saveBtn); });
   if (loadBtn) loadBtn.addEventListener("click", () => { loadGame(); updateUI(); showFeedback("Does nothing yet ㋡"); popButton(loadBtn); });
 
   // ------------------ Reset / Confirm ------------------
   function resetGameState() {
-    state.resources = 0; state.perClick = 1; state.upgradeCost = 50;
-    state.autoCollect = false; state.autoCollectCost = 150;
-    state.doubleGain = false; state.doubleGainCost = 400;
-    state.tripleGain = false; state.tripleGainCost = 1200;
-    state.boost = false; state.boostCost = 3000;
-    state.luckyGain = false; state.luckyGainCost = 10000;
-    resourceSamples.length = 0; clickTimestamps.length = 0;
+    localStorage.clear();
+    state.resources = 0,
+    state.perClick = 1,
+    state.upgradeCost = 50,
+    state.autoCollect = false,
+    state.autoCollectCost = 150,
+    state.doubleGain = false,
+    state.doubleGainCost = 400,
+    state.tripleGain = false,
+    state.tripleGainCost = 1200,
+    state.boost = false,
+    state.boostCost = 3000,
+    state.luckyGain = false,
+    state.luckyGainCost = 10000,
+    state.measuredRps = 0,
+    state.beginningfinished = false;
     pushResourceSample();
   }
 
@@ -497,7 +463,7 @@ window.addEventListener("load", () => {
   if (optionsBtn) {
     optionsBtn.addEventListener("click", () => { showFeedback("Options soon"); popButton(optionsBtn); });
   }
-    
+
   // ------------------ Tooltips ------------------
   (function attachTooltips() {
     const map = {
