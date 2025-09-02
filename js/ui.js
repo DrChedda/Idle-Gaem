@@ -497,15 +497,7 @@ window.addEventListener("load", () => {
   if (optionsBtn) {
     optionsBtn.addEventListener("click", () => { showFeedback("Options soon"); popButton(optionsBtn); });
   }
-
-      window.addEventListener("keydown", (e) => {
-        if (e.ctrlKey && e.key === ".") {
-            state.beginningfinished = true;
-            saveGame();
-            window.location.href = "chapter1/index.html";
-            return;
-        }
-      });  
+    
   // ------------------ Tooltips ------------------
   (function attachTooltips() {
     const map = {
