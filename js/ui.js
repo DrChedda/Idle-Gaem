@@ -39,8 +39,6 @@ window.addEventListener("load", () => {
   const clickTimestamps = [];
 
   // ------------------ Helper Functions ------------------
-  
-  function formatPrice(n) { return n != null ? n : 0; }
 
   function luckyMultiplier() {
     const p = 0.12;
@@ -99,7 +97,6 @@ window.addEventListener("load", () => {
     const now = Date.now();
     const cutoff = now - 10000;
     while (clickTimestamps.length > 0 && clickTimestamps[0] < cutoff) clickTimestamps.shift();
-    const windowSecs = Math.min(10, (now - (clickTimestamps[0] || now)) / 1000 || 10);
     if (clickTimestamps.length === 0) return 0;
     const first = clickTimestamps[0];
     const last = clickTimestamps[clickTimestamps.length - 1];
