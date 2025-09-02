@@ -1,5 +1,5 @@
 // rebirth-one.js
-let state = window.state || { materials: 0, perClick: 1, measuredRps: 0 };
+let rebirthOne = window.state || { materials: 0, perClick: 1, measuredRps: 0 };
 window.state = state;
 
 function updateMaterialDisplay() {

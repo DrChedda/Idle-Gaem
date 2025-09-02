@@ -14,7 +14,7 @@ window.addEventListener("load", () => {
 
   if (confirmBar) confirmBar.style.display = "none";
 
-  let lastMaterials = state.materials || 0;
+  let lastMaterials = rebirthOne.materials || 0;
   let materialSamples = [];
 
   // ------------------ Global Functions ------------------
@@ -54,7 +54,7 @@ window.addEventListener("load", () => {
   }
 
   function resetMaterials(mats = 0) {
-    state.materials = mats;
+    rebirthOne.materials = mats;
     lastMaterials = mats;
     materialSamples.length = 0;
     pushMaterialSample(mats);
@@ -109,12 +109,12 @@ window.addEventListener("load", () => {
   if (confirmYes) {
     confirmYes.addEventListener("click", () => {
       localStorage.clear();
-      for (const key in state) {
-        if (Object.prototype.hasOwnProperty.call(state, key)) {
-          if (typeof state[key] === "number") state[key] = 0;
-          else if (Array.isArray(state[key])) state[key] = [];
-          else if (typeof state[key] === "object") state[key] = {};
-          else state[key] = null;
+      for (const key in rebirthOne) {
+        if (Object.prototype.hasOwnProperty.call(rebirthOne, key)) {
+          if (typeof rebirthOne[key] === "number") rebirthOne[key] = 0;
+          else if (Array.isArray(rebirthOne[key])) rebirthOne[key] = [];
+          else if (typeof rebirthOne[key] === "object") rebirthOne[key] = {};
+          else rebirthOne[key] = null;
         }
       }
       resetMaterials(0);
@@ -135,6 +135,6 @@ window.addEventListener("load", () => {
   }
 
   // ------------------ Auto Material Sampling ------------------
-  pushMaterialSample(state.materials || 0);
-  setInterval(() => pushMaterialSample(state.materials || 0), 1000);
+  pushMaterialSample(rebirthOne.materials || 0);
+  setInterval(() => pushMaterialSample(rebirthOne.materials || 0), 1000);
 });
