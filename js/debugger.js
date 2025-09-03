@@ -1,4 +1,4 @@
-// --- Debug menu ---
+// debugger.js
 const debugMenu = document.createElement("div");
 Object.assign(debugMenu.style, {
   position: "fixed", top: "10px", left: "10px",
