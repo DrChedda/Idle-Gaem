@@ -15,37 +15,57 @@ let state = {
   luckyGainCost: 10000,
   measuredRps: 0
 };
+
 let settings = {
   theme: "dark",
-  
 };
-// Base multipliers
+
+// -------------------- Base multipliers --------------------
 const BOOST_MULTIPLIER = 3;
 const DOUBLE_MULTIPLIER = 2;
 const TRIPLE_MULTIPLIER = 3;
 const LUCKY_CHANCE = 0.12;
 const LUCKY_MULTIPLIER = 6;
 
-// --- Collect resources ---
-function collect() {
-  let amount = state.perClick;
-
-  if (state.doubleGain) amount *= DOUBLE_MULTIPLIER;
-  if (state.tripleGain) amount *= TRIPLE_MULTIPLIER;
-  if (state.boost) amount *= BOOST_MULTIPLIER;
-  if (state.luckyGain && Math.random() < LUCKY_CHANCE) amount *= LUCKY_MULTIPLIER;
-
-  state.resources += amount;
-  return amount; // optionally return for UI feedback
+// -------------------- Core Logic --------------------
+function luckyMultiplier() {
+  return state.luckyGain ? (1 + (LUCKY_MULTIPLIER - 1) * LUCKY_CHANCE) : 1;
 }
 
-// --- Upgrade purchases ---
+function perClickWithModifiers() {
+  let v = state.perClick;
+
+  if (state.doubleGain) {
+    v *= DOUBLE_MULTIPLIER;
+  }
+  if (state.tripleGain) {
+    v *= TRIPLE_MULTIPLIER;
+  }
+  if (state.boost) {
+    v *= BOOST_MULTIPLIER;
+  }
+
+  v *= luckyMultiplier();
+  return v;
+}
+
+// --- Collect resources ---
+function collect() {
+  const amount = perClickWithModifiers();
+  state.resources += amount;
+  return amount;
+}
+
+// -------------------- Upgrades --------------------
 function buyUpgrade() {
-  const cost = state.tripleGain ? Math.max(1, Math.floor(state.upgradeCost * 0.7)) : state.upgradeCost;
+  const cost = state.tripleGain
+    ? Math.max(1, Math.floor(state.upgradeCost * 0.7))
+    : state.upgradeCost;
+
   if (state.resources >= cost) {
     state.resources -= cost;
-    state.perClick += 1;                    // incremental growth
-    state.upgradeCost = Math.floor(state.upgradeCost * 1.55); // smoother scaling
+    state.perClick += 1; // incremental growth only
+    state.upgradeCost = Math.floor(state.upgradeCost * 1.55);
     return true;
   }
   return false;
@@ -55,7 +75,7 @@ function buyAutoCollect() {
   if (!state.autoCollect && state.resources >= state.autoCollectCost) {
     state.resources -= state.autoCollectCost;
     state.autoCollect = true;
-    state.autoCollectCost = Math.floor(state.autoCollectCost * 1.6); // future upgrades could be more expensive
+    state.autoCollectCost = Math.floor(state.autoCollectCost * 1.6);
     return true;
   }
   return false;
@@ -74,7 +94,6 @@ function buyTripleGain() {
   if (!state.tripleGain && state.resources >= state.tripleGainCost) {
     state.resources -= state.tripleGainCost;
     state.tripleGain = true;
-    state.perClick = Math.max(1, Math.floor(state.perClick * TRIPLE_MULTIPLIER));
     return true;
   }
   return false;
@@ -98,11 +117,11 @@ function buyLuckyGain() {
   return false;
 }
 
+// -------------------- Keybinds --------------------
 window.addEventListener("keydown", (e) => {
   if (e.ctrlKey && e.key === ".") {
     state.beginningfinished = true;
     saveGame();
     window.location.href = "chapter1/index.html";
-    return;
   }
 });
