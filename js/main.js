@@ -1,3 +1,4 @@
+// main.js
 window.addEventListener("load", () => {
   loadGame();
   if (window.updateUI) window.updateUI();
