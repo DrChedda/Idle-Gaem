@@ -1,4 +1,4 @@
-// --- Game data and core logic (Balanced) ---
+// game.js
 let state = {
   resources: 0,
   perClick: 1,
@@ -15,7 +15,10 @@ let state = {
   luckyGainCost: 10000,
   measuredRps: 0
 };
-
+let settings = {
+  theme: "dark",
+  
+};
 // Base multipliers
 const BOOST_MULTIPLIER = 3;
 const DOUBLE_MULTIPLIER = 2;
