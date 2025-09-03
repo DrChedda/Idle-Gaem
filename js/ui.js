@@ -198,7 +198,7 @@ window.addEventListener("load", () => {
       btn.style.color = shouldGrey ? "#999" : "#fff";
     }
   }
-
+  
   function updateSVGLines() {
     if (!lineSVG) return;
     const parentRect = lineSVG.getBoundingClientRect();
@@ -334,14 +334,18 @@ window.addEventListener("load", () => {
   }
 
   if (collectBtn) {
-    collectBtn.addEventListener("click", () => {
-      pushClickSample(Date.now());
-      collect();
-      updateUI();
-      popButton(collectBtn);
-      collectBtn.blur();
-    });
-  }
+  collectBtn.replaceWith(collectBtn.cloneNode(true));
+  const freshBtn = document.getElementById("collect-btn");
+
+  freshBtn.addEventListener("click", () => {
+    pushClickSample(Date.now());
+    collect();
+    updateUI();
+    popButton(freshBtn);
+    freshBtn.blur();
+  });
+}
+
 
   handlePurchase(upgradeBtn, buyUpgrade, () => false, state.upgradeCost);
   handlePurchase(autoBtn, buyAutoCollect, () => state.autoCollect, state.autoCollectCost);
