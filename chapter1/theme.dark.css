@@ -39,7 +39,7 @@ html, body {
 
 /* --- Materials Display --- */
 #material-display {
-  margin-top: 50px; /* space below top menu */
+  margin-top: 160px; /* space below top menu */
   text-align: center;
   font-size: 1.8rem;
   font-weight: 600;
