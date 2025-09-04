@@ -94,8 +94,7 @@ window.addEventListener("load", () => {
   });
 
   if (loadBtn) loadBtn.addEventListener("click", () => {
-    loadGame();
-    showFeedback("Game loaded");
+    showFeedback("This doesn't do anything yet.");
   });
 
   // ------------------ Confirm Reset ------------------
