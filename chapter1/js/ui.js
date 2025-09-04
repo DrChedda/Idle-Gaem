@@ -84,7 +84,8 @@ window.addEventListener("load", () => {
   }
 
   buttons.forEach(btn => btn.addEventListener("click", () => showTab(btn.dataset.tab)));
-  showTab(localStorage.getItem("lastTab") || "game");
+
+  showTab("game");
 
   // ------------------ Save / Load ------------------
   if (saveBtn) saveBtn.addEventListener("click", () => {
@@ -107,15 +108,30 @@ window.addEventListener("load", () => {
 
   if (confirmYes) {
     confirmYes.addEventListener("click", () => {
-      localStorage.clear();
-      for (const key in rebirthOne) {
-        if (Object.prototype.hasOwnProperty.call(rebirthOne, key)) {
-          if (typeof rebirthOne[key] === "number") rebirthOne[key] = 0;
-          else if (Array.isArray(rebirthOne[key])) rebirthOne[key] = [];
-          else if (typeof rebirthOne[key] === "object") rebirthOne[key] = {};
-          else rebirthOne[key] = null;
-        }
-      }
+      rebirthOne = {
+        materials: 0,
+        perClick: 1,
+        measuredRps: 0,
+        seenChapterMessage: false
+      };
+
+      state = {
+        resources: 0,
+        perClick: 1,
+        upgradeCost: 50,
+        autoCollect: false,
+        autoCollectCost: 150,
+        doubleGain: false,
+        doubleGainCost: 400,
+        tripleGain: false,
+        tripleGainCost: 1200,
+        boost: false,
+        boostCost: 3000,
+        luckyGain: false,
+        luckyGainCost: 10000,
+        measuredRps: 0
+      };
+
       resetMaterials(0);
       showFeedback("All data wiped!");
       popElement(confirmYes);
@@ -124,6 +140,7 @@ window.addEventListener("load", () => {
       window.location.href = "../index.html";
     });
   }
+
 
   if (confirmNo) {
     confirmNo.addEventListener("click", () => {
