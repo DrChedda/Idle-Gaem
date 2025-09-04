@@ -1,4 +1,4 @@
-// --- UI initialization and event handlers ---
+// ui.js
 
 // --- Universal Functions ---
   function showFeedback(msg) {
@@ -22,7 +22,9 @@ window.addEventListener("load", () => {
   const saveBtn = document.getElementById("save-btn");
   const loadBtn = document.getElementById("load-btn");
   const resetBtn = document.getElementById("reset-btn");
+  const optionsModal = document.getElementById("options-modal");
   const optionsBtn = document.getElementById("options-btn");
+  const optionsCloseBtn = document.getElementById("options-close-btn");
   const feedback = document.getElementById("feedback");
   const lineSVG = document.getElementById("svg-lines");
   const confirmBar = document.getElementById("confirm-bar");
@@ -196,7 +198,7 @@ window.addEventListener("load", () => {
       btn.style.color = shouldGrey ? "#999" : "#fff";
     }
   }
-
+  
   function updateSVGLines() {
     if (!lineSVG) return;
     const parentRect = lineSVG.getBoundingClientRect();
@@ -219,19 +221,36 @@ window.addEventListener("load", () => {
       return { x: r.left + r.width / 2 - parentRect.left, y: r.top + r.height / 2 - parentRect.top };
     }
 
-    function drawLine(a, b, color = "rgba(255,255,255,0.95)") {
-      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", a.x);
-      line.setAttribute("y1", a.y);
-      line.setAttribute("x2", b.x);
-      line.setAttribute("y2", b.y);
-      line.setAttribute("stroke", color);
-      line.setAttribute("stroke-width", "2");
-      line.setAttribute("stroke-linecap", "round");
-      line.style.pointerEvents = "none";
-      lineSVG.appendChild(line);
+    if (settings.theme === "dark") {
+      function drawLine(a, b, color = "rgba(255,255,255,0.95)") {
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", a.x);
+        line.setAttribute("y1", a.y);
+        line.setAttribute("x2", b.x);
+        line.setAttribute("y2", b.y);
+        line.setAttribute("stroke", color);
+        line.setAttribute("stroke-width", "2");
+        line.setAttribute("stroke-linecap", "round");
+        line.style.pointerEvents = "none";
+        lineSVG.appendChild(line);
+      }
     }
 
+    if (settings.theme === "light") {
+      function drawLine(a, b, color = "rgba(0, 0, 0, 0.95)") {
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", a.x);
+        line.setAttribute("y1", a.y);
+        line.setAttribute("x2", b.x);
+        line.setAttribute("y2", b.y);
+        line.setAttribute("stroke", color);
+        line.setAttribute("stroke-width", "2");
+        line.setAttribute("stroke-linecap", "round");
+        line.style.pointerEvents = "none";
+        lineSVG.appendChild(line);
+      }
+    }
+    
     try {
       const upC = centerOf(nodes.upgrade);
       const autoC = centerOf(nodes.auto);
@@ -315,14 +334,18 @@ window.addEventListener("load", () => {
   }
 
   if (collectBtn) {
-    collectBtn.addEventListener("click", () => {
-      pushClickSample(Date.now());
-      collect();
-      updateUI();
-      popButton(collectBtn);
-      collectBtn.blur();
-    });
-  }
+  collectBtn.replaceWith(collectBtn.cloneNode(true));
+  const freshBtn = document.getElementById("collect-btn");
+
+  freshBtn.addEventListener("click", () => {
+    pushClickSample(Date.now());
+    collect();
+    updateUI();
+    popButton(freshBtn);
+    freshBtn.blur();
+  });
+}
+
 
   handlePurchase(upgradeBtn, buyUpgrade, () => false, state.upgradeCost);
   handlePurchase(autoBtn, buyAutoCollect, () => state.autoCollect, state.autoCollectCost);
@@ -461,9 +484,22 @@ window.addEventListener("load", () => {
   }
 
   if (optionsBtn) {
-    optionsBtn.addEventListener("click", () => { showFeedback("Options soon"); popButton(optionsBtn); });
+    optionsBtn.addEventListener("click", () => {
+      optionsModal.classList.add("active");
+    });
+  } 
+
+  if (optionsCloseBtn) {
+    optionsCloseBtn.addEventListener("click", () => {
+      optionsModal.classList.remove("active");
+    });
   }
 
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && optionsModal.classList.contains("active")) {
+      optionsModal.classList.remove("active");
+    }
+  });
   // ------------------ Tooltips ------------------
   (function attachTooltips() {
     const map = {

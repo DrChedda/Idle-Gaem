@@ -1,4 +1,4 @@
-// --- Save Game ---
+// storage.js
 function saveGame() {
   try {
     const json = JSON.stringify(state);

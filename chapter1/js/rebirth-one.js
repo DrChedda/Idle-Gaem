@@ -1,6 +1,6 @@
 // rebirth-one.js
 let rebirthOne = window.state || { materials: 0, perClick: 1, measuredRps: 0 };
-window.state = state;
+window.state = rebirthOne;
 
 function updateMaterialDisplay() {
   const materialDisplay = document.getElementById("material-display"); // query inside function

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>Idle Gaem</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+  <link id="theme-stylesheet" rel="stylesheet" href="theme.dark.css" />
 </head>
 <body>
   <header>
@@ -29,6 +29,21 @@
       </div>
     </div>
 
+    <div id="options-modal" class="modal" hidden>
+      <div class="modal-content">
+        <h2>Theme</h2>
+
+        <label class="switch">
+          <input type="checkbox" id="theme-toggle">
+          <span class="slider"></span>
+        </label>
+        <p id="theme-label">Dark Mode</p>
+
+        <div style="margin-top:12px;">
+          <button id="options-close-btn">Close</button>
+        </div>
+      </div>
+    </div>
 
 
     <div class="button-stack" style="display:flex;flex-direction:column;gap:12px;align-items:center;">
@@ -67,7 +82,8 @@
 
   <script src="js/game.js"></script>
   <script src="js/storage.js"></script>
-  <script src="js/ui.js"></script>
+  <script src="js/ui.js" id="ui-script" defer></script>
+  <script src="js/options.js"></script>
   <script src="js/main.js"></script>
   <script src="js/debugger.js"></script>
   <script>
