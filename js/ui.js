@@ -371,7 +371,7 @@ window.addEventListener("load", () => {
             clearInterval(glitchInterval);
             measuredRpsEl.textContent = "Resources/s: 0";
           }
-        }, 80);
+        }, 180);
       }
 
       if (resourceDisplay) {
