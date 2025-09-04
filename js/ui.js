@@ -359,17 +359,14 @@ window.addEventListener("load", () => {
       state.resources = 0;
       state.perClick = 0;
       state.measuredRps = 0;
-      state.autoCollect = false;
-      state.doubleGain = false;
-      state.tripleGain = false;
-      state.boost = false;
-      state.luckyGain = false;
 
       if (measuredRpsEl) {
         let glitchCount = 0;
         const glitchInterval = setInterval(() => {
           glitchCount++;
-          measuredRpsEl.textContent = Math.random().toString(36).substring(2, 8).toUpperCase();
+          measuredRpsEl.textContent =
+            Math.random().toString(36).substring(2, 8).toUpperCase();
+
           if (glitchCount > 10) {
             clearInterval(glitchInterval);
             measuredRpsEl.textContent = "Resources/s: 0";
@@ -381,8 +378,11 @@ window.addEventListener("load", () => {
         let glitchCount = 0;
         const glitchInterval2 = setInterval(() => {
           glitchCount++;
-          resourceDisplay.textContent = Math.random().toString(36).substring(2, 10).toUpperCase();
-          resourceDisplay.style.color = `hsl(${Math.floor(Math.random() * 360)}, 100%, 60%)`;
+          resourceDisplay.textContent =
+            Math.random().toString(36).substring(2, 10).toUpperCase();
+          resourceDisplay.style.color =
+            `hsl(${Math.floor(Math.random() * 360)}, 100%, 60%)`;
+
           if (glitchCount > 10) {
             clearInterval(glitchInterval2);
             resourceDisplay.textContent = "Resources: 0";
@@ -391,43 +391,79 @@ window.addEventListener("load", () => {
         }, 80);
       }
 
+      state.autoCollect = false;
+      state.doubleGain = false;
+      state.tripleGain = false;
+      state.boost = false;
+      state.luckyGain = false;
+
       const feedbackMessages = [
         "Eeotk",
         "And we are almost bankrupt...",
         "So.. time for a cheaper approach...",
         "Allow me to introduce...",
-        "The Multiverse!"
+        "The Multiverse!",
       ];
 
-      if (feedback) {
-        let msgIndex = 0;
-        const showNextMessage = () => {
-          if (msgIndex >= feedbackMessages.length) return;
+      function showGlitchyMessage(el, text, duration = 2000, interval = 80) {
+        let chars = "!@#$%^&*()_+{}[]<>?/|ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let iterations = Math.floor(duration / interval);
+        let i = 0;
 
-          feedback.classList.add("show");
-          feedback.textContent = feedbackMessages[msgIndex];
-          msgIndex++;
+        let glitch = setInterval(() => {
+          let glitched = text
+            .split("")
+            .map((ch, idx) =>
+              Math.random() > 0.5 && i < iterations
+                ? chars[Math.floor(Math.random() * chars.length)]
+                : ch
+            )
+            .join("");
 
-          const delay = msgIndex === feedbackMessages.length ? 2000 : 5000;
-          setTimeout(() => {
-            feedback.classList.remove("show");
-            setTimeout(showNextMessage, 200);
-          }, delay);
-        };
-        showNextMessage();
+          el.textContent = glitched;
+
+          if (i >= iterations) {
+            clearInterval(glitch);
+            el.textContent = text;
+          }
+
+          i++;
+        }, interval);
       }
 
-      state.beginningfinished = true;
-      saveGame();
+      if (feedback) {
+        let i = 0;
+        const showNext = () => {
+          if (i >= feedbackMessages.length) {
+            state.beginningfinished = true;
+            saveGame();
+            window.location.href = "chapter1/index.html";
+            return;
+          }
 
-      setTimeout(() => {
-        window.location.href = "chapter1/index.html";
-        popButton(newAgeBtn);
-        updateUI();
-      }, 3000); // short delay to let glitches/messages show
+          if (i >= feedbackMessages.length) return;
+
+          feedback.classList.add("show");
+
+          if (i === feedbackMessages.length - 1) {
+            showGlitchyMessage(feedback, feedbackMessages[i]);
+          } else {
+            feedback.textContent = feedbackMessages[i];
+          }
+
+          i++;
+          setTimeout(() => {
+            feedback.classList.remove("show");
+            showNext();
+          }, 5000);
+        };
+        showNext();
+      }
+
+      popButton(newAgeBtn);
+      updateUI();
     });
   }
-
 
   if (saveBtn) saveBtn.addEventListener("click", () => { saveGame(); showFeedback("Saved"); popButton(saveBtn); });
   if (loadBtn) loadBtn.addEventListener("click", () => { loadGame(); updateUI(); showFeedback("Does nothing yet ㋡"); popButton(loadBtn); });
