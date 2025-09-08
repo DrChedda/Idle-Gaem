@@ -13,6 +13,8 @@
   <!-- Top Navigation -->
   <nav class="top-menu">
     <button data-tab="game">Gaem</button>
+    <button data-tab="pickaxes">Pickaxes</button>
+    <button data-tab="achievements" disabled>Achievements</button>
     <button data-tab="options">Options</button>
   </nav>
 
@@ -24,7 +26,14 @@
   <div id="tab-game" class="tab-page">
     <div id="game-container">
       <button id="collect-btn">Collect</button>
+      <br />
+      <button id="crate-btn">Open Basic Crate</button>
     </div>
+  </div>
+
+  <div id="tab-pickaxes" class="tab-page" style="display:none;">
+    <h2>Your Pickaxes</h2>
+    <div id="pickaxe-list">No pickaxes yet.</div>
   </div>
 
   <!-- Options Tab -->
