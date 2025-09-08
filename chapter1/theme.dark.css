@@ -49,11 +49,12 @@ html, body {
 /* --- Collect Button Container --- */
 #game-container {
   display: flex;
-  justify-content: center;   /* horizontal center */
-  align-items: flex-start;   /* stick near top, not full vertical center */
-  margin-top: 20px;          /* space below materials display */
-  height: auto;              /* remove fixed height */
+  flex-direction: column;   /* stack items vertically */
+  align-items: center;      /* center horizontally */
+  margin-top: 20px;
+  gap: 12px;                /* spacing between buttons */
 }
+
 
 /* --- Collect Button --- */
 #collect-btn {
@@ -120,31 +121,6 @@ button:hover { background: var(--accent-2); }
   border-color: #733;
 }
 .danger-btn:hover { background: var(--danger-hover); }
-
-/* --- Corner Save/Load Buttons --- */
-.corner-group {
-  position: fixed;
-  right: 15px;
-  bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 100;
-}
-.corner-group button { min-width: 100px; }
-
-@media (max-width: 640px) {
-  .corner-group {
-    right: 8px;
-    bottom: 8px;
-    flex-direction: row;
-  }
-  .corner-group button {
-    min-width: 70px;
-    padding: 5px 8px;
-    font-size: 12px;
-  }
-}
 
 /* --- Tab Pages --- */
 .tab-page {
