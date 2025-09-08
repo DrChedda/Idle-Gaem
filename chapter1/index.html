@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Idle Gaem</title>
-  <link rel="stylesheet" href="theme.dark.css">
+  <!-- Theme placeholder for dynamic switching -->
+  <link id="theme-stylesheet" rel="stylesheet" href="theme.dark.css">
 </head>
 <body>
   <header>
@@ -31,6 +32,7 @@
     </div>
   </div>
 
+  <!-- Pickaxes Tab -->
   <div id="tab-pickaxes" class="tab-page" style="display:none;">
     <h2>Your Pickaxes</h2>
     <div id="pickaxe-list">No pickaxes yet.</div>
@@ -42,6 +44,12 @@
     <button id="reset-btn" class="danger-btn">Reset Save</button>
     <button id="save-btn">Save</button>
     <button id="load-btn">Load</button>
+
+    <!-- Theme Toggle -->
+    <div style="margin-top:20px;">
+      <label id="theme-label" for="theme-toggle">Dark Mode</label>
+      <input type="checkbox" id="theme-toggle">
+    </div>
   </div>
 
   <!-- Confirm Reset Bar -->
@@ -61,6 +69,7 @@
   <script src="js/rebirth-one.js"></script>
   <script src="js/animations.js"></script>
   <script src="js/tabs.js"></script>
+  <script src="js/options.js"></script>
   <script src="js/ui.js"></script>
 </body>
 </html>
