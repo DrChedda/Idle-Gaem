@@ -13,15 +13,19 @@ window.addEventListener("load", () => {
 
   if (confirmBar) confirmBar.style.display = "none";
 
-  let lastMaterials = rebirthOne.materials || 0;
+  let lastMaterials = window.state.materials || 0;
   let materialSamples = [];
 
   // ------------------ Global Functions ------------------
-  function showFeedback(msg) {
+  function showFeedback(msg, duration = 1800) {
+    if (typeof window.showFeedback === 'function') {
+      window.showFeedback(msg, duration);
+      return;
+    }
     if (!feedback) return;
     feedback.textContent = msg;
     feedback.classList.add("show");
-    setTimeout(() => feedback.classList.remove("show"), 1800);
+    setTimeout(() => feedback.classList.remove("show"), duration);
   }
 
   function animateMaterialChange(newVal) {
@@ -53,7 +57,7 @@ window.addEventListener("load", () => {
   }
 
   function resetMaterials(mats = 0) {
-    rebirthOne.materials = mats;
+    window.state.materials = mats;
     lastMaterials = mats;
     materialSamples.length = 0;
     pushMaterialSample(mats);
@@ -101,55 +105,64 @@ window.addEventListener("load", () => {
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
       confirmBar.style.display = "flex";
+      if (confirmYes) confirmYes.textContent = "Chapter Reset";
+      if (confirmNo) confirmNo.textContent = "Full Reset";
       setTimeout(() => confirmBar.classList.add("show"), 10);
     });
   }
 
   if (confirmYes) {
     confirmYes.addEventListener("click", () => {
-      rebirthOne = {
+      // Clear existing state
+      Object.keys(window.state).forEach(key => delete window.state[key]);
+      // Set initial values
+      Object.assign(window.state, {
         materials: 0,
         perClick: 1,
         measuredRps: 0,
-        seenChapterMessage: false
-      };
-
-      state = {
-        resources: 0,
-        perClick: 1,
-        upgradeCost: 50,
-        autoCollect: false,
-        autoCollectCost: 150,
-        doubleGain: false,
-        doubleGainCost: 400,
-        tripleGain: false,
-        tripleGainCost: 1200,
-        boost: false,
-        boostCost: 3000,
-        luckyGain: false,
-        luckyGainCost: 10000,
-        measuredRps: 0
-      };
+        crateCost: 10,
+        advancedCrateCost: 100,
+        epicCrateCost: 1000,
+        cratesOpened: 0,
+        items: {}
+      });
 
       resetMaterials(0);
-      showFeedback("All data wiped!");
+      showFeedback("Chapter data reset!");
       popElement(confirmYes);
       confirmBar.classList.remove("show");
       setTimeout(() => (confirmBar.style.display = "none"), 300);
-      window.location.href = "../index.html";
+      window.location.href = "./index.html";
     });
   }
 
 
   if (confirmNo) {
     confirmNo.addEventListener("click", () => {
+      // Clear existing state
+      Object.keys(window.state).forEach(key => delete window.state[key]);
+      // Set initial values
+      Object.assign(window.state, {
+        materials: 0,
+        perClick: 1,
+        measuredRps: 0,
+        crateCost: 10,
+        advancedCrateCost: 100,
+        epicCrateCost: 1000,
+        cratesOpened: 0,
+        items: {}
+      });
+
+      resetMaterials(0);
+      showFeedback("All data wiped!");
       popElement(confirmNo);
       confirmBar.classList.remove("show");
       setTimeout(() => (confirmBar.style.display = "none"), 300);
+      window.location.href = "../index.html";
     });
   }
 
   // ------------------ Auto Material Sampling ------------------
-  pushMaterialSample(rebirthOne.materials || 0);
-  setInterval(() => pushMaterialSample(rebirthOne.materials || 0), 1000);
+  pushMaterialSample(window.state.materials || 0);
+  setInterval(() => pushMaterialSample(window.state.materials || 0), 1000);
 });

@@ -22,7 +22,7 @@ window.addEventListener("DOMContentLoaded", () => {
       themeLabel.textContent = "Light Mode.";
     } else {
       themeStylesheet.href = "theme.dark.css";
-      themeLabel.textContent = "Dark Mode.";
+      themeLabel.textContent = "Light Mode.";
     }
 
     // update global settings

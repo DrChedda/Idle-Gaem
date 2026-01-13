@@ -15,7 +15,7 @@
   <nav class="top-menu">
     <button data-tab="game">Gaem</button>
     <button data-tab="pickaxes">Pickaxes</button>
-    <button data-tab="achievements" disabled>Achievements</button>
+    <button data-tab="achievements">Achievements</button>
     <button data-tab="options">Options</button>
   </nav>
 
@@ -29,6 +29,8 @@
       <button id="collect-btn">Collect</button>
       <br />
       <button id="crate-btn">Open Basic Crate</button>
+      <button id="advanced-crate-btn">Open Advanced Crate</button>
+      <button id="epic-crate-btn">Open Epic Crate</button>
     </div>
   </div>
 
@@ -36,6 +38,11 @@
   <div id="tab-pickaxes" class="tab-page" style="display:none;">
     <h2>Your Pickaxes</h2>
     <div id="pickaxe-list">No pickaxes yet.</div>
+  </div>
+
+  <div id="tab-achievements" class="tab-page" style="display:none;">
+    <h2>Achievements</h2>
+    <div id="achievements-list"></div>
   </div>
 
   <!-- Options Tab -->
@@ -66,7 +73,9 @@
 
   <!-- Scripts -->
   <script src="js/storage.js"></script>
+  <script src="js/formatNumbers.js"></script>
   <script src="js/rebirth-one.js"></script>
+  <script src="js/achievements.js"></script>
   <script src="js/animations.js"></script>
   <script src="js/tabs.js"></script>
   <script src="js/options.js"></script>

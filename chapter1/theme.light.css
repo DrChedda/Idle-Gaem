@@ -16,6 +16,11 @@ html, body {
   background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
   color: var(--muted);
   overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* old IE/Edge */
+  -webkit-touch-callout: none; /* iOS long-press menu */
 }
 
 /* --- Top Menu (Tabs) --- */
@@ -165,11 +170,11 @@ button:hover { background: var(--accent-2); }
 .confirm-bar button:hover { background: var(--accent-2); }
 
 /* --- Tooltip Styles --- */
-button[data-desc] {
+[data-desc] {
   position: relative;
   z-index: 3;
 }
-button[data-desc]::after {
+[data-desc]::after {
   content: attr(data-desc);
   position: absolute;
   left: 50%;
@@ -187,7 +192,7 @@ button[data-desc]::after {
   pointer-events: none;
   transition: opacity .12s ease, transform .12s ease;
 }
-button[data-desc]::before {
+[data-desc]::before {
   content: "";
   position: absolute;
   left: 50%;
@@ -198,20 +203,114 @@ button[data-desc]::before {
   opacity: 0;
   transition: opacity .12s ease;
 }
-button[data-desc]:hover::after,
-button[data-desc]:hover::before {
+[data-desc]:hover::after,
+[data-desc]:hover::before {
   opacity: 1;
   transform: translateX(-50%) translateY(5px);
 }
 
 /* Feedback */
 .feedback {
-  height: 22px;
-  text-align: center;
-  margin-top: 6px;
-  color: var(--accent-2);
-  font-weight: 600;
-  opacity: 0;
-  transition: opacity 0.18s;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 18px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  align-items: center;
+  z-index: 300;
+  pointer-events: none;
+  max-width: 90%;
 }
-.feedback.show { opacity: 1; }
+
+.feedback .msg {
+  background: rgba(255,255,255,0.95);
+  color: var(--muted);
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  min-width: 200px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.18s ease, transform 0.2s ease;
+}
+
+.feedback .msg.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Pickaxes Tab Styles --- */
+#tab-pickaxes h2 {
+  text-align: center;
+  color: var(--accent-1);
+  margin-bottom: 20px;
+}
+
+#pickaxe-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#pickaxe-list div {
+  background: var(--bg-2);
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 2px solid var(--accent-1);
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--muted);
+  min-width: 250px;
+  text-align: center;
+}
+
+/* --- Achievements Tab Styles --- */
+#tab-achievements h2 {
+  text-align: center;
+  color: var(--accent-1);
+  margin-bottom: 20px;
+}
+
+#achievements-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 10px;
+  justify-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.achievement-box {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-2);
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.achievement-box.unlocked {
+  border-color: var(--accent-1);
+  background: rgba(47, 142, 247, 0.1);
+  box-shadow: 0 0 10px rgba(47, 142, 247, 0.3);
+}
+
+.achievement-box.locked {
+  border-color: #ccc;
+  opacity: 0.6;
+  filter: grayscale(100%);
+}
+
+.achievement-box:hover {
+  transform: scale(1.1);
+}
