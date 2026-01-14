@@ -1,12 +1,15 @@
 // ui.js
 
 // --- Universal Functions ---
-  function showFeedback(msg) {
-    if (!feedback) return;
-    feedback.textContent = msg;
-    feedback.classList.add("show");
-    setTimeout(() => feedback.classList.remove("show"), 1800);
-  }
+function showFeedback(msg) {
+  // Resolve the feedback element lazily to avoid referencing a block-scoped
+  // variable that may not exist in callers' scope.
+  const feedbackEl = document.getElementById('feedback');
+  if (!feedbackEl) return;
+  feedbackEl.textContent = msg;
+  feedbackEl.classList.add('show');
+  setTimeout(() => feedbackEl.classList.remove('show'), 1800);
+}
 
 window.addEventListener("load", () => {
   // DOM references
@@ -65,7 +68,7 @@ window.addEventListener("load", () => {
       if (!startTime) startTime = ts;
       const progress = Math.min((ts - startTime) / duration, 1);
       const current = Math.floor(start + (end - start) * progress);
-      if (resourceDisplay) resourceDisplay.textContent = `Resources: ${current}`;
+      if (resourceDisplay) resourceDisplay.textContent = `Resources: ${formatNumber(current)}`;
       if (progress < 1) requestAnimationFrame(step);
       else lastResources = end;
     }

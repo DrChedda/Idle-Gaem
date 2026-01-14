@@ -16,6 +16,10 @@ body {
   color: var(--text);
   margin: 0;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  user-select: none
 }
 
 header {
@@ -136,19 +140,21 @@ details summary { cursor: pointer; padding: 6px 0; }
 html,body{
   height:100%;
   margin:0;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none;
-  -webkit-touch-callout:none; /* disable callout menu on iOS */
-  font-family:Segoe UI,Arial,sans-serif;
+  /* Allow text selection for accessibility and easier use of the guide */
+  -webkit-user-select:text;
+  -moz-user-select:text;
+  -ms-user-select:text;
+  user-select:text;
+  -webkit-touch-callout:auto; /* allow iOS callout */
+  font-family: Segoe UI, Arial, sans-serif;
   background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
   color:var(--muted);
-  user-select: none;
-  -webkit-user-select: none; /* Chrome/Safari/Opera */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* old IE/Edge */
-  -webkit-touch-callout: none; /* iOS long-press menu */
+}
+
+/* Accessibility: visible focus rings for keyboard users (subtle) */
+button:focus-visible, a:focus-visible {
+  outline: 3px solid rgba(47,142,247,0.12);
+  outline-offset: 3px;
 }
 
 header{padding:20px 16px 8px;text-align:center}
