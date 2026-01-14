@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Guide — Idle Gaem</title>
+
+    <!-- theme CSS (light first, dark will apply automatically when prefers-color-scheme: dark) -->
+    <link rel="stylesheet" href="theme.light.css" id="theme-light">
+    <link rel="stylesheet" href="theme.dark.css" id="theme-dark" media="(prefers-color-scheme: dark)">
+
+    <script>
+    // Small theme loader: if user preference stored, enforce it
+    (function(){
+        try {
+            var t = localStorage.getItem('theme');
+            if (t === 'dark') {
+                document.getElementById('theme-dark').media = 'all';
+                document.getElementById('theme-light').media = 'not all';
+            } else if (t === 'light') {
+                document.getElementById('theme-light').media = 'all';
+                document.getElementById('theme-dark').media = 'not all';
+            }
+        } catch(e) { /* ignore */ }
+    })();
+    </script>
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">Idle Gaem — Guide</div>
+        <div style="margin-left:auto;color:var(--muted);font-size:0.95rem">Reference • Tutorials • Tips</div>
+    </header>
+
+    <div class="container" role="main">
+        <nav class="toc" aria-label="Table of contents">
+            <ul>
+                <li><a href="#intro">Introduction</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#progress">Progress & Tips</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#changelog">Changelog</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <article class="card" aria-labelledby="guide-title">
+                <header>
+                    <h1 id="guide-title">Guide</h1>
+                </header>
+
+                <p class="meta">A simple, long-page friendly guide layout. Use section anchors for navigation.</p>
+
+                <section id="intro" class="section">
+                    <h2>Introduction</h2>
+                    <p>This guide layout is optimized for long pages: a narrow readable measure, sticky table of contents on wide screens, smooth scrolling, and a floating back-to-top button.</p>
+                    <details>
+                        <summary>Design notes</summary>
+                        <p>The typography favors legibility (comfortable line-height and max width). The page is responsive and printable.</p>
+                    </details>
+                </section>
+
+                <section id="getting-started" class="section">
+                    <h2>Getting started</h2>
+                    <h3>Structure</h3>
+                    <p>Split your guide into semantic sections and add id attributes for direct linking. Use details blocks for optional deep dives.</p>
+                    <pre><code>&lt;section id="example"&gt;
+    &lt;h2&gt;Example&lt;/h2&gt;
+    &lt;p&gt;Content...&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+                </section>
+
+                <section id="progress" class="section">
+                    <h2>Progress & Tips</h2>
+                    <p>For very long pages, prefer internal anchors and a top-level TOC so readers can jump quickly. Break content into smaller logical chunks.</p>
+                    <h3>Examples</h3>
+                    <p>Use lists, code blocks, and collapsible sections. Consider paginating extremely long tutorials or adding search/filter for the TOC.</p>
+                </section>
+
+                <section id="faq" class="section">
+                    <h2>FAQ</h2>
+                    <details>
+                        <summary>How do I add a new section to the TOC?</summary>
+                        <p>Add an anchor link in the nav and an element with the matching id in the main content.</p>
+                    </details>
+                    <details>
+                        <summary>How to keep the page fast?</summary>
+                        <p>Avoid heavy DOM updates during scroll and defer large images. Lazy-load media where possible.</p>
+                    </details>
+                </section>
+
+                <section id="changelog" class="section">
+                    <h2>Changelog</h2>
+                    <p>Keep an appended changelog or version history at the end of the document so readers can scan for recent changes without losing place in the main guide.</p>
+                </section>
+
+                <p style="color:var(--muted);font-size:0.9rem;margin-top:14px">End of guide. Use the TOC to jump to sections, or the button to return to top.</p>
+            </article>
+        </main>
+    </div>
+
+    <button class="top-btn" aria-label="Back to top" title="Back to top">↑</button>
+
+    <script>
+        // Activate TOC link for visible section
+        const tocLinks = Array.from(document.querySelectorAll('nav.toc a'));
+        const sections = tocLinks.map(a => document.getElementById(a.getAttribute('href').slice(1)));
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                const id = e.target.id;
+                const link = document.querySelector('nav.toc a[href="#' + id + '"]');
+                if (e.isIntersecting) {
+                    tocLinks.forEach(l => l.classList.remove('active'));
+                    if (link) link.classList.add('active');
+                }
+            });
+        }, {root: null, rootMargin: '0px 0px -60% 0px', threshold: 0});
+        sections.forEach(s => s && observer.observe(s));
+
+        // Back-to-top visibility and action
+        const topBtn = document.querySelector('.top-btn');
+        window.addEventListener('scroll', () => {
+            topBtn.style.display = (window.scrollY > 300) ? 'block' : 'none';
+        });
+        topBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+        // Smoothly focus target when anchor clicked (accessibility)
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const id = a.getAttribute('href').slice(1);
+                const el = document.getElementById(id);
+                if (!el) return;
+                // let browser handle scroll; then focus for keyboard users
+                setTimeout(() => { el.setAttribute('tabindex','-1'); el.focus(); }, 300);
+            });
+        });
+    </script>
+</body>
+</html>

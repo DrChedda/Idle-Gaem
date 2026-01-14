@@ -66,6 +66,7 @@ function buyUpgrade() {
     state.resources -= cost;
     state.perClick += 1; // incremental growth only
     state.upgradeCost = Math.floor(state.upgradeCost * 1.55);
+    saveGame();
     return true;
   }
   return false;
@@ -76,6 +77,7 @@ function buyAutoCollect() {
     state.resources -= state.autoCollectCost;
     state.autoCollect = true;
     state.autoCollectCost = Math.floor(state.autoCollectCost * 1.6);
+    saveGame();
     return true;
   }
   return false;
@@ -85,6 +87,7 @@ function buyDoubleGain() {
   if (!state.doubleGain && state.resources >= state.doubleGainCost) {
     state.resources -= state.doubleGainCost;
     state.doubleGain = true;
+    saveGame();
     return true;
   }
   return false;
@@ -94,6 +97,7 @@ function buyTripleGain() {
   if (!state.tripleGain && state.resources >= state.tripleGainCost) {
     state.resources -= state.tripleGainCost;
     state.tripleGain = true;
+    saveGame();
     return true;
   }
   return false;
@@ -103,6 +107,7 @@ function buyBoost() {
   if (!state.boost && state.resources >= state.boostCost) {
     state.resources -= state.boostCost;
     state.boost = true;
+    saveGame();
     return true;
   }
   return false;
@@ -112,6 +117,7 @@ function buyLuckyGain() {
   if (!state.luckyGain && state.resources >= state.luckyGainCost) {
     state.resources -= state.luckyGainCost;
     state.luckyGain = true;
+    saveGame();
     return true;
   }
   return false;

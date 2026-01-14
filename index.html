@@ -19,7 +19,7 @@
         <h2>Welcome to Gaem!</h2>
         <p>Here’s some info to get you started:</p>
         <ul style="text-align:left;">
-          <li><a href="https://example.com/guide" target="_blank">Full Guide</a><br /><a>(Trust me you will need it)</a></li>
+          <li><a href="/guide.html" target="_blank">Full Guide</a><br /><a>(Trust me you will need it later I mean.)</a></li>
           <li><a href="https://example.com/discord" target="_blank">Join Discord</a></li>
         </ul>
         <label style="display:flex;align-items:center;gap:6px;justify-content:center;margin-top:12px;">
@@ -29,22 +29,29 @@
       </div>
     </div>
 
-    <div id="options-modal" class="modal" hidden>
-      <div class="modal-content">
-        <h2>Theme</h2>
+<div id="options-modal" class="modal">
+  <div class="modal-content">
+    <h2 style="margin-top: 0;">Options</h2>
 
-        <label class="switch">
-          <input type="checkbox" id="theme-toggle">
-          <span class="slider"></span>
-        </label>
-        <p id="theme-label">Dark Mode</p>
-
-        <div style="margin-top:12px;">
-          <button id="options-close-btn">Close</button>
-        </div>
-      </div>
+    <div style="margin: 20px 0; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+      <label class="switch">
+        <input type="checkbox" id="theme-toggle">
+        <span class="slider"></span>
+      </label>
+      <span id="theme-label" style="font-weight: 600;">Dark Mode</span>
     </div>
 
+    <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+      <a href="guide.html" target="_blank" style="text-decoration: none;">
+        <button type="button" style="width: 140px;">Guide</button>
+      </a>
+
+      <button id="options-close-btn" style="width: 140px; background: var(--bg-2); border: 1px solid var(--accent-1);">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
 
     <div class="button-stack" style="display:flex;flex-direction:column;gap:12px;align-items:center;">
       <button id="collect-btn" aria-label="Collect resources">Collect</button>
