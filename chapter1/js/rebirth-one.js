@@ -153,7 +153,7 @@ function openCrate() {
 
     state.cratesOpened += 1;
     if (state.cratesOpened % 10 === 0) {
-        state.crateCost *= 1.5;
+        state.crateCost *= 1.8;
         state.crateCost = round2(state.crateCost);
     }
 
@@ -194,7 +194,7 @@ function openAdvancedCrate() {
 
     state.cratesOpened += 1;
     if (state.cratesOpened % 10 === 0) {
-        state.advancedCrateCost *= 1.5;
+        state.advancedCrateCost *= 1.9;
         state.advancedCrateCost = round2(state.advancedCrateCost);
     }
 
@@ -235,7 +235,7 @@ function openEpicCrate() {
 
     state.cratesOpened += 1;
     if (state.cratesOpened % 10 === 0) {
-        state.epicCrateCost *= 1.5;
+        state.epicCrateCost *= 2;
         state.epicCrateCost = round2(state.epicCrateCost);
     }
 
