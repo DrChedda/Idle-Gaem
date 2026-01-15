@@ -1,4 +1,4 @@
-// game.js
+
 let state = {
   resources: 0,
   perClick: 1,
@@ -20,14 +20,14 @@ let settings = {
   theme: "dark",
 };
 
-// -------------------- Base multipliers --------------------
+
 const BOOST_MULTIPLIER = 3;
 const DOUBLE_MULTIPLIER = 2;
 const TRIPLE_MULTIPLIER = 3;
 const LUCKY_CHANCE = 0.12;
 const LUCKY_MULTIPLIER = 6;
 
-// -------------------- Core Logic --------------------
+
 function luckyMultiplier() {
   return state.luckyGain ? (1 + (LUCKY_MULTIPLIER - 1) * LUCKY_CHANCE) : 1;
 }
@@ -49,14 +49,14 @@ function perClickWithModifiers() {
   return v;
 }
 
-// --- Collect resources ---
+
 function collect() {
   const amount = perClickWithModifiers();
   state.resources += amount;
   return amount;
 }
 
-// -------------------- Upgrades --------------------
+
 function buyUpgrade() {
   const cost = state.tripleGain
     ? Math.max(1, Math.floor(state.upgradeCost * 0.7))
@@ -123,7 +123,7 @@ function buyLuckyGain() {
   return false;
 }
 
-// -------------------- Keybinds --------------------
+
 window.addEventListener("keydown", (e) => {
   if (e.ctrlKey && e.key === ".") {
     state.beginningfinished = true;

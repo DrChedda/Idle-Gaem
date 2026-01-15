@@ -1,4 +1,4 @@
-// debugger.js
+
 const debugMenu = document.createElement("div");
 Object.assign(debugMenu.style, {
   position: "fixed", top: "10px", left: "10px",
@@ -19,13 +19,13 @@ function toggleDebugger() {
   debugMenu.style.display = debugEnabled ? "block" : "none";
 
   if (debugEnabled) {
-    // Save resources and give a debug boost
+
     savedResources = state.resources;
     state.resources += 100000;
     updateDebugMenu();
     showFeedback("Debug Menu Opened");
   } else {
-    // Restore original resources
+
     if (savedResources !== null) {
       state.resources = savedResources;
       savedResources = null;
@@ -37,7 +37,7 @@ function toggleDebugger() {
 function updateDebugMenu() {
   if (!debugEnabled) return;
 
-  // Gather memory stats
+
   const memory = performance && performance.memory ? performance.memory : null;
   let memoryInfo = "Memory info not available";
   if (memory) {
@@ -69,7 +69,7 @@ function updateDebugMenu() {
   requestAnimationFrame(updateDebugMenu);
 }
 
-// Toggle with Ctrl+[
+
 window.addEventListener("keydown", e => {
   if (e.ctrlKey && e.key === "[") {
     e.preventDefault();

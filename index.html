@@ -104,7 +104,6 @@
   <script>
     window.onload = () => {
     if (state && state.beginningfinished === true) {
-      // create overlay
       const overlay = document.createElement("div");
       overlay.style.position = "fixed";
       overlay.style.top = "0";
@@ -147,7 +146,6 @@
       overlay.appendChild(box);
       document.body.appendChild(overlay);
 
-      // 🔹 Hide overlay only when Ctrl + [ is pressed
       window.addEventListener("keydown", (e) => {
         if (e.ctrlKey && e.key === "[") {
           overlay.style.display = "none";

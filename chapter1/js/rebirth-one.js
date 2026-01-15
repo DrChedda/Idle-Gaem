@@ -65,7 +65,7 @@ function updatePickaxeTab() {
         return;
     }
 
-    // Sort by per-click value (rarity) descending
+
     pickaxeEntries.sort((a, b) => (pickaxes[b[0]] || 0) - (pickaxes[a[0]] || 0));
 
     container.innerHTML = "";
@@ -86,10 +86,10 @@ function showFeedback(msg, duration = 1500) {
         window._fbMax = 4; // max visible messages at once
     }
 
-    // enqueue the message
+
     window._fbQueue.push({ text: msg, duration: duration });
 
-    // try to show next if there's capacity
+
     function tryShowNext() {
         if (window._fbActive >= window._fbMax) return;
         const next = window._fbQueue.shift();
@@ -100,23 +100,23 @@ function showFeedback(msg, duration = 1500) {
         el.textContent = next.text;
         container.appendChild(el);
 
-        // show with transition
+
         requestAnimationFrame(() => el.classList.add("show"));
         window._fbActive++;
 
-        // hide after duration, then remove and try to show another
+
         setTimeout(() => {
             el.classList.remove("show");
-            // allow CSS hide transition to finish before removing
+
             setTimeout(() => {
                 if (el.parentElement === container) container.removeChild(el);
                 window._fbActive = Math.max(0, window._fbActive - 1);
-                // show next queued message if any
+
                 if (window._fbQueue.length) tryShowNext();
             }, 220);
         }, next.duration);
 
-        // if there is still room, immediately show more
+
         if (window._fbActive < window._fbMax && window._fbQueue.length) {
             tryShowNext();
         }

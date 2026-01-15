@@ -1,4 +1,4 @@
-// achievements.js
+
 const achievements = {
     "first_collect": {
         name: "First Steps",
@@ -146,7 +146,7 @@ function updateAchievementsDisplay() {
 }
 
 window.addEventListener("load", () => {
-    // Load achievements from state
+
     if (!state.achievements) state.achievements = {};
     for (const key in achievements) {
         achievements[key].unlocked = state.achievements[key] || false;
@@ -154,6 +154,6 @@ window.addEventListener("load", () => {
 
     updateAchievementsDisplay();
 
-    // Check achievements periodically
+
     setInterval(checkAchievements, 1000);
 });

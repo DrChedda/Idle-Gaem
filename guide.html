@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Guide — Idle Gaem</title>
 
-    <!-- theme CSS (light first, dark will apply automatically when prefers-color-scheme: dark) -->
     <link rel="stylesheet" href="theme.light.css" id="theme-light">
     <link rel="stylesheet" href="theme.dark.css" id="theme-dark" media="(prefers-color-scheme: dark)">
 
     <script>
-    // Small theme loader: if user preference stored, enforce it
     (function(){
         try {
             var t = localStorage.getItem('theme');
@@ -21,7 +19,7 @@
                 document.getElementById('theme-light').media = 'all';
                 document.getElementById('theme-dark').media = 'not all';
             }
-        } catch(e) { /* ignore */ }
+        } catch(e) { }
     })();
     </script>
     </style>
@@ -102,7 +100,6 @@
     <button class="top-btn" aria-label="Back to top" title="Back to top">↑</button>
 
     <script>
-        // Activate TOC link for visible section
         const tocLinks = Array.from(document.querySelectorAll('nav.toc a'));
         const sections = tocLinks.map(a => document.getElementById(a.getAttribute('href').slice(1)));
         const observer = new IntersectionObserver(entries => {
@@ -117,20 +114,17 @@
         }, {root: null, rootMargin: '0px 0px -60% 0px', threshold: 0});
         sections.forEach(s => s && observer.observe(s));
 
-        // Back-to-top visibility and action
         const topBtn = document.querySelector('.top-btn');
         window.addEventListener('scroll', () => {
             topBtn.style.display = (window.scrollY > 300) ? 'block' : 'none';
         });
         topBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-        // Smoothly focus target when anchor clicked (accessibility)
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 const id = a.getAttribute('href').slice(1);
                 const el = document.getElementById(id);
                 if (!el) return;
-                // let browser handle scroll; then focus for keyboard users
                 setTimeout(() => { el.setAttribute('tabindex','-1'); el.focus(); }, 300);
             });
         });
