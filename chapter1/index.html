@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Idle Gaem</title>
-  <!-- Theme placeholder for dynamic switching -->
+  
   <link id="theme-stylesheet" rel="stylesheet" href="theme.dark.css">
 </head>
 <body>
   <header>
     <div id="material-display" aria-live="polite">Materials: 0</div>
     <nav style="margin-left:auto">
-      <a href="../guide.html">Guide</a>
+      <a href="../guide.html" target="_blank">Guide</a>
     </nav>
     <style>
       body {
@@ -22,19 +22,19 @@
     </style>
   </header>
 
-  <!-- Top Navigation -->
+  
   <nav class="top-menu">
     <button data-tab="game">Gaem</button>
-    <button data-tab="pickaxes">Pickaxes</button>
+    <button data-tab="inventory">Inventory</button>
     <button data-tab="achievements">Achievements</button>
     <button data-tab="options">Options</button>
   </nav>
 
-  <!-- Chapter Messages -->
+  
   <div id="chapterMessage">Chapter 1</div>
   <div id="restartMessage">GAMBLING!!</div>
 
-  <!-- Game Tab -->
+  
   <div id="tab-game" class="tab-page">
     <div id="game-container">
       <button id="collect-btn">Collect</button>
@@ -45,10 +45,10 @@
     </div>
   </div>
 
-  <!-- Pickaxes Tab -->
-  <div id="tab-pickaxes" class="tab-page" style="display:none;">
-    <h2>Your Pickaxes</h2>
-    <div id="pickaxe-list">No pickaxes yet.</div>
+  
+  <div id="tab-inventory" class="tab-page" style="display:none;">
+    <h2>Your Inventory</h2>
+    <div id="pickaxe-list">No items yet.</div>
   </div>
 
   <div id="tab-achievements" class="tab-page" style="display:none;">
@@ -56,21 +56,21 @@
     <div id="achievements-list"></div>
   </div>
 
-  <!-- Options Tab -->
+  
   <div id="tab-options" class="tab-page" style="display:none;">
     <h2>Options</h2>
     <button id="reset-btn" class="danger-btn">Reset Save</button>
     <button id="save-btn">Save</button>
     <button id="load-btn">Load</button>
 
-    <!-- Theme Toggle -->
+    
     <div style="margin-top:20px;">
       <label id="theme-label" for="theme-toggle">Dark Mode</label>
       <input type="checkbox" id="theme-toggle">
     </div>
   </div>
 
-  <!-- Confirm Reset Bar -->
+  
   <div id="confirm-bar" class="confirm-bar" hidden>
     <span>Are you sure you want to reset your save?</span>
     <div class="confirm-actions">
@@ -79,10 +79,10 @@
     </div>
   </div>
 
-  <!-- Feedback messages -->
+  
   <div id="feedback" class="feedback"></div>
 
-  <!-- Scripts -->
+  
   <script src="js/storage.js"></script>
   <script src="js/formatNumbers.js"></script>
   <script src="js/rebirth-one.js"></script>

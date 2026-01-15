@@ -1,4 +1,3 @@
-/* Guide layout variables (light) */
 :root {
   --bg: #f6f7fb;
   --card: #ffffff;
@@ -10,7 +9,6 @@
   --radius: 10px;
 }
 
-/* Basic guide layout */
 body {
   background: linear-gradient(180deg, var(--bg), #eef2ff 300px);
   color: var(--text);
@@ -20,7 +18,7 @@ body {
   -webkit-user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
-  user-select: none
+  user-select: none;
 }
 
 header {
@@ -36,6 +34,28 @@ header {
   padding: 12px var(--gutter);
 }
 
+header nav a {
+  position: fixed;
+  top: 8px;
+  right: 12px;
+  z-index: 500; 
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  color: #ffffff;
+  border: none;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background .12s ease, transform .08s ease, box-shadow .12s ease;
+}
+header nav a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px #2F8EF714;
+}
+header nav a:focus { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+
 .brand { color: var(--accent); font-weight:700; letter-spacing:0.2px; font-size:1rem; }
 
 .container {
@@ -48,7 +68,6 @@ header {
   padding: 0 var(--gutter);
 }
 
-/* TOC */
 nav.toc {
   position: sticky;
   top: 78px;
@@ -72,7 +91,6 @@ nav.toc a:hover, nav.toc a.active {
   color: var(--accent);
 }
 
-/* Main content */
 main { min-width: 0; }
 article.card {
   background: var(--card);
@@ -97,11 +115,9 @@ pre, code {
   overflow: auto;
 }
 
-/* helpers */
 .section { margin-bottom: 18px; }
 details summary { cursor: pointer; padding: 6px 0; }
 
-/* back-to-top */
 .top-btn {
   display: none;
   position: fixed;
@@ -117,19 +133,15 @@ details summary { cursor: pointer; padding: 6px 0; }
   cursor: pointer;
 }
 
-/* responsive */
 @media (max-width: 980px) {
   .container { grid-template-columns: 1fr; padding: 0 14px; }
   nav.toc { position: relative; height: auto; top: 0; order: 2; }
   .top-btn { right: 12px; bottom: 12px; }
 }
 
-/* print */
 @media print {
   nav.toc, .top-btn { display: none !important; }
 }
-
-/* ...existing code... */
 
 :root{
   --bg-1:#fbfdff;
@@ -141,16 +153,14 @@ details summary { cursor: pointer; padding: 6px 0; }
 }
 
 *{box-sizing:border-box}
-*{box-sizing:border-box}
 html,body{
   height:100%;
   margin:0;
-  /* Allow text selection for accessibility and easier use of the guide */
   -webkit-user-select:text;
   -moz-user-select:text;
   -ms-user-select:text;
   user-select:text;
-  -webkit-touch-callout:auto; /* allow iOS callout */
+  -webkit-touch-callout:auto;
   font-family: Segoe UI, Arial, sans-serif;
   background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
   color:var(--muted);
@@ -292,9 +302,8 @@ button[data-desc]::before{
 button[data-desc]:hover::after,
 button[data-desc]:hover::before {
   opacity: 1;
-  transform: translateX(-50%) translateY(5px); /* 👈 moved tooltip down */
+  transform: translateX(-50%) translateY(5px);
 }
-
 
 .rps-display{
   text-align:center;
@@ -357,7 +366,7 @@ button[data-desc]:hover::before {
 }
 
 #start-modal {
-  display: none; /* hide by default */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -366,7 +375,7 @@ button[data-desc]:hover::before {
   background: rgba(16,24,40,0.06);
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* make sure it's above everything else */
+  z-index: 1000;
 }
 
 .modal-content {
@@ -398,10 +407,9 @@ button[data-desc]:hover::before {
   font-weight: 600;
   cursor: pointer;
   box-shadow:0 6px 18px rgba(16,24,40,0.06);
-  transition:transform .12s ease,box-shadow .12s;
   margin-top: 16px;
 }
-/* Accessibility: visible focus rings for keyboard users (subtle) */
+
 button:focus-visible, a:focus-visible {
   outline: 3px solid rgba(47,142,247,0.12);
   outline-offset: 3px;
@@ -409,7 +417,7 @@ button:focus-visible, a:focus-visible {
 #start-close-btn:active{transform:scale(.98)}
 #start-close-btn:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(16,24,40,0.08)}
 
-/* Responsive adjustments */
+
 @media (max-width:900px){
   .upgrades{ width:420px; height:420px; }
   #buy-upgrade    { left:50%; top:6%; }

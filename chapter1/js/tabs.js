@@ -1,4 +1,4 @@
-// tabs.js
+
 window.addEventListener("load", () => {
   const buttons = document.querySelectorAll(".top-menu button");
   const pages = document.querySelectorAll(".tab-page");

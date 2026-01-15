@@ -5,12 +5,26 @@ let rebirthOne = window.state || {
     crateCost: 10,
     advancedCrateCost: 100,
     epicCrateCost: 1000,
-    cratesOpened: 0,
+    cratesOpened: { basic: 0, advanced: 0, epic: 0 },
     items: {},
     achievements: {}
 };
 window.state = rebirthOne;
-const state = window.state;
+let state = window.state;
+
+function ensureCrateCounters() {
+    if (state == null) return;
+    // If older saves used a numeric counter, convert it to per-crate counts
+    if (typeof state.cratesOpened === 'number') {
+        const total = state.cratesOpened;
+        state.cratesOpened = { basic: total, advanced: 0, epic: 0 };
+    } else {
+        state.cratesOpened = state.cratesOpened || {};
+        state.cratesOpened.basic = state.cratesOpened.basic || 0;
+        state.cratesOpened.advanced = state.cratesOpened.advanced || 0;
+        state.cratesOpened.epic = state.cratesOpened.epic || 0;
+    }
+}
 
 const pickaxes = {
     "Wooden Pickaxe": 0.2,
@@ -65,7 +79,7 @@ function updatePickaxeTab() {
         return;
     }
 
-    // Sort by per-click value (rarity) descending
+
     pickaxeEntries.sort((a, b) => (pickaxes[b[0]] || 0) - (pickaxes[a[0]] || 0));
 
     container.innerHTML = "";
@@ -86,10 +100,10 @@ function showFeedback(msg, duration = 1500) {
         window._fbMax = 4; // max visible messages at once
     }
 
-    // enqueue the message
+
     window._fbQueue.push({ text: msg, duration: duration });
 
-    // try to show next if there's capacity
+
     function tryShowNext() {
         if (window._fbActive >= window._fbMax) return;
         const next = window._fbQueue.shift();
@@ -100,23 +114,23 @@ function showFeedback(msg, duration = 1500) {
         el.textContent = next.text;
         container.appendChild(el);
 
-        // show with transition
+
         requestAnimationFrame(() => el.classList.add("show"));
         window._fbActive++;
 
-        // hide after duration, then remove and try to show another
+
         setTimeout(() => {
             el.classList.remove("show");
-            // allow CSS hide transition to finish before removing
+
             setTimeout(() => {
                 if (el.parentElement === container) container.removeChild(el);
                 window._fbActive = Math.max(0, window._fbActive - 1);
-                // show next queued message if any
+
                 if (window._fbQueue.length) tryShowNext();
             }, 220);
         }, next.duration);
 
-        // if there is still room, immediately show more
+
         if (window._fbActive < window._fbMax && window._fbQueue.length) {
             tryShowNext();
         }
@@ -151,8 +165,8 @@ function openCrate() {
 
     calculatePerClick(); // recalc total perClick after crate
 
-    state.cratesOpened += 1;
-    if (state.cratesOpened % 10 === 0) {
+    state.cratesOpened.basic += 1;
+    if (state.cratesOpened.basic % 10 === 0) {
         state.crateCost *= 1.5;
         state.crateCost = round2(state.crateCost);
     }
@@ -192,8 +206,8 @@ function openAdvancedCrate() {
 
     calculatePerClick(); // recalc total perClick after crate
 
-    state.cratesOpened += 1;
-    if (state.cratesOpened % 10 === 0) {
+    state.cratesOpened.advanced += 1;
+    if (state.cratesOpened.advanced % 10 === 0) {
         state.advancedCrateCost *= 1.7;
         state.advancedCrateCost = round2(state.advancedCrateCost);
     }
@@ -233,8 +247,8 @@ function openEpicCrate() {
 
     calculatePerClick(); // recalc total perClick after crate
 
-    state.cratesOpened += 1;
-    if (state.cratesOpened % 10 === 0) {
+    state.cratesOpened.epic += 1;
+    if (state.cratesOpened.epic % 10 === 0) {
         state.epicCrateCost *= 1.5;
         state.epicCrateCost = round2(state.epicCrateCost);
     }
@@ -248,6 +262,9 @@ function openEpicCrate() {
 
 window.addEventListener("load", () => {
     loadGame();
+    // Rebind `state` to the possibly-loaded game object and ensure crate counters exist
+    state = window.state;
+    ensureCrateCounters();
 
     let lastCollectClick = 0;
     const collectBtn = document.getElementById("collect-btn");

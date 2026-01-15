@@ -6,6 +6,7 @@
   --muted: #cfd8e3;
   --danger: #d9534f;
   --danger-hover: #ff6b6b;
+  --header-button-space: 140px; 
 }
 
 html, body {
@@ -16,52 +17,59 @@ html, body {
   color: var(--muted);
   overflow: hidden;
   user-select: none;
-  -webkit-user-select: none; /* Chrome/Safari/Opera */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* old IE/Edge */
-  -webkit-touch-callout: none; /* iOS long-press menu */
+  -webkit-user-select: none; 
+  -moz-user-select: none;    
+  -ms-user-select: none;     
+  -webkit-touch-callout: none; 
 }
 
-/* --- Top Menu (Tabs) --- */
+
 .top-menu {
   display: flex;
   gap: 10px;
   background: #222;
-  padding: 10px;
+  padding: 10px var(--header-button-space) 10px 10px; 
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   z-index: 200;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden; 
 }
 .top-menu button {
   border: none;
-  padding: 8px 16px;
+  padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+  flex: 1 1 0;           
+  min-width: min-content;
+  white-space: nowrap;   
+  box-sizing: border-box;
 }
 .top-menu button.active { background: var(--accent-2); }
 
-/* --- Materials Display --- */
+
 #material-display {
-  margin-top: 160px; /* space below top menu */
+  margin-top: 160px; 
   text-align: center;
   font-size: 1.8rem;
   font-weight: 600;
 }
 
-/* --- Collect Button --- */
-/* --- Collect Button Container --- */
+
 #game-container {
   display: flex;
-  flex-direction: column;   /* stack items vertically */
-  align-items: center;      /* center horizontally */
+  flex-direction: column;   
+  align-items: center;      
   margin-top: 20px;
-  gap: 12px;                /* spacing between buttons */
+  gap: 12px;                
 }
 
 
-/* --- Collect Button --- */
+
 #collect-btn {
   font-size: 18px;
   padding: 10px 18px;
@@ -78,14 +86,14 @@ html, body {
 #collect-btn.pop { transform: scale(1.05); }
 
 
-/* --- Chapter & Restart Messages --- */
+
 #chapterMessage, #restartMessage {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   width: 100%;
-  opacity: 0; /* hidden by default */
+  opacity: 0; 
   transition: top 1s ease, opacity 1s ease;
   font-weight: bold;
   pointer-events: none;
@@ -105,7 +113,7 @@ html, body {
 }
 #restartMessage.show { top: 120px; opacity: 1; }
 
-/* --- Base Button Styles --- */
+
 button {
   min-width: 200px;
   padding: 8px 12px;
@@ -120,31 +128,31 @@ button {
 }
 button:hover { background: var(--accent-2); }
 
-/* Danger button */
+
 .danger-btn {
   background: var(--danger);
   border-color: #733;
 }
 .danger-btn:hover { background: var(--danger-hover); }
 
-/* --- Tab Pages --- */
+
 .tab-page {
-  margin-top: 60px; /* space below menu */
+  margin-top: 60px; 
   padding: 20px;
 }
 .tab-page.hidden { display: none; }
 
-/* --- Confirm Reset Bar --- */
+
 .confirm-bar {
   position: fixed;
   left: 50%;
   bottom: 18px;
   transform: translateX(-50%);
-  background: rgba(20,20,20,0.95);
+  background: #141414F2;
   color: #fff;
   padding: 12px 18px;
   border-radius: 10px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 30px #00000080;
   display: flex;
   gap: 12px;
   align-items: center;
@@ -171,7 +179,7 @@ button:hover { background: var(--accent-2); }
 }
 .confirm-bar button:hover { background: var(--accent-2); }
 
-/* --- Tooltip Styles --- */
+
 [data-desc] {
   position: relative;
   z-index: 3;
@@ -182,14 +190,14 @@ button:hover { background: var(--accent-2); }
   left: 50%;
   bottom: calc(100% + 8px);
   transform: translateX(-50%) translateY(6px);
-  background: rgba(20,20,20,0.95);
+  background: #141414F2;
   color: #fff;
   padding: 6px 10px;
   border-radius: 6px;
   white-space: nowrap;
   font-size: 0.86rem;
   line-height: 1;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  box-shadow: 0 6px 18px #00000059;
   opacity: 0;
   pointer-events: none;
   transition: opacity .12s ease, transform .12s ease;
@@ -201,7 +209,7 @@ button:hover { background: var(--accent-2); }
   bottom: calc(100% + 2px);
   transform: translateX(-50%);
   border: 6px solid transparent;
-  border-top-color: rgba(20,20,20,0.95);
+  border-top-color: #141414F2;
   opacity: 0;
   transition: opacity .12s ease;
 }
@@ -225,7 +233,7 @@ button:hover { background: var(--accent-2); }
 }
 
 .feedback .msg {
-  background: rgba(10,10,10,0.7);
+  background: #0A0A0AB2;
   color: var(--accent-2);
   font-weight: 600;
   padding: 8px 12px;
@@ -242,7 +250,7 @@ button:hover { background: var(--accent-2); }
   transform: translateY(0);
 }
 
-/* --- Pickaxes Tab Styles --- */
+
 #tab-pickaxes h2 {
   text-align: center;
   color: var(--accent-1);
@@ -268,7 +276,7 @@ button:hover { background: var(--accent-2); }
   text-align: center;
 }
 
-/* --- Achievements Tab Styles --- */
+
 #tab-achievements h2 {
   text-align: center;
   color: var(--accent-1);
@@ -301,8 +309,8 @@ button:hover { background: var(--accent-2); }
 
 .achievement-box.unlocked {
   border-color: var(--accent-1);
-  background: rgba(47, 142, 247, 0.1);
-  box-shadow: 0 0 10px rgba(47, 142, 247, 0.3);
+  background: #2F8EF719;
+  box-shadow: 0 0 10px #2F8EF74D;
 }
 
 .achievement-box.locked {
@@ -314,3 +322,27 @@ button:hover { background: var(--accent-2); }
 .achievement-box:hover {
   transform: scale(1.1);
 }
+
+
+header { position: relative; }
+header nav { margin: 0; }
+header nav a {
+  position: fixed;
+  top: 8px;
+  right: 12px;
+  z-index: 500; 
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  color: #ffffff;
+  border: none;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background .12s ease, transform .08s ease, box-shadow .12s ease;
+}
+header nav a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px #2F8EF714;
+}
+header nav a:focus { outline: 2px solid var(--accent-2); outline-offset: 2px; }

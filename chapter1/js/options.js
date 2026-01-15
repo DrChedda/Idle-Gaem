@@ -4,10 +4,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const themeStylesheet = document.getElementById("theme-stylesheet");
   const uiScript = document.getElementById("ui-script");
 
-  // global settings object
+
   window.settings = window.settings || {};
 
-  // Load saved theme or default to dark
+
   const savedTheme = localStorage.getItem("theme") || "dark";
   applyTheme(savedTheme);
   themeToggle.checked = savedTheme === "light";
@@ -25,11 +25,11 @@ window.addEventListener("DOMContentLoaded", () => {
       themeLabel.textContent = "Light Mode.";
     }
 
-    // update global settings
+
     settings.theme = theme;
     localStorage.setItem("theme", theme);
 
-    // reload ui.js
+
     if (uiScript) {
       uiScript.remove();
     }

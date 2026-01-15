@@ -1,9 +1,9 @@
-// ui.js
 
-// --- Universal Functions ---
+
+
 function showFeedback(msg) {
-  // Resolve the feedback element lazily to avoid referencing a block-scoped
-  // variable that may not exist in callers' scope.
+
+
   const feedbackEl = document.getElementById('feedback');
   if (!feedbackEl) return;
   feedbackEl.textContent = msg;
@@ -12,7 +12,7 @@ function showFeedback(msg) {
 }
 
 window.addEventListener("load", () => {
-  // DOM references
+
   const resourceDisplay = document.getElementById("resource-display");
   const collectBtn = document.getElementById("collect-btn");
   const upgradeBtn = document.getElementById("buy-upgrade");
@@ -43,7 +43,7 @@ window.addEventListener("load", () => {
   const resourceSamples = [];
   const clickTimestamps = [];
 
-  // ------------------ Helper Functions ------------------
+
 
   function luckyMultiplier() {
     const p = 0.12;
@@ -123,7 +123,7 @@ window.addEventListener("load", () => {
 
   function getCostFor(id) {
     switch (id) {
-      case "buy-upgrade": return state.tripleGain ? Math.floor(state.upgradeCost * 0.7) : state.upgradeCost;
+      case "buy-upgrade": return state.upgradeCost;
       case "upgrade-auto": return state.autoCollectCost;
       case "upgrade-double": return state.doubleGainCost;
       case "upgrade-triple": return state.tripleGainCost;
@@ -140,7 +140,7 @@ window.addEventListener("load", () => {
     setTimeout(() => btn.classList.remove("pop"), 120);
   }
 
-  // ------------------ UI Updates ------------------
+
   function updateUpgradeButtons() {
     const upgradeDeps = {
       "upgrade-auto": ["buy-upgrade"],
@@ -263,7 +263,7 @@ window.addEventListener("load", () => {
       const luckyC = centerOf(nodes.lucky);
       const newAgeC = centerOf(nodes.newAge);
 
-      // Always visible lines
+
       drawLine(upC, autoC);
       drawLine(upC, doubleC);
       drawLine(autoC, boostC);
@@ -271,7 +271,7 @@ window.addEventListener("load", () => {
       drawLine(boostC, luckyC);
       drawLine(tripleC, luckyC);
 
-      // Conditional middle line
+
       if (state.tripleGain && state.boost) drawLine(luckyC, newAgeC, "rgba(0,255,255,0.95)");
     } catch (e) {
       console.error("Failed to draw SVG lines", e);
@@ -310,9 +310,7 @@ window.addEventListener("load", () => {
     if (rpsAutoEl) rpsAutoEl.textContent = `Auto/s: ${formatNumber(autoRPS)}`;
     if (rpsTotalEl) rpsTotalEl.textContent = `Total/s: ${formatNumber(totalEstimated)}`;
 
-    if (upgradeBtn) upgradeBtn.textContent = state.tripleGain
-      ? `Upgrade Gain [+1] [${formatNumber(Math.floor(state.upgradeCost * 0.7))}]`
-      : `Upgrade Gain [+1] [${formatNumber(state.upgradeCost)}]`;
+    if (upgradeBtn) upgradeBtn.textContent = `Upgrade Gain [+1] [${formatNumber(state.upgradeCost)}]`;
 
     if (autoBtn) autoBtn.textContent = state.autoCollect ? `Auto Collect (Owned)` : `Auto Collect [${formatNumber(state.autoCollectCost)}]`;
     if (doubleBtn) doubleBtn.textContent = state.doubleGain ? `Double Gain (Owned)` : `Double Gain [${formatNumber(state.doubleGainCost)}]`;
@@ -324,7 +322,7 @@ window.addEventListener("load", () => {
     updateSVGLines();
   }
 
-  // ------------------ Purchase Handlers ------------------
+
   function handlePurchase(btn, buyFn, ownedCheck, cost) {
     if (!btn) return;
     btn.addEventListener("click", () => {
@@ -471,7 +469,7 @@ window.addEventListener("load", () => {
   if (saveBtn) saveBtn.addEventListener("click", () => { saveGame(); showFeedback("Saved"); popButton(saveBtn); });
   if (loadBtn) loadBtn.addEventListener("click", () => { loadGame(); updateUI(); showFeedback("Does nothing yet ㋡"); popButton(loadBtn); });
 
-  // ------------------ Reset / Confirm ------------------
+
   function resetGameState() {
     localStorage.clear();
     state.resources = 0,
@@ -539,7 +537,7 @@ window.addEventListener("load", () => {
       optionsModal.classList.remove("active");
     }
   });
-  // ------------------ Tooltips ------------------
+
   (function attachTooltips() {
     const map = {
       "buy-upgrade":"Increase resources per gain by +1.",
@@ -562,12 +560,12 @@ window.addEventListener("load", () => {
     }
   })();
 
-  // ------------------ Samplers & Auto-Collect ------------------
+
   pushResourceSample();
   setInterval(pushResourceSample, 1000);
   setInterval(() => { if (state.autoCollect) { collect(); updateUI(); } }, 1000);
 
-  // ------------------ Final Setup ------------------
+
   window.updateUI = updateUI;
   updateUI();
   setTimeout(updateSVGLines, 120);

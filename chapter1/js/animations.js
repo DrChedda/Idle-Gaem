@@ -1,4 +1,4 @@
-// animations.js
+
 window.addEventListener("load", () => {
   setTimeout(() => {
     if (typeof state.seenChapterMessage === "undefined") state.seenChapterMessage = false;

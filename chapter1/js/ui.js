@@ -1,4 +1,4 @@
-// ui.js
+
 window.addEventListener("load", () => {
   const buttons = document.querySelectorAll(".top-menu button");
   const pages = document.querySelectorAll(".tab-page");
@@ -16,7 +16,7 @@ window.addEventListener("load", () => {
   let lastMaterials = window.state.materials || 0;
   let materialSamples = [];
 
-  // ------------------ Global Functions ------------------
+
   function showFeedback(msg, duration = 1800) {
     if (typeof window.showFeedback === 'function') {
       window.showFeedback(msg, duration);
@@ -71,7 +71,7 @@ window.addEventListener("load", () => {
     setTimeout(() => el.classList.remove("pop"), 120);
   }
 
-  // ------------------ Tabs ------------------
+
   function showTab(tab) {
     pages.forEach(p => p.style.display = "none");
     const current = document.getElementById(`tab-${tab}`);
@@ -91,7 +91,7 @@ window.addEventListener("load", () => {
 
   showTab("game");
 
-  // ------------------ Save / Load ------------------
+
   if (saveBtn) saveBtn.addEventListener("click", () => {
     saveGame();
     showFeedback("Game saved");
@@ -101,7 +101,7 @@ window.addEventListener("load", () => {
     showFeedback("This doesn't do anything yet.");
   });
 
-  // ------------------ Confirm Reset ------------------
+
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
       confirmBar.style.display = "flex";
@@ -113,9 +113,9 @@ window.addEventListener("load", () => {
 
   if (confirmYes) {
     confirmYes.addEventListener("click", () => {
-      // Clear existing state
+
       Object.keys(window.state).forEach(key => delete window.state[key]);
-      // Set initial values
+
       Object.assign(window.state, {
         materials: 0,
         perClick: 1,
@@ -139,9 +139,9 @@ window.addEventListener("load", () => {
 
   if (confirmNo) {
     confirmNo.addEventListener("click", () => {
-      // Clear existing state
+
       Object.keys(window.state).forEach(key => delete window.state[key]);
-      // Set initial values
+
       Object.assign(window.state, {
         materials: 0,
         perClick: 1,
@@ -162,7 +162,7 @@ window.addEventListener("load", () => {
     });
   }
 
-  // ------------------ Auto Material Sampling ------------------
+
   pushMaterialSample(window.state.materials || 0);
   setInterval(() => pushMaterialSample(window.state.materials || 0), 1000);
 });
