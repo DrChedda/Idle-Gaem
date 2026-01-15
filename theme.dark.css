@@ -407,7 +407,6 @@ button[data-desc]:hover::before {
   font-weight: 600;
   cursor: pointer;
   box-shadow:0 6px 18px rgba(0,0,0,0.35);
-}
   margin-top: 16px;
 }
 #start-close-btn:active{transform:scale(.98)}

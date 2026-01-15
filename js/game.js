@@ -58,9 +58,7 @@ function collect() {
 
 
 function buyUpgrade() {
-  const cost = state.tripleGain
-    ? Math.max(1, Math.floor(state.upgradeCost * 0.7))
-    : state.upgradeCost;
+  const cost = state.upgradeCost;
 
   if (state.resources >= cost) {
     state.resources -= cost;

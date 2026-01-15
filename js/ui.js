@@ -123,7 +123,7 @@ window.addEventListener("load", () => {
 
   function getCostFor(id) {
     switch (id) {
-      case "buy-upgrade": return state.tripleGain ? Math.floor(state.upgradeCost * 0.7) : state.upgradeCost;
+      case "buy-upgrade": return state.upgradeCost;
       case "upgrade-auto": return state.autoCollectCost;
       case "upgrade-double": return state.doubleGainCost;
       case "upgrade-triple": return state.tripleGainCost;
@@ -310,9 +310,7 @@ window.addEventListener("load", () => {
     if (rpsAutoEl) rpsAutoEl.textContent = `Auto/s: ${formatNumber(autoRPS)}`;
     if (rpsTotalEl) rpsTotalEl.textContent = `Total/s: ${formatNumber(totalEstimated)}`;
 
-    if (upgradeBtn) upgradeBtn.textContent = state.tripleGain
-      ? `Upgrade Gain [+1] [${formatNumber(Math.floor(state.upgradeCost * 0.7))}]`
-      : `Upgrade Gain [+1] [${formatNumber(state.upgradeCost)}]`;
+    if (upgradeBtn) upgradeBtn.textContent = `Upgrade Gain [+1] [${formatNumber(state.upgradeCost)}]`;
 
     if (autoBtn) autoBtn.textContent = state.autoCollect ? `Auto Collect (Owned)` : `Auto Collect [${formatNumber(state.autoCollectCost)}]`;
     if (doubleBtn) doubleBtn.textContent = state.doubleGain ? `Double Gain (Owned)` : `Double Gain [${formatNumber(state.doubleGainCost)}]`;

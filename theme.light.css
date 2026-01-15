@@ -407,7 +407,6 @@ button[data-desc]:hover::before {
   font-weight: 600;
   cursor: pointer;
   box-shadow:0 6px 18px rgba(16,24,40,0.06);
-}
   margin-top: 16px;
 }
 
