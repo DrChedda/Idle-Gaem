@@ -1,4 +1,12 @@
 function formatNumber(num) {
+    // Allow toggling formatting via localStorage setting `formatNumbers` ("true"/"false").
+    const pref = localStorage.getItem('formatNumbers');
+    const useFormatting = pref === null ? true : (pref === 'true');
+    if (!useFormatting) {
+        // Show raw number with one decimal (matches round2 display precision)
+        return Number(num.toFixed(1));
+    }
+
     if (num < 1000) {
         return num.toFixed(1); // since round2 rounds to 1 decimal
     }

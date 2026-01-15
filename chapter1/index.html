@@ -25,6 +25,7 @@
   
   <nav class="top-menu">
     <button data-tab="game">Gaem</button>
+    <button data-tab="research">Research</button>
     <button data-tab="inventory">Inventory</button>
     <button data-tab="achievements">Achievements</button>
     <button data-tab="options">Options</button>
@@ -45,7 +46,11 @@
     </div>
   </div>
 
-  
+  <div id="tab-research" class="tab-page" style="display:none;">
+    <h2>Research</h2>
+    <div id="research-list">No research available yet.</div>
+  </div>
+
   <div id="tab-inventory" class="tab-page" style="display:none;">
     <h2>Your Inventory</h2>
     <div id="pickaxe-list">No items yet.</div>
@@ -61,12 +66,15 @@
     <h2>Options</h2>
     <button id="reset-btn" class="danger-btn">Reset Save</button>
     <button id="save-btn">Save</button>
-    <button id="load-btn">Load</button>
-
     
     <div style="margin-top:20px;">
       <label id="theme-label" for="theme-toggle">Dark Mode</label>
       <input type="checkbox" id="theme-toggle">
+    </div>
+
+    <div style="margin-top:12px;">
+      <label id="format-label" for="format-toggle">Use Number Formatting</label>
+      <input type="checkbox" id="format-toggle">
     </div>
   </div>
 

@@ -4,7 +4,6 @@ window.addEventListener("load", () => {
   const pages = document.querySelectorAll(".tab-page");
   const materialDisplay = document.getElementById("material-display");
   const saveBtn = document.getElementById("save-btn");
-  const loadBtn = document.getElementById("load-btn");
   const resetBtn = document.getElementById("reset-btn");
   const confirmBar = document.getElementById("confirm-bar");
   const confirmYes = document.getElementById("confirm-yes");
@@ -97,9 +96,6 @@ window.addEventListener("load", () => {
     showFeedback("Game saved");
   });
 
-  if (loadBtn) loadBtn.addEventListener("click", () => {
-    showFeedback("This doesn't do anything yet.");
-  });
 
 
   if (resetBtn) {

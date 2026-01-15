@@ -68,6 +68,17 @@ function updateCrateButtons() {
     if (epicBtn) epicBtn.textContent = `Open Epic Crate (${formatNumber(state.epicCrateCost)})`;
 }
 
+function updateResearchVisibility() {
+    const researchBtn = document.querySelector('.top-menu button[data-tab="research"]');
+    const researchTab = document.getElementById('tab-research');
+    const unlocked = state && state.achievements && state.achievements['ten_crates'];
+    if (researchBtn) researchBtn.style.display = unlocked ? '' : 'none';
+    if (researchTab) researchTab.style.display = unlocked ? '' : 'none';
+}
+
+// expose for other modules (achievements.js) to call
+window.updateResearchVisibility = updateResearchVisibility;
+
 function updatePickaxeTab() {
     const container = document.getElementById("pickaxe-list");
     if (!container) return;
@@ -297,4 +308,5 @@ window.addEventListener("load", () => {
     updateMaterialDisplay();
     updatePickaxeTab();
     updateCrateButtons();
+    updateResearchVisibility();
 });
