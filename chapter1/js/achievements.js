@@ -31,21 +31,30 @@ const achievements = {
     "first_crate": {
         name: "Crate Opener",
         desc: "Open your first crate",
-        condition: () => state.cratesOpened >= 1,
+        condition: () => {
+            const total = typeof state.cratesOpened === 'number' ? state.cratesOpened : ((state.cratesOpened && (state.cratesOpened.basic || 0) + (state.cratesOpened.advanced || 0) + (state.cratesOpened.epic || 0)) || 0);
+            return total >= 1;
+        },
         unlocked: false,
         icon: "📦"
     },
     "ten_crates": {
         name: "Crate Enthusiast",
         desc: "Open 100 crates",
-        condition: () => state.cratesOpened >= 100,
+        condition: () => {
+            const total = typeof state.cratesOpened === 'number' ? state.cratesOpened : ((state.cratesOpened && (state.cratesOpened.basic || 0) + (state.cratesOpened.advanced || 0) + (state.cratesOpened.epic || 0)) || 0);
+            return total >= 100;
+        },
         unlocked: false,
         icon: "📦"
     },
     "hundred_crates": {
         name: "Crate Master",
         desc: "Open 1000 crates",
-        condition: () => state.cratesOpened >= 1000,
+        condition: () => {
+            const total = typeof state.cratesOpened === 'number' ? state.cratesOpened : ((state.cratesOpened && (state.cratesOpened.basic || 0) + (state.cratesOpened.advanced || 0) + (state.cratesOpened.epic || 0)) || 0);
+            return total >= 1000;
+        },
         unlocked: false,
         icon: "💯"
     },
@@ -126,6 +135,7 @@ function checkAchievements() {
     }
     if (newUnlock) {
         updateAchievementsDisplay();
+        if (window.updateResearchVisibility) window.updateResearchVisibility();
         saveGame();
     }
 }

@@ -30,9 +30,9 @@ const pickaxes = {
     "Wooden Pickaxe": 0.2,
     "Iron Pickaxe": 0.5,
     "Diamond Pickaxe": 2,
-    "Emerald Pickaxe": 7,
+    "Emerald Pickaxe": 5,
     "Godly Pickaxe": 15,
-    "Unholy Pickaxe": 100,
+    "Unholy Pickaxe": 60,
     "Secret Pickaxe": 200
 };
 
@@ -67,6 +67,17 @@ function updateCrateButtons() {
     const epicBtn = document.getElementById("epic-crate-btn");
     if (epicBtn) epicBtn.textContent = `Open Epic Crate (${formatNumber(state.epicCrateCost)})`;
 }
+
+function updateResearchVisibility() {
+    const researchBtn = document.querySelector('.top-menu button[data-tab="research"]');
+    const researchTab = document.getElementById('tab-research');
+    const unlocked = state && state.achievements && state.achievements['ten_crates'];
+    if (researchBtn) researchBtn.style.display = unlocked ? '' : 'none';
+    if (researchTab) researchTab.style.display = unlocked ? '' : 'none';
+}
+
+// expose for other modules (achievements.js) to call
+window.updateResearchVisibility = updateResearchVisibility;
 
 function updatePickaxeTab() {
     const container = document.getElementById("pickaxe-list");
@@ -297,4 +308,5 @@ window.addEventListener("load", () => {
     updateMaterialDisplay();
     updatePickaxeTab();
     updateCrateButtons();
+    updateResearchVisibility();
 });
