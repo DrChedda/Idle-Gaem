@@ -30,9 +30,9 @@ const pickaxes = {
     "Wooden Pickaxe": 0.2,
     "Iron Pickaxe": 0.5,
     "Diamond Pickaxe": 2,
-    "Emerald Pickaxe": 7,
+    "Emerald Pickaxe": 5,
     "Godly Pickaxe": 15,
-    "Unholy Pickaxe": 100,
+    "Unholy Pickaxe": 60,
     "Secret Pickaxe": 200
 };
 
