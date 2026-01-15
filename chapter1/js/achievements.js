@@ -40,14 +40,14 @@ const achievements = {
         desc: "Open 100 crates",
         condition: () => state.cratesOpened >= 100,
         unlocked: false,
-        icon: "📦📦"
+        icon: "📦"
     },
     "hundred_crates": {
         name: "Crate Master",
         desc: "Open 1000 crates",
         condition: () => state.cratesOpened >= 1000,
         unlocked: false,
-        icon: "📦💯"
+        icon: "💯"
     },
     "first_pickaxe": {
         name: "Tool Collector",
@@ -61,56 +61,56 @@ const achievements = {
         desc: "Get a Diamond Pickaxe",
         condition: () => (state.items["Diamond Pickaxe"] || 0) >= 1,
         unlocked: false,
-        icon: "💎⛏️"
+        icon: "💎"
     },
     "godly_pickaxe": {
         name: "Divine Tool",
         desc: "Get a Godly Pickaxe",
         condition: () => (state.items["Godly Pickaxe"] || 0) >= 1,
         unlocked: false,
-        icon: "👑⛏️"
+        icon: "👑"
     },
     "unholy_pickaxe": {
         name: "Unholy Power",
         desc: "Get an Unholy Pickaxe",
         condition: () => (state.items["Unholy Pickaxe"] || 0) >= 1,
         unlocked: false,
-        icon: "😈⛏️"
+        icon: "😈"
     },
     "secret_pickaxe": {
         name: "Ultimate Secret",
         desc: "Get the Secret Pickaxe",
         condition: () => (state.items["Secret Pickaxe"] || 0) >= 1,
         unlocked: false,
-        icon: "🤫⛏️"
+        icon: "🤫"
     },
     "ten_wooden": {
         name: "Wood Enthusiast",
         desc: "Own 10 Wooden Pickaxes",
         condition: () => (state.items["Wooden Pickaxe"] || 0) >= 10,
         unlocked: false,
-        icon: "🌳🔨"
+        icon: "🌳"
     },
     "five_diamond": {
         name: "Diamond Collector",
         desc: "Own 5 Diamond Pickaxes",
         condition: () => (state.items["Diamond Pickaxe"] || 0) >= 5,
         unlocked: false,
-        icon: "💎💎"
+        icon: "💎"
     },
     "per_click_10": {
         name: "Efficient Miner",
         desc: "Reach 10 per click",
         condition: () => state.perClick >= 10,
         unlocked: false,
-        icon: "⚡⛏️"
+        icon: "⚡"
     },
     "per_click_100": {
         name: "Super Miner",
         desc: "Reach 100 per click",
         condition: () => state.perClick >= 100,
         unlocked: false,
-        icon: "🚀⛏️"
+        icon: "🚀"
     }
 };
 

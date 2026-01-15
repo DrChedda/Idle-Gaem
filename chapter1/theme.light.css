@@ -300,7 +300,7 @@ button:hover { background: var(--accent-2); }
   align-items: center;
   justify-content: center;
   background: var(--bg-2);
-  border: 2px solid #ccc;
+  border: 2px solid #464646;
   border-radius: 8px;
   font-size: 24px;
   cursor: pointer;
