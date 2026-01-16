@@ -6,7 +6,8 @@ const achievements = {
         unlock: "",
         condition: () => state.materials >= 10,
         unlocked: false,
-        icon: "⛏️"
+        icon: "⛏️",
+        hidden: false
     },
     "thousand_materials": {
         name: "Material Hoarder",
@@ -14,7 +15,8 @@ const achievements = {
         unlock: "",
         condition: () => state.materials >= 1000,
         unlocked: false,
-        icon: "💰"
+        icon: "💰",
+        hidden: false
     },
     "ten_thousand_materials": {
         name: "Wealthy Miner",
@@ -22,7 +24,8 @@ const achievements = {
         unlock: "",
         condition: () => state.materials >= 10000,
         unlocked: false,
-        icon: "💎"
+        icon: "💎",
+        hidden: false
     },
     "hundred_thousand_materials": {
         name: "Millionaire",
@@ -30,7 +33,8 @@ const achievements = {
         unlock: "",
         condition: () => state.materials >= 100000,
         unlocked: false,
-        icon: "🏦"
+        icon: "🏦",
+        hidden: false
     },
     "first_crate": {
         name: "Crate Opener",
@@ -41,7 +45,8 @@ const achievements = {
             return total >= 1;
         },
         unlocked: false,
-        icon: "📦"
+        icon: "📦",
+        hidden: false
     },
     "hundred_crates": {
         name: "Crate Enthusiast",
@@ -52,7 +57,8 @@ const achievements = {
             return total >= 100;
         },
         unlocked: false,
-        icon: "📦"
+        icon: "📦",
+        hidden: false
     },
     "thousand_crates": {
         name: "Crate Master",
@@ -63,7 +69,8 @@ const achievements = {
             return total >= 1000;
         },
         unlocked: false,
-        icon: "💯"
+        icon: "💯",
+        hidden: false
     },
     "first_pickaxe": {
         name: "Tool Collector",
@@ -71,7 +78,8 @@ const achievements = {
         unlock: "",
         condition: () => Object.keys(state.items).some(key => key.includes("Pickaxe")),
         unlocked: false,
-        icon: "🔨"
+        icon: "🔨",
+        hidden: false
     },
     "diamond_pickaxe": {
         name: "Diamond Miner",
@@ -79,7 +87,8 @@ const achievements = {
         unlock: "",
         condition: () => (state.items["Diamond Pickaxe"] || 0) >= 1,
         unlocked: false,
-        icon: "💎"
+        icon: "💎",
+        hidden: false
     },
     "godly_pickaxe": {
         name: "Divine Tool",
@@ -87,7 +96,8 @@ const achievements = {
         unlock: "",
         condition: () => (state.items["Godly Pickaxe"] || 0) >= 1,
         unlocked: false,
-        icon: "👑"
+        icon: "👑",
+        hidden: false
     },
     "unholy_pickaxe": {
         name: "Unholy Power",
@@ -95,7 +105,8 @@ const achievements = {
         unlock: "",
         condition: () => (state.items["Unholy Pickaxe"] || 0) >= 1,
         unlocked: false,
-        icon: "😈"
+        icon: "😈",
+        hidden: false
     },
     "secret_pickaxe": {
         name: "Ultimate Secret",
@@ -103,7 +114,8 @@ const achievements = {
         unlock: "",
         condition: () => (state.items["Secret Pickaxe"] || 0) >= 1,
         unlocked: false,
-        icon: "🤫"
+        icon: "🤫",
+        hidden: true
     },
     "ten_wooden": {
         name: "Wood Enthusiast",
@@ -111,7 +123,8 @@ const achievements = {
         unlock: "",
         condition: () => (state.items["Wooden Pickaxe"] || 0) >= 10,
         unlocked: false,
-        icon: "🌳"
+        icon: "🌳",
+        hidden: false
     },
     "five_diamond": {
         name: "Diamond Collector",
@@ -119,7 +132,8 @@ const achievements = {
         unlock: "",
         condition: () => (state.items["Diamond Pickaxe"] || 0) >= 5,
         unlocked: false,
-        icon: "💎"
+        icon: "💎",
+        hidden: false
     },
     "per_click_10": {
         name: "Efficient Miner",
@@ -127,7 +141,8 @@ const achievements = {
         unlock: "",
         condition: () => state.perClick >= 10,
         unlocked: false,
-        icon: "⚡"
+        icon: "⚡",
+        hidden: false
     },
     "per_click_100": {
         name: "Super Miner",
@@ -135,7 +150,8 @@ const achievements = {
         unlock: "",
         condition: () => state.perClick >= 100,
         unlocked: false,
-        icon: "🚀"
+        icon: "🚀",
+        hidden: false
     }
 };
 
@@ -165,10 +181,16 @@ function updateAchievementsDisplay() {
         const ach = achievements[key];
         const div = document.createElement("div");
         div.className = `achievement-box ${ach.unlocked ? "unlocked" : "locked"}`;
-        let descText = `${ach.name}: ${ach.desc}`;
-        if (ach.unlock) descText += `\nUnlock: ${ach.unlock}`;
+        let descText;
+        if (ach.hidden) {
+            div.innerHTML = "?";
+            descText = ach.unlock ? `Unlock: ${ach.unlock}` : "Hidden Achievement";
+        } else {
+            div.innerHTML = ach.icon;
+            descText = `${ach.name}: ${ach.desc}`;
+            if (ach.unlock) descText += `\nUnlock: ${ach.unlock}`;
+        }
         div.setAttribute("data-desc", descText);
-        div.innerHTML = ach.icon;
         container.appendChild(div);
     }
 }
