@@ -45,8 +45,7 @@ const CRATE_CONFIG = {
             { threshold: 0.65, item: "Diamond Pickaxe" },
             { threshold: 0.99, item: "Emerald Pickaxe" },
             { threshold: 0.999, item: "Obsidian Pickaxe" },
-            { threshold: 0.9999, item: "Titanium Pickaxe" },
-            { threshold: 1.0, item: "Neutronium Pickaxe" }
+            { threshold: 0.9999, item: "Titanium Pickaxe" }
         ]
     },
     epic: {

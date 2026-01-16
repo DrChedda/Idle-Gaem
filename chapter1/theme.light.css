@@ -339,6 +339,41 @@ button:hover { background: var(--accent-2); }
   transform: scale(1.1);
 }
 
+/* Research tree styles */
+.research-intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 12px auto;
+  color: var(--muted);
+}
+
+.research-list-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.research-node {
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 12px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.research-title { color: var(--accent-1); font-weight: 700; font-size: 1.05rem; }
+.research-desc { color: var(--muted); font-size: 0.95rem; }
+.research-footer { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.research-cost { color: var(--muted); font-weight:700; }
+.research-btn { padding:6px 10px; border-radius:6px; border:none; background:var(--accent-1); color:#fff; cursor:pointer; }
+.research-btn[disabled] { opacity:0.55; cursor:not-allowed; background:#999; }
+
+
 
 header { position: relative; }
 header nav { margin: 0; }
