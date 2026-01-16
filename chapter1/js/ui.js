@@ -6,8 +6,8 @@ window.addEventListener("load", () => {
   const saveBtn = document.getElementById("save-btn");
   const resetBtn = document.getElementById("reset-btn");
   const confirmBar = document.getElementById("confirm-bar");
+  const confirmYesChapter = document.getElementById("confirm-yes-chapter");
   const confirmYesFull = document.getElementById("confirm-yes-full");
-  const confirmYesChapter = document.getElementById("confirm-yes-chaper");
   const confirmNo = document.getElementById("confirm-no");
   const feedback = document.getElementById("feedback");
 
@@ -89,7 +89,8 @@ window.addEventListener("load", () => {
 
   buttons.forEach(btn => btn.addEventListener("click", () => showTab(btn.dataset.tab)));
 
-  showTab("game");
+  const savedTab = localStorage.getItem("lastTab") || "game";
+  showTab(savedTab);
 
 
   if (saveBtn) saveBtn.addEventListener("click", () => {
@@ -102,8 +103,9 @@ window.addEventListener("load", () => {
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
       confirmBar.style.display = "flex";
-      if (confirmYes) confirmYes.textContent = "Chapter Reset";
-      if (confirmNo) confirmNo.textContent = "Full Reset";
+      if (confirmYesChapter) confirmYesChapter.textContent = "Chapter Reset";
+      if (confirmYesFull) confirmYesFull.textContent = "Full Reset";
+      if (confirmNo) confirmNo.textContent = "Cancel";
       setTimeout(() => confirmBar.classList.add("show"), 10);
     });
   }

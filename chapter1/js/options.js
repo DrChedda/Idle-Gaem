@@ -39,10 +39,10 @@ window.addEventListener("DOMContentLoaded", () => {
   function applyTheme(theme) {
     if (theme === "light") {
       themeStylesheet.href = "theme.light.css";
-      themeLabel.textContent = "Light Mode.";
+      themeLabel.textContent = "Light Mode";
     } else {
       themeStylesheet.href = "theme.dark.css";
-      themeLabel.textContent = "Light Mode.";
+      themeLabel.textContent = "Dark Mode";
     }
 
 
