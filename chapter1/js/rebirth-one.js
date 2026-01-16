@@ -128,10 +128,17 @@ function ensureCrateCounters() {
 }
 
 function saveGame() {
-    if (typeof window.saveGame === 'function') {
-        window.saveGame();
-    } else {
+    try {
+        if (typeof window.saveGame === 'function' && window.saveGame !== saveGame) {
+            return window.saveGame();
+        }
+    } catch (e) {
+    }
+
+    try {
         localStorage.setItem("rebirthOne", JSON.stringify(window.state));
+    } catch (e) {
+        console.warn('Failed to save rebirthOne to localStorage', e);
     }
 }
 
@@ -202,12 +209,20 @@ function updateCrateButtons() {
 }
 
 function updateResearchVisibility() {
-    const unlocked = window.state?.achievements?.['ten_crates'];
+    if (!window.state) {
+        total = 0;
+    } else if (typeof window.state.cratesOpened === 'number') {
+        total = window.state.cratesOpened;
+    } else if (window.state.cratesOpened) {
+        total = (window.state.cratesOpened.basic || 0) + (window.state.cratesOpened.advanced || 0) + (window.state.cratesOpened.epic || 0);
+    }
+
+    const hasAchievement = !!(window.state?.achievements?.['hundred_crates']);
+    const unlocked = hasAchievement || total >= 10;
+
     const btn = document.querySelector('.top-menu button[data-tab="research"]');
-    const tab = document.getElementById('tab-research');
     const displayStyle = unlocked ? '' : 'none';
     if (btn) btn.style.display = displayStyle;
-    if (tab) tab.style.display = displayStyle;
 }
 window.updateResearchVisibility = updateResearchVisibility;
 
