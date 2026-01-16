@@ -110,19 +110,7 @@ window.addEventListener("load", () => {
 
   if (confirmYesChapter) {
     confirmYesChapter.addEventListener("click", () => {
-
-      Object.keys(window.state).forEach(key => delete window.state[key]);
-
-      Object.assign(window.state, {
-        materials: 0,
-        perClick: 1,
-        measuredRps: 0,
-        crateCost: 10,
-        advancedCrateCost: 100,
-        epicCrateCost: 1000,
-        cratesOpened: 0,
-        items: {}
-      });
+      localStorage.removeItem("chapter1Save");
 
       resetMaterials(0);
       showFeedback("Chapter data reset!");
@@ -136,19 +124,8 @@ window.addEventListener("load", () => {
 
   if (confirmYesFull) {
     confirmYesFull.addEventListener("click", () => {
-
-      Object.keys(window.state).forEach(key => delete window.state[key]);
-
-      Object.assign(window.state, {
-        materials: 0,
-        perClick: 1,
-        measuredRps: 0,
-        crateCost: 10,
-        advancedCrateCost: 100,
-        epicCrateCost: 1000,
-        cratesOpened: 0,
-        items: {}
-      });
+      localStorage.removeItem("chapter1Save");
+      localStorage.removeItem("mainSave");
 
       resetMaterials(0);
       showFeedback("All data wiped!");
