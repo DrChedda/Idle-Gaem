@@ -99,7 +99,6 @@ const RESEARCH_TREE = {
     if (!canAffordNode(node)) return node.id === 'construct_research_lab' ? notify('Not enough materials') : notify('Not enough research points');
 
   if (node.id === 'construct_research_lab') {
-      // Deduct materials from either rebirthOne or global materials
       if (typeof window.state?.rebirthOne?.materials !== 'undefined') {
         window.state.rebirthOne.materials = Number(window.state.rebirthOne.materials || 0) - node.cost;
       } else if (typeof window.state?.materials !== 'undefined') {
@@ -159,7 +158,6 @@ const RESEARCH_TREE = {
     if (window._research_rp_interval) return;
     window._research_rp_interval = setInterval(() => {
       ensureState();
-      // Only generate RP if Research Lab is unlocked
       if (!getUnlocked('construct_research_lab')) return;
       window.state.researchPoints = (window.state.researchPoints || 0) + 1;
       updateRPDisplay();
@@ -329,10 +327,12 @@ const RESEARCH_TREE = {
       const rl = document.getElementById('research-list');
       if(rl && isVisible(rl)) buildResearchUI();
     }
-  // Prefer attaching directly to the top nav research button if present
-  const navBtn = document.querySelector('.top-menu button[data-tab="research"]');
-  if (navBtn) navBtn.addEventListener('click', tryRefreshUI);
-  else document.addEventListener('click', tryRefreshUI, true);
+    function handleTabChange(e) {
+        if (e.target && e.target.getAttribute('data-tab') === 'research') {
+            buildResearchUI();
+        }
+    }
+    document.addEventListener('click', handleTabChange);
     document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) tryRefreshUI(); });
     window.addEventListener('focus', tryRefreshUI);
 

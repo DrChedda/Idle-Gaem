@@ -161,10 +161,6 @@
             updateDebugMenu();
             if (typeof showFeedback === 'function') showFeedback("Debug Menu Opened");
         } else {
-            if (savedMaterials !== null && window.state) {
-                window.state.materials = savedMaterials;
-                savedMaterials = null;
-            }
             if (typeof updateAllUI === 'function') updateAllUI();
             if (typeof showFeedback === 'function') showFeedback("Debug Menu Closed");
         }
