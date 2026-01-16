@@ -222,7 +222,7 @@ function updateResearchVisibility() {
     }
 
     const hasAchievement = !!(window.state?.achievements?.['hundred_crates']);
-    const unlocked = hasAchievement || total >= 100;
+    const unlocked = hasAchievement || total >= 200;
 
     const btn = document.querySelector('.top-menu button[data-tab="research"]');
     const displayStyle = unlocked ? '' : 'none';

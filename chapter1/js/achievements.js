@@ -50,23 +50,23 @@ const achievements = {
     },
     "hundred_crates": {
         name: "Crate Enthusiast",
-        desc: "Open 100 crates",
+        desc: "Open 200 crates",
         unlock: "Research Tree",
         condition: () => {
             const total = typeof window.state.cratesOpened === 'number' ? window.state.cratesOpened : ((window.state.cratesOpened && (window.state.cratesOpened.basic || 0) + (window.state.cratesOpened.advanced || 0) + (window.state.cratesOpened.epic || 0)) || 0);
-            return total >= 100;
+            return total >= 200;
         },
         unlocked: false,
         icon: "📦",
         hidden: false
     },
-    "thousand_crates": {
+    "four_hundred_crates": {
         name: "Crate Master",
-        desc: "Open 1000 crates",
+        desc: "Open 400 crates",
         unlock: "",
         condition: () => {
             const total = typeof window.state.cratesOpened === 'number' ? window.state.cratesOpened : ((window.state.cratesOpened && (window.state.cratesOpened.basic || 0) + (window.state.cratesOpened.advanced || 0) + (window.state.cratesOpened.epic || 0)) || 0);
-            return total >= 1000;
+            return total >= 400;
         },
         unlocked: false,
         icon: "💯",
