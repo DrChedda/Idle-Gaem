@@ -182,7 +182,7 @@ function updateAchievementsDisplay() {
         const div = document.createElement("div");
         div.className = `achievement-box ${ach.unlocked ? "unlocked" : "locked"}`;
         let descText;
-        if (ach.hidden) {
+        if (ach.hidden && !ach.unlocked) {
             div.innerHTML = "?";
             descText = ach.unlock ? `Unlock: ${ach.unlock}` : "Hidden Achievement";
         } else {
