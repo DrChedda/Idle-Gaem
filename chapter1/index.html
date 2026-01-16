@@ -109,5 +109,15 @@
   
   <script src="js/ui.js"></script>
   <script src="js/debugger.js"></script>
+  <script>
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        if (document.activeElement.tagName === 'BUTTON') {
+          e.preventDefault();
+          document.activeElement.blur();
+        }
+      }
+    });
+  </script>
 </body>
 </html>
