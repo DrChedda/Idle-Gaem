@@ -20,6 +20,7 @@ function toggleDebugger() {
   if (debugEnabled) {
     savedMaterials = state.materials;
     state.materials += 100000;
+    updateMaterialDisplay();
     updateDebugMenu();
     showFeedback("Debug Menu Opened");
   } else {
@@ -27,6 +28,7 @@ function toggleDebugger() {
       state.materials = savedMaterials;
       savedMaterials = null;
     }
+    updateMaterialDisplay();
     showFeedback("Debug Menu Closed");
   }
 }

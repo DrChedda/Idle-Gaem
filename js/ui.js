@@ -23,7 +23,6 @@ window.addEventListener("load", () => {
   const luckyBtn = document.getElementById("upgrade-lucky");
   const newAgeBtn = document.getElementById("upgrade-new-age");
   const saveBtn = document.getElementById("save-btn");
-  const loadBtn = document.getElementById("load-btn");
   const resetBtn = document.getElementById("reset-btn");
   const optionsModal = document.getElementById("options-modal");
   const optionsBtn = document.getElementById("options-btn");
@@ -467,9 +466,6 @@ window.addEventListener("load", () => {
   }
 
   if (saveBtn) saveBtn.addEventListener("click", () => { saveGame(); showFeedback("Saved"); popButton(saveBtn); });
-  if (loadBtn) loadBtn.addEventListener("click", () => { loadGame(); updateUI(); showFeedback("Does nothing yet ㋡"); popButton(loadBtn); });
-
-
   function resetGameState() {
     localStorage.clear();
     state.resources = 0,
