@@ -8,7 +8,11 @@ Object.assign(debugMenu.style, {
   display: "none", zIndex: "1000",
   pointerEvents: "none"
 });
-document.body.appendChild(debugMenu);
+if (document.body) {
+  document.body.appendChild(debugMenu);
+} else {
+  window.addEventListener('DOMContentLoaded', () => document.body.appendChild(debugMenu));
+}
 
 let debugEnabled = false;
 let savedMaterials = null;
@@ -18,18 +22,23 @@ function toggleDebugger() {
   debugMenu.style.display = debugEnabled ? "block" : "none";
 
   if (debugEnabled) {
-    savedMaterials = state.materials;
-    state.materials += 100000;
-    updateMaterialDisplay();
+    savedMaterials = (window.state && typeof window.state.materials === 'number') ? window.state.materials : null;
+    if (!window.state) window.state = {};
+    window.state.materials = (window.state.materials || 0) + 100000;
+
+    if (typeof animateMaterialChange === 'function') animateMaterialChange(window.state.materials);
+    if (typeof updateAllUI === 'function') updateAllUI();
     updateDebugMenu();
-    showFeedback("Debug Menu Opened");
+    if (typeof showFeedback === 'function') showFeedback("Debug Menu Opened");
   } else {
-    if (savedMaterials !== null) {
-      state.materials = savedMaterials;
+    if (savedMaterials !== null && window.state) {
+      window.state.materials = savedMaterials;
       savedMaterials = null;
     }
-    updateMaterialDisplay();
-    showFeedback("Debug Menu Closed");
+
+    if (typeof animateMaterialChange === 'function') animateMaterialChange(window.state ? window.state.materials : 0);
+    if (typeof updateAllUI === 'function') updateAllUI();
+    if (typeof showFeedback === 'function') showFeedback("Debug Menu Closed");
   }
 }
 
