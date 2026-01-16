@@ -1,5 +1,6 @@
 const DEFAULT_STATE = {
     materials: 0,
+    researchPoints: 0,
     perClick: 1,
     measuredRps: 0,
     crateCost: 10,
