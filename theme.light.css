@@ -249,7 +249,7 @@ button:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(16,24,40,0.0
 #upgrade-auto    { left:14%;  top:22%; }
 #upgrade-triple   { left:86%;  top:56%; }
 #upgrade-boost   { left:14%;  top:56%; }
-#upgrade-lucky   { left:50%;  top:72%; }
+#upgrade-unknown   { left:50%;  top:72%; }
 
 #svg-lines{
   position:absolute;
@@ -445,7 +445,7 @@ button:focus-visible, a:focus-visible {
   #upgrade-auto    { left:14%; top:22%; }
   #upgrade-triple   { left:86%; top:58%; }
   #upgrade-boost    { left:14%; top:58%; }
-  #upgrade-lucky    { left:50%; top:74%; }
+  #upgrade-unknown    { left:50%; top:74%; }
   .corner-group{ right:14px; bottom:14px; }
 }
 
@@ -456,7 +456,7 @@ button:focus-visible, a:focus-visible {
   #upgrade-auto    { left:16%; top:24%; }
   #upgrade-triple   { left:84%; top:60%; }
   #upgrade-boost    { left:16%; top:60%; }
-  #upgrade-lucky    { left:50%; top:76%; }
+  #upgrade-unknown    { left:50%; top:76%; }
   .upgrades .upgrade{ min-width:100px; padding:8px 10px; font-size:0.92rem; }
   .corner-group{ right:10px; bottom:10px; flex-direction:row; }
   h1 { font-size: 1.6rem; }

@@ -56,12 +56,12 @@ function updateDebugMenu() {
     Auto Collect Cost: ${state.autoCollectCost}<br>
     Double Gain: ${state.doubleGain}<br>
     Double Gain Cost: ${state.doubleGainCost}<br>
-    Triple Gain: ${state.tripleGain}<br>
-    Triple Gain Cost: ${state.tripleGainCost}<br>
+    Unlock ???: ${state.tripleGain}<br>
+    Unlock ??? Cost: ${state.tripleGainCost}<br>
     Boost: ${state.boost}<br>
     Boost Cost: ${state.boostCost}<br>
-    Lucky Gain: ${state.luckyGain}<br>
-    Lucky Gain Cost: ${state.luckyGainCost}<br>
+    ???: ${state.unknownUpgrade}<br>
+    ??? Cost: ${state.unknownUpgradeCost}<br>
     Measured RPS: ${state.measuredRps.toFixed(2)}<br>
     <strong>MEMORY</strong><br>
     ${memoryInfo}<br>

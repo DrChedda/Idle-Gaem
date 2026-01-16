@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
   const doubleBtn = document.getElementById("upgrade-double");
   const tripleBtn = document.getElementById("upgrade-triple");
   const boostBtn = document.getElementById("upgrade-boost");
-  const luckyBtn = document.getElementById("upgrade-lucky");
+  const unknownBtn = document.getElementById("upgrade-unknown");
   const newAgeBtn = document.getElementById("upgrade-new-age");
   const saveBtn = document.getElementById("save-btn");
   const resetBtn = document.getElementById("reset-btn");
@@ -44,17 +44,10 @@ window.addEventListener("load", () => {
 
 
 
-  function luckyMultiplier() {
-    const p = 0.12;
-    const luckyFactor = 6;
-    return state.luckyGain ? (1 + (luckyFactor - 1) * p) : 1;
-  }
-
   function perClickWithModifiers() {
     let v = state.perClick;
     if (state.doubleGain) v *= 2;
     if (state.boost) v *= 3;
-    v *= luckyMultiplier();
     return v;
   }
 
@@ -115,7 +108,7 @@ window.addEventListener("load", () => {
       case "upgrade-double": return state.doubleGain;
       case "upgrade-triple": return state.tripleGain;
       case "upgrade-boost": return state.boost;
-      case "upgrade-lucky": return state.luckyGain;
+      case "upgrade-unknown": return state.unknownUpgrade;
       default: return false;
     }
   }
@@ -127,7 +120,7 @@ window.addEventListener("load", () => {
       case "upgrade-double": return state.doubleGainCost;
       case "upgrade-triple": return state.tripleGainCost;
       case "upgrade-boost": return state.boostCost;
-      case "upgrade-lucky": return state.luckyGainCost;
+      case "upgrade-unknown": return state.unknownUpgradeCost;
       case "upgrade-new-age": return 0;
       default: return Infinity;
     }
@@ -146,8 +139,8 @@ window.addEventListener("load", () => {
       "upgrade-double": ["buy-upgrade"],
       "upgrade-triple": ["upgrade-double"],
       "upgrade-boost": ["upgrade-auto"],
-      "upgrade-lucky": ["upgrade-boost", "upgrade-triple"],
-      "upgrade-new-age": ["upgrade-lucky"]
+      "upgrade-unknown": ["upgrade-boost", "upgrade-triple"],
+      "upgrade-new-age": ["upgrade-unknown"]
     };
 
     const buttons = [
@@ -156,7 +149,7 @@ window.addEventListener("load", () => {
       "upgrade-double",
       "upgrade-triple",
       "upgrade-boost",
-      "upgrade-lucky",
+      "upgrade-unknown",
       "upgrade-new-age"
     ];
 
@@ -167,7 +160,7 @@ window.addEventListener("load", () => {
         state.doubleGain,
         state.tripleGain,
         state.boost,
-        state.luckyGain
+        state.unknownUpgrade
       ];
       const purchasedCount = totalUpgrades.filter(Boolean).length;
       const minToShow = 2;
@@ -214,7 +207,7 @@ window.addEventListener("load", () => {
       double: document.getElementById("upgrade-double"),
       triple: document.getElementById("upgrade-triple"),
       boost: document.getElementById("upgrade-boost"),
-      lucky: document.getElementById("upgrade-lucky"),
+      unknown: document.getElementById("upgrade-unknown"),
       newAge: document.getElementById("upgrade-new-age")
     };
 
@@ -259,7 +252,7 @@ window.addEventListener("load", () => {
       const doubleC = centerOf(nodes.double);
       const tripleC = centerOf(nodes.triple);
       const boostC = centerOf(nodes.boost);
-      const luckyC = centerOf(nodes.lucky);
+      const unknownC = centerOf(nodes.unknown);
       const newAgeC = centerOf(nodes.newAge);
 
 
@@ -267,11 +260,11 @@ window.addEventListener("load", () => {
       drawLine(upC, doubleC);
       drawLine(autoC, boostC);
       drawLine(doubleC, tripleC);
-      drawLine(boostC, luckyC);
-      drawLine(tripleC, luckyC);
+      drawLine(boostC, unknownC);
+      drawLine(tripleC, unknownC);
 
 
-      if (state.tripleGain && state.boost) drawLine(luckyC, newAgeC, "rgba(0,255,255,0.95)");
+      if (state.tripleGain && state.boost) drawLine(unknownC, newAgeC, "rgba(0,255,255,0.95)");
     } catch (e) {
       console.error("Failed to draw SVG lines", e);
     }
@@ -315,7 +308,7 @@ window.addEventListener("load", () => {
     if (doubleBtn) doubleBtn.textContent = state.doubleGain ? `Double Gain (Owned)` : `Double Gain [${formatNumber(state.doubleGainCost)}]`;
     if (tripleBtn) tripleBtn.textContent = state.tripleGain ? `Triple Gain (Owned)` : `Triple Gain [${formatNumber(state.tripleGainCost)}]`;
     if (boostBtn) boostBtn.textContent = state.boost ? `Boost (Owned)` : `Boost [${formatNumber(state.boostCost)}]`;
-    if (luckyBtn) luckyBtn.textContent = state.luckyGain ? `Lucky Gain (Owned)` : `Lucky Gain [${formatNumber(state.luckyGainCost)}]`;
+    if (unknownBtn) unknownBtn.textContent = state.unknownUpgrade ? "??? (Owned)" : `??? [${formatNumber(state.unknownUpgradeCost)}]`;
 
     updateUpgradeButtons();
     updateSVGLines();
@@ -352,7 +345,7 @@ window.addEventListener("load", () => {
   handlePurchase(doubleBtn, buyDoubleGain, () => state.doubleGain, state.doubleGainCost);
   handlePurchase(tripleBtn, buyTripleGain, () => state.tripleGain, state.tripleGainCost);
   handlePurchase(boostBtn, buyBoost, () => state.boost, state.boostCost);
-  handlePurchase(luckyBtn, buyLuckyGain, () => state.luckyGain, state.luckyGainCost);
+  handlePurchase(unknownBtn, buyUnknownUpgrade, () => state.unknownUpgrade, state.unknownUpgradeCost);
 
   if (newAgeBtn) {
     newAgeBtn.addEventListener("click", () => {
@@ -395,7 +388,7 @@ window.addEventListener("load", () => {
       state.doubleGain = false;
       state.tripleGain = false;
       state.boost = false;
-      state.luckyGain = false;
+      state.unknownUpgrade = false;
 
       const feedbackMessages = [
         "Eeotk",
@@ -479,8 +472,8 @@ window.addEventListener("load", () => {
     state.tripleGainCost = 1200,
     state.boost = false,
     state.boostCost = 3000,
-    state.luckyGain = false,
-    state.luckyGainCost = 10000,
+    state.unknownUpgrade = false,
+    state.unknownUpgradeCost = 10000,
     state.measuredRps = 0,
     state.beginningfinished = false;
     pushResourceSample();
@@ -541,7 +534,7 @@ window.addEventListener("load", () => {
       "upgrade-double":"Double your gain output.",
       "upgrade-triple":"Triple your gain output.",
       "upgrade-boost":"Temporarily boost gain output.",
-      "upgrade-lucky":"Small chance for a large bonus on gain.",
+      "upgrade-unknown":"???",
       "save-btn":"Save your game to local storage.",
       "load-btn":"Load the saved game state.",
       "reset-btn":"Reset progress to default.",
