@@ -24,7 +24,7 @@ const CRATE_CONFIG = {
     basic: {
         costKey: 'crateCost',
         counterKey: 'basic',
-        multiplier: 1.5,
+        multiplier: 1.7,
         loot: [
             { threshold: 0.4, item: "Nothing" },
             { threshold: 0.6, item: "Wooden Pickaxe" },
@@ -37,7 +37,7 @@ const CRATE_CONFIG = {
     advanced: {
         costKey: 'advancedCrateCost',
         counterKey: 'advanced',
-        multiplier: 1.7,
+        multiplier: 1.6,
         loot: [
             { threshold: 0.1, item: "Nothing" },
             { threshold: 0.25, item: "Wooden Pickaxe" },
