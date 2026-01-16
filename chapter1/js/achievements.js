@@ -90,29 +90,29 @@ const achievements = {
         icon: "💎",
         hidden: false
     },
-    "godly_pickaxe": {
+    "obsidian_pickaxe": {
         name: "Divine Tool",
-        desc: "Get a Godly Pickaxe",
+        desc: "Get an Obsidian Pickaxe",
         unlock: "",
-        condition: () => (window.state.items["Godly Pickaxe"] || 0) >= 1,
+        condition: () => (window.state.items["Obsidian Pickaxe"] || 0) >= 1,
         unlocked: false,
         icon: "👑",
         hidden: false
     },
-    "unholy_pickaxe": {
+    "titanium_pickaxe": {
         name: "Unholy Power",
-        desc: "Get an Unholy Pickaxe",
+        desc: "Get a Titanium Pickaxe",
         unlock: "",
-        condition: () => (window.state.items["Unholy Pickaxe"] || 0) >= 1,
+        condition: () => (window.state.items["Titanium Pickaxe"] || 0) >= 1,
         unlocked: false,
         icon: "😈",
         hidden: false
     },
-    "secret_pickaxe": {
+    "neutronium_pickaxe": {
         name: "Ultimate Secret",
-        desc: "Get the Secret Pickaxe",
+        desc: "Get the Neutronium Pickaxe",
         unlock: "",
-        condition: () => (window.state.items["Secret Pickaxe"] || 0) >= 1,
+        condition: () => (window.state.items["Neutronium Pickaxe"] || 0) >= 1,
         unlocked: false,
         icon: "🤫",
         hidden: true

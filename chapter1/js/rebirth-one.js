@@ -14,10 +14,10 @@ const PICKAXES = {
     "Wooden Pickaxe": 0.2,
     "Iron Pickaxe": 0.5,
     "Diamond Pickaxe": 2,
-    "Emerald Pickaxe": 5,
-    "Godly Pickaxe": 15,
-    "Unholy Pickaxe": 60,
-    "Secret Pickaxe": 200
+    "Emerald Pickaxe": 4,
+    "Obsidian Pickaxe": 10,
+    "Titanium Pickaxe": 60,
+    "Neutronium Pickaxe": 200
 };
 
 const CRATE_CONFIG = {
@@ -31,7 +31,7 @@ const CRATE_CONFIG = {
             { threshold: 0.75, item: "Iron Pickaxe" },
             { threshold: 0.94, item: "Diamond Pickaxe" },
             { threshold: 0.999, item: "Emerald Pickaxe" },
-            { threshold: 1.0, item: "Godly Pickaxe" }
+            { threshold: 1.0, item: "Obsidian Pickaxe" }
         ]
     },
     advanced: {
@@ -44,9 +44,9 @@ const CRATE_CONFIG = {
             { threshold: 0.45, item: "Iron Pickaxe" },
             { threshold: 0.65, item: "Diamond Pickaxe" },
             { threshold: 0.99, item: "Emerald Pickaxe" },
-            { threshold: 0.999, item: "Godly Pickaxe" },
-            { threshold: 0.9999, item: "Unholy Pickaxe" },
-            { threshold: 1.0, item: "Secret Pickaxe" }
+            { threshold: 0.999, item: "Obsidian Pickaxe" },
+            { threshold: 0.9999, item: "Titanium Pickaxe" },
+            { threshold: 1.0, item: "Neutronium Pickaxe" }
         ]
     },
     epic: {
@@ -59,9 +59,9 @@ const CRATE_CONFIG = {
             { threshold: 0.3, item: "Iron Pickaxe" },
             { threshold: 0.5, item: "Diamond Pickaxe" },
             { threshold: 0.85, item: "Emerald Pickaxe" },
-            { threshold: 0.99, item: "Godly Pickaxe" },
-            { threshold: 0.999, item: "Unholy Pickaxe" },
-            { threshold: 1.0, item: "Secret Pickaxe" }
+            { threshold: 0.99, item: "Obsidian Pickaxe" },
+            { threshold: 0.999, item: "Titanium Pickaxe" },
+            { threshold: 1.0, item: "Neutronium Pickaxe" }
         ]
     }
 };
@@ -85,9 +85,15 @@ window.state = rebirthOne;
 window.DEFAULT_STATE = DEFAULT_STATE;
 
 const fmt = (n) => (typeof formatNumber === 'function' ? formatNumber(n) : n.toLocaleString());
-const round2 = (num) => Math.round(num * 10) / 10;
+// Round to one decimal place (0.1) reliably
+const round2 = (num) => {
+    if (typeof num !== 'number' || !isFinite(num)) return num;
+    // Use toFixed to avoid floating-point precision artifacts, then convert back to number
+    return parseFloat((Math.round((num + Number.EPSILON) * 10) / 10).toFixed(1));
+};
 
 let lastMaterials = window.state.materials;
+let lastCrateClick = 0;
 
 function animateMaterialChange(newVal) {
     const el = document.getElementById("material-display");
@@ -104,7 +110,9 @@ function animateMaterialChange(newVal) {
     function step(ts) {
         if (!startTime) startTime = ts;
         const progress = Math.min((ts - startTime) / duration, 1);
-        const current = Math.floor(start + (newVal - start) * progress);
+        // interpolate and round to 0.1 for display
+        const interpolated = start + (newVal - start) * progress;
+        const current = Math.round(interpolated * 10) / 10;
         el.textContent = `Materials: ${fmt(current)}`;
         if (progress < 1) requestAnimationFrame(step);
         else lastMaterials = newVal;
@@ -191,8 +199,9 @@ function updateAllUI() {
     updateResearchVisibility();
     
     const el = document.getElementById("material-display");
-    if(el && Math.abs(lastMaterials - window.state.materials) < 1) {
-         el.textContent = `Materials: ${fmt(window.state.materials)}`;
+    // If the difference is very small, update immediately; otherwise let the animation show change
+    if (el && Math.abs(lastMaterials - window.state.materials) < 0.1) {
+        el.textContent = `Materials: ${fmt(window.state.materials)}`;
     }
 }
 
@@ -316,7 +325,12 @@ window.addEventListener("load", () => {
     ];
     listeners.forEach(l => {
         const btn = document.getElementById(l.id);
-        if (btn) btn.addEventListener("click", () => handleCrateOpen(l.type));
+        if (btn) btn.addEventListener("click", () => {
+            const now = Date.now();
+            if (now - lastCrateClick < 20) return; // ignore clicks faster than 20ms
+            lastCrateClick = now;
+            handleCrateOpen(l.type);
+        });
     });
 
     if (saveBtn) {
