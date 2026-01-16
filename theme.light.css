@@ -34,16 +34,35 @@ header {
   padding: 12px var(--gutter);
 }
 
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.resources {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  line-height: 0.7;
+}
+
 header nav a {
   position: fixed;
-  top: 8px;
+  top: 22px;
   right: 12px;
   z-index: 500; 
   display: inline-block;
   padding: 8px 12px;
   border-radius: 8px;
   background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-  color: #ffffff;
+  color: #000000;
   border: none;
   text-decoration: none;
   font-weight: 700;
@@ -168,6 +187,7 @@ html,body{
 
 header{padding:20px 16px 8px;text-align:center}
 h1{margin:0;font-size:2rem;letter-spacing:1px;color:var(--muted)}
+h1 a{font-size:0.6rem;margin-left:8px;color:var(--accent-2);font-weight:600;text-decoration:none}
 #resource-display{margin-top:10px;font-weight:600}
 
 main{max-width:980px;margin:0 auto;padding:18px}
@@ -401,7 +421,7 @@ button[data-desc]:hover::before {
 
 #start-close-btn {
   background: linear-gradient(90deg,var(--accent-1),var(--accent-2));
-  color: #fff;
+  color: #000000;
   border-radius: 10px;
   padding: 10px 16px;
   font-weight: 600;
