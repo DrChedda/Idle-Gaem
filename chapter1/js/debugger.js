@@ -45,7 +45,6 @@ function updateDebugMenu() {
     memoryInfo = `Memory Used: ${usedMB} MB / ${totalMB} MB (Limit: ${limitMB} MB)`;
   }
 
-  // Get pickaxe counts
   const pickaxeCounts = Object.entries(state.items || {})
     .filter(([key]) => key.includes("Pickaxe"))
     .map(([key, count]) => `${key}: ${count}`)

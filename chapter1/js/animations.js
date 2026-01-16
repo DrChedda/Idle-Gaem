@@ -1,21 +1,26 @@
-
 window.addEventListener("load", () => {
   setTimeout(() => {
-    if (typeof state.seenChapterMessage === "undefined") state.seenChapterMessage = false;
+    if (window.state.seenChapterMessage === undefined) {
+      window.state.seenChapterMessage = false;
+    }
 
-    if (!state.seenChapterMessage) {
+    if (!window.state.seenChapterMessage) {
       const msg1 = document.getElementById("chapterMessage");
       const msg2 = document.getElementById("restartMessage");
 
-      msg1.classList.add("show");
-      setTimeout(() => msg2.classList.add("show"), 1000);
-      setTimeout(() => {
-        msg1.classList.remove("show");
-        msg2.classList.remove("show");
-      }, 4000);
+      if (msg1 && msg2) {
+        msg1.classList.add("show");
+        
+        setTimeout(() => msg2.classList.add("show"), 1000);
 
-      state.seenChapterMessage = true;
-      saveGame();
+        setTimeout(() => {
+          msg1.classList.remove("show");
+          msg2.classList.remove("show");
+        }, 4000);
+      }
+
+      window.state.seenChapterMessage = true;
+      if (typeof saveGame === "function") saveGame();
     }
-  }, 50);
+  }, 100);
 });

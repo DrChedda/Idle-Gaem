@@ -1,21 +1,24 @@
-
 window.addEventListener("load", () => {
-  const buttons = document.querySelectorAll(".top-menu button");
+  const menu = document.querySelector(".top-menu");
   const pages = document.querySelectorAll(".tab-page");
+  const buttons = document.querySelectorAll(".top-menu button");
 
-  function showTab(tab) {
+  function showTab(tabId) {
+    const targetPage = document.getElementById(`tab-${tabId}`);
+    if (!targetPage) return;
+
     pages.forEach(p => p.style.display = "none");
-    const current = document.getElementById(`tab-${tab}`);
-    if (current) current.style.display = "block";
+    targetPage.style.display = "block";
 
-    buttons.forEach(b => b.classList.remove("active"));
-    const btn = document.querySelector(`.top-menu button[data-tab="${tab}"]`);
-    if (btn) btn.classList.add("active");
+    buttons.forEach(b => b.classList.toggle("active", b.dataset.tab === tabId));
 
-    localStorage.setItem("lastTab", tab);
+    localStorage.setItem("lastTab", tabId);
   }
 
-  buttons.forEach(btn => btn.addEventListener("click", () => showTab(btn.dataset.tab)));
-  const saved = localStorage.getItem("lastTab") || "game";
-  showTab(saved);
+  menu?.addEventListener("click", (e) => {
+    const tab = e.target.closest("button")?.dataset.tab;
+    if (tab) showTab(tab);
+  });
+
+  showTab(localStorage.getItem("lastTab") || "game");
 });

@@ -1,28 +1,14 @@
-
 function saveGame() {
   try {
-    const json = JSON.stringify(state);
-    localStorage.setItem("chapter1Save", json);
+    const saveData = JSON.stringify(window.state);
+    localStorage.setItem("rebirthOne", saveData);
   } catch (e) {
-    console.warn("Save failed", e);
-  }
-}
-
-function loadGame() {
-  const json = localStorage.getItem("chapter1Save");
-  if (!json) return;
-
-  try {
-    const parsed = JSON.parse(json);
-    for (const k in parsed) {
-      if (Object.prototype.hasOwnProperty.call(parsed, k)) {
-        rebirthOne[k] = parsed[k];
-      }
+    if (e.name === 'QuotaExceededError') {
+      console.error("Save failed: LocalStorage is full!");
+    } else {
+      console.warn("Save failed", e);
     }
-  } catch (e) {
-    console.warn("Load failed", e);
-    localStorage.removeItem("idleGameSave");
   }
 }
 
-setInterval(saveGame, 5000);
+setInterval(saveGame, 30000);
