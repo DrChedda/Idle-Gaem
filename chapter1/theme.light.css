@@ -193,7 +193,7 @@ button:hover { background: var(--accent-2); }
   color: var(--muted);
   padding: 6px 10px;
   border-radius: 6px;
-  white-space: nowrap;
+  white-space: pre;
   font-size: 0.86rem;
   line-height: 1;
   box-shadow: 0 6px 18px #00000026;

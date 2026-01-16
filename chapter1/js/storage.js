@@ -2,14 +2,14 @@
 function saveGame() {
   try {
     const json = JSON.stringify(state);
-    localStorage.setItem("idleGameSave", json);
+    localStorage.setItem("chapter1Save", json);
   } catch (e) {
     console.warn("Save failed", e);
   }
 }
 
 function loadGame() {
-  const json = localStorage.getItem("idleGameSave");
+  const json = localStorage.getItem("chapter1Save");
   if (!json) return;
 
   try {
