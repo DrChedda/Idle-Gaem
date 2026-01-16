@@ -277,6 +277,21 @@ button:hover { background: var(--accent-2); }
   text-align: center;
 }
 
+/* Version badge in bottom-right to match main site's small "Alpha" badge */
+#version-badge {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 500;
+}
+#version-badge a{
+  font-size: 0.6rem;
+  margin-left: 8px;
+  color: var(--accent-2);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 
 #tab-achievements h2 {
   text-align: center;

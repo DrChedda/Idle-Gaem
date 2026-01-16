@@ -85,10 +85,8 @@ window.state = rebirthOne;
 window.DEFAULT_STATE = DEFAULT_STATE;
 
 const fmt = (n) => (typeof formatNumber === 'function' ? formatNumber(n) : n.toLocaleString());
-// Round to one decimal place (0.1) reliably
 const round2 = (num) => {
     if (typeof num !== 'number' || !isFinite(num)) return num;
-    // Use toFixed to avoid floating-point precision artifacts, then convert back to number
     return parseFloat((Math.round((num + Number.EPSILON) * 10) / 10).toFixed(1));
 };
 
@@ -110,7 +108,6 @@ function animateMaterialChange(newVal) {
     function step(ts) {
         if (!startTime) startTime = ts;
         const progress = Math.min((ts - startTime) / duration, 1);
-        // interpolate and round to 0.1 for display
         const interpolated = start + (newVal - start) * progress;
         const current = Math.round(interpolated * 10) / 10;
         el.textContent = `Materials: ${fmt(current)}`;
@@ -199,7 +196,6 @@ function updateAllUI() {
     updateResearchVisibility();
     
     const el = document.getElementById("material-display");
-    // If the difference is very small, update immediately; otherwise let the animation show change
     if (el && Math.abs(lastMaterials - window.state.materials) < 0.1) {
         el.textContent = `Materials: ${fmt(window.state.materials)}`;
     }
@@ -227,7 +223,7 @@ function updateResearchVisibility() {
     }
 
     const hasAchievement = !!(window.state?.achievements?.['hundred_crates']);
-    const unlocked = hasAchievement || total >= 10;
+    const unlocked = hasAchievement || total >= 100;
 
     const btn = document.querySelector('.top-menu button[data-tab="research"]');
     const displayStyle = unlocked ? '' : 'none';
