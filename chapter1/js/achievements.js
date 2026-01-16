@@ -1,29 +1,33 @@
 
 const achievements = {
-    "first_collect": {
+    "beginner_collector": {
         name: "First Steps",
-        desc: "Collect your first material",
-        condition: () => state.materials >= 1,
+        desc: "Collect your first 10 materials",
+        unlock: "",
+        condition: () => state.materials >= 10,
         unlocked: false,
         icon: "⛏️"
     },
-    "hundred_materials": {
+    "thousand_materials": {
         name: "Material Hoarder",
         desc: "Collect 1000 materials",
+        unlock: "",
         condition: () => state.materials >= 1000,
         unlocked: false,
         icon: "💰"
     },
-    "thousand_materials": {
+    "ten_thousand_materials": {
         name: "Wealthy Miner",
         desc: "Collect 10,000 materials",
+        unlock: "",
         condition: () => state.materials >= 10000,
         unlocked: false,
         icon: "💎"
     },
-    "ten_thousand_materials": {
+    "hundred_thousand_materials": {
         name: "Millionaire",
         desc: "Collect 100,000 materials",
+        unlock: "",
         condition: () => state.materials >= 100000,
         unlocked: false,
         icon: "🏦"
@@ -31,6 +35,7 @@ const achievements = {
     "first_crate": {
         name: "Crate Opener",
         desc: "Open your first crate",
+        unlock: "",
         condition: () => {
             const total = typeof state.cratesOpened === 'number' ? state.cratesOpened : ((state.cratesOpened && (state.cratesOpened.basic || 0) + (state.cratesOpened.advanced || 0) + (state.cratesOpened.epic || 0)) || 0);
             return total >= 1;
@@ -38,9 +43,10 @@ const achievements = {
         unlocked: false,
         icon: "📦"
     },
-    "ten_crates": {
+    "hundred_crates": {
         name: "Crate Enthusiast",
         desc: "Open 100 crates",
+        unlock: "Research Tree",
         condition: () => {
             const total = typeof state.cratesOpened === 'number' ? state.cratesOpened : ((state.cratesOpened && (state.cratesOpened.basic || 0) + (state.cratesOpened.advanced || 0) + (state.cratesOpened.epic || 0)) || 0);
             return total >= 100;
@@ -48,9 +54,10 @@ const achievements = {
         unlocked: false,
         icon: "📦"
     },
-    "hundred_crates": {
+    "thousand_crates": {
         name: "Crate Master",
         desc: "Open 1000 crates",
+        unlock: "",
         condition: () => {
             const total = typeof state.cratesOpened === 'number' ? state.cratesOpened : ((state.cratesOpened && (state.cratesOpened.basic || 0) + (state.cratesOpened.advanced || 0) + (state.cratesOpened.epic || 0)) || 0);
             return total >= 1000;
@@ -61,6 +68,7 @@ const achievements = {
     "first_pickaxe": {
         name: "Tool Collector",
         desc: "Acquire your first pickaxe",
+        unlock: "",
         condition: () => Object.keys(state.items).some(key => key.includes("Pickaxe")),
         unlocked: false,
         icon: "🔨"
@@ -68,6 +76,7 @@ const achievements = {
     "diamond_pickaxe": {
         name: "Diamond Miner",
         desc: "Get a Diamond Pickaxe",
+        unlock: "",
         condition: () => (state.items["Diamond Pickaxe"] || 0) >= 1,
         unlocked: false,
         icon: "💎"
@@ -75,6 +84,7 @@ const achievements = {
     "godly_pickaxe": {
         name: "Divine Tool",
         desc: "Get a Godly Pickaxe",
+        unlock: "",
         condition: () => (state.items["Godly Pickaxe"] || 0) >= 1,
         unlocked: false,
         icon: "👑"
@@ -82,6 +92,7 @@ const achievements = {
     "unholy_pickaxe": {
         name: "Unholy Power",
         desc: "Get an Unholy Pickaxe",
+        unlock: "",
         condition: () => (state.items["Unholy Pickaxe"] || 0) >= 1,
         unlocked: false,
         icon: "😈"
@@ -89,6 +100,7 @@ const achievements = {
     "secret_pickaxe": {
         name: "Ultimate Secret",
         desc: "Get the Secret Pickaxe",
+        unlock: "",
         condition: () => (state.items["Secret Pickaxe"] || 0) >= 1,
         unlocked: false,
         icon: "🤫"
@@ -96,6 +108,7 @@ const achievements = {
     "ten_wooden": {
         name: "Wood Enthusiast",
         desc: "Own 10 Wooden Pickaxes",
+        unlock: "",
         condition: () => (state.items["Wooden Pickaxe"] || 0) >= 10,
         unlocked: false,
         icon: "🌳"
@@ -103,6 +116,7 @@ const achievements = {
     "five_diamond": {
         name: "Diamond Collector",
         desc: "Own 5 Diamond Pickaxes",
+        unlock: "",
         condition: () => (state.items["Diamond Pickaxe"] || 0) >= 5,
         unlocked: false,
         icon: "💎"
@@ -110,6 +124,7 @@ const achievements = {
     "per_click_10": {
         name: "Efficient Miner",
         desc: "Reach 10 per click",
+        unlock: "",
         condition: () => state.perClick >= 10,
         unlocked: false,
         icon: "⚡"
@@ -117,6 +132,7 @@ const achievements = {
     "per_click_100": {
         name: "Super Miner",
         desc: "Reach 100 per click",
+        unlock: "",
         condition: () => state.perClick >= 100,
         unlocked: false,
         icon: "🚀"
@@ -149,7 +165,9 @@ function updateAchievementsDisplay() {
         const ach = achievements[key];
         const div = document.createElement("div");
         div.className = `achievement-box ${ach.unlocked ? "unlocked" : "locked"}`;
-        div.setAttribute("data-desc", `${ach.name}: ${ach.desc}`);
+        let descText = `${ach.name}: ${ach.desc}`;
+        if (ach.unlock) descText += `\nUnlock: ${ach.unlock}`;
+        div.setAttribute("data-desc", descText);
         div.innerHTML = ach.icon;
         container.appendChild(div);
     }
