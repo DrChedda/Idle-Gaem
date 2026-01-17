@@ -9,7 +9,7 @@
 <body>
   <header>
     <div class="header-content">
-      <h1>Gaem<a>Alpha</a></h1>
+      <h1>Gaem<a>V0.1.2a</a></h1>
       <div class="resources">
         <div id="resource-display" aria-live="polite">Resources: 0</div>
         <div id="rps-display" class="rps-display" aria-hidden="true">Resources/s: 0</div>
@@ -34,7 +34,7 @@
         <h2>Welcome to Gaem!</h2>
         <p>Here’s some info to get you started:</p>
         <ul style="text-align:left;">
-          <li><a href="/guide.html" target="_blank">Full Guide</a><br /><a>(Trust me you will need it later I mean.)</a></li>
+          <li><a href="/guide.html" target="_blank">Full Guide</a></li>
           <li><a href="https://example.com/discord" target="_blank">Join Discord</a></li>
         </ul>
         <label style="display:flex;align-items:center;gap:6px;justify-content:center;margin-top:12px;">
@@ -73,12 +73,12 @@
     </div>
 
     <section class="upgrades" aria-label="Upgrades">
-      <button id="buy-upgrade" class="upgrade" aria-label="Upgrade gain">Upgrade Gain</button>
-      <button id="upgrade-auto" class="upgrade">Auto Collect</button>
-      <button id="upgrade-double" class="upgrade">Double Gain</button>
-      <button id="upgrade-triple" class="upgrade">Triple Gain</button>
-      <button id="upgrade-boost" class="upgrade">Boost</button>
-      <button id="upgrade-lucky" class="upgrade">Lucky Gain</button>
+      <button id="buy-upgrade" class="upgrade" aria-label="Upgrade gain">Error Gain</button>
+      <button id="upgrade-auto" class="upgrade">Error Collect</button>
+      <button id="upgrade-double" class="upgrade">Error Gain</button>
+      <button id="upgrade-triple" class="upgrade">Error Gain</button>
+      <button id="upgrade-boost" class="upgrade">Error</button>
+      <button id="upgrade-unknown" class="upgrade">???</button>
       <button id="upgrade-new-age" class="upgrade">|</button>
 
       <svg id="svg-lines" aria-hidden="true" preserveAspectRatio="none"></svg>
@@ -97,7 +97,6 @@
 
   <div class="corner-group" role="region" aria-label="Save and options">
     <button id="save-btn">Save</button>
-    <button id="load-btn">Load</button>
     <button id="reset-btn">Reset</button>
     <button id="options-btn">Options</button>
   </div>

@@ -1,54 +1,73 @@
-
 window.addEventListener("load", () => {
-  const buttons = document.querySelectorAll(".top-menu button");
-  const pages = document.querySelectorAll(".tab-page");
-  const materialDisplay = document.getElementById("material-display");
-  const saveBtn = document.getElementById("save-btn");
-  const resetBtn = document.getElementById("reset-btn");
-  const confirmBar = document.getElementById("confirm-bar");
-  const confirmYesChapter = document.getElementById("confirm-yes-chapter");
-  const confirmYesFull = document.getElementById("confirm-yes-full");
-  const confirmNo = document.getElementById("confirm-no");
-  const feedback = document.getElementById("feedback");
+  const el = {
+    buttons: document.querySelectorAll(".top-menu button"),
+    pages: document.querySelectorAll(".tab-page"),
+    materialDisplay: document.getElementById("material-display"),
+    confirmBar: document.getElementById("confirm-bar"),
+    feedback: document.getElementById("feedback"),
+    btnSave: document.getElementById("save-btn"),
+    btnReset: document.getElementById("reset-btn"),
+    btnYesChapter: document.getElementById("confirm-yes-chapter"),
+    btnYesFull: document.getElementById("confirm-yes-full"),
+    btnNo: document.getElementById("confirm-no")
+  };
 
-  if (confirmBar) confirmBar.style.display = "none";
-
-  let lastMaterials = window.state.materials || 0;
+  let lastMaterials = window.state?.materials || 0;
   let materialSamples = [];
+  let feedbackData = { lastMessage: null, count: 0, timeout: null };
 
+  function closeConfirmBar(clickedEl) {
+    if (clickedEl) popElement(clickedEl);
+    if (!el.confirmBar) return;
+    el.confirmBar.classList.remove("show");
+    setTimeout(() => (el.confirmBar.style.display = "none"), 300);
+  }
+
+  function popElement(target) {
+    if (!target) return;
+    target.classList.add("pop");
+    setTimeout(() => target.classList.remove("pop"), 120);
+  }
 
   function showFeedback(msg, duration = 1800) {
-    if (typeof window.showFeedback === 'function') {
-      window.showFeedback(msg, duration);
-      return;
-    }
-    if (!feedback) return;
-    feedback.textContent = msg;
-    feedback.classList.add("show");
-    setTimeout(() => feedback.classList.remove("show"), duration);
+    if (typeof window.showFeedback === 'function') return window.showFeedback(msg, duration);
+    if (!el.feedback) return;
+
+    feedbackData.count = (msg === feedbackData.lastMessage) ? feedbackData.count + 1 : 1;
+    feedbackData.lastMessage = msg;
+
+    if (feedbackData.timeout) clearTimeout(feedbackData.timeout);
+
+    el.feedback.textContent = `${msg}${feedbackData.count > 1 ? ` ${feedbackData.count}x` : ''}`;
+    el.feedback.classList.add("show");
+
+    feedbackData.timeout = setTimeout(() => {
+      el.feedback.classList.remove("show");
+      feedbackData.lastMessage = null;
+    }, duration);
   }
 
   function animateMaterialChange(newVal) {
+    if (!el.materialDisplay || !isGameTab()) {
+      lastMaterials = newVal;
+      return;
+    }
+
     const start = lastMaterials;
-    const end = newVal;
     const duration = 80;
     let startTime = null;
+
     function step(ts) {
       if (!startTime) startTime = ts;
       const progress = Math.min((ts - startTime) / duration, 1);
-      const current = Math.floor(start + (end - start) * progress);
-      if (materialDisplay && isGameTab()) materialDisplay.textContent = `Materials: ${current}`;
+      const current = Math.floor(start + (newVal - start) * progress);
+      
+      el.materialDisplay.textContent = `Materials: ${current}`;
+
       if (progress < 1) requestAnimationFrame(step);
-      else lastMaterials = end;
+      else lastMaterials = newVal;
     }
     requestAnimationFrame(step);
-  }
-
-  function pushMaterialSample(mats) {
-    const now = Date.now();
-    materialSamples.push({ t: now, m: mats });
-    const cutoff = now - 10000;
-    while (materialSamples.length > 1 && materialSamples[0].t < cutoff) materialSamples.shift();
   }
 
   function isGameTab() {
@@ -59,94 +78,67 @@ window.addEventListener("load", () => {
   function resetMaterials(mats = 0) {
     window.state.materials = mats;
     lastMaterials = mats;
-    materialSamples.length = 0;
-    pushMaterialSample(mats);
+    materialSamples = [{ t: Date.now(), m: mats }];
     animateMaterialChange(mats);
-    saveGame();
+    if (typeof saveGame === 'function') saveGame();
   }
 
-  function popElement(el) {
-    if (!el) return;
-    el.classList.add("pop");
-    setTimeout(() => el.classList.remove("pop"), 120);
+  function showTab(tabId) {
+    el.pages.forEach(p => p.style.display = p.id === `tab-${tabId}` ? "block" : "none");
+    el.buttons.forEach(b => b.classList.toggle("active", b.dataset.tab === tabId));
+    
+    if (el.materialDisplay) el.materialDisplay.style.display = tabId === "game" ? "block" : "none";
+    localStorage.setItem("lastTab", tabId);
   }
 
-
-  function showTab(tab) {
-    pages.forEach(p => p.style.display = "none");
-    const current = document.getElementById(`tab-${tab}`);
-    if (current) current.style.display = "block";
-
-    buttons.forEach(b => b.classList.remove("active"));
-    const btn = document.querySelector(`.top-menu button[data-tab="${tab}"]`);
-    if (btn) btn.classList.add("active");
-
-    if (materialDisplay) materialDisplay.style.display = tab === "game" ? "block" : "none";
-    if (feedback) feedback.style.display = "block";
-
-    localStorage.setItem("lastTab", tab);
+  const menu = document.querySelector(".top-menu");
+  if (menu) {
+    menu.addEventListener("click", (e) => {
+      const tab = e.target.closest("button")?.dataset.tab;
+      if (tab) showTab(tab);
+    });
   }
 
-  buttons.forEach(btn => btn.addEventListener("click", () => showTab(btn.dataset.tab)));
+  if (el.btnSave) {
+    el.btnSave.addEventListener("click", () => {
+      if (typeof saveGame === 'function') saveGame();
+      showFeedback("Game saved");
+    });
+  }
 
-  const savedTab = localStorage.getItem("lastTab") || "game";
-  showTab(savedTab);
+  if (el.btnReset) {
+    el.btnReset.addEventListener("click", () => {
+      el.confirmBar.style.display = "flex";
+      el.btnYesChapter.textContent = "Chapter Reset";
+      el.btnYesFull.textContent = "Full Reset";
+      el.btnNo.textContent = "Cancel";
+      setTimeout(() => el.confirmBar.classList.add("show"), 10);
+    });
+  }
 
-
-  if (saveBtn) saveBtn.addEventListener("click", () => {
-    saveGame();
-    showFeedback("Game saved");
+  el.btnYesChapter?.addEventListener("click", () => {
+    localStorage.removeItem("rebirthOne");
+    window.state = JSON.parse(JSON.stringify(window.DEFAULT_STATE));
+    resetMaterials(0);
+    closeConfirmBar(el.btnYesChapter);
+    window.location.reload();
   });
 
+  el.btnYesFull?.addEventListener("click", () => {
+    localStorage.clear();
+    closeConfirmBar(el.btnYesFull);
+    window.location.href = "../index.html";
+  });
 
+  el.btnNo?.addEventListener("click", () => closeConfirmBar(el.btnNo));
 
-  if (resetBtn) {
-    resetBtn.addEventListener("click", () => {
-      confirmBar.style.display = "flex";
-      if (confirmYesChapter) confirmYesChapter.textContent = "Chapter Reset";
-      if (confirmYesFull) confirmYesFull.textContent = "Full Reset";
-      if (confirmNo) confirmNo.textContent = "Cancel";
-      setTimeout(() => confirmBar.classList.add("show"), 10);
-    });
-  }
-
-  if (confirmYesChapter) {
-    confirmYesChapter.addEventListener("click", () => {
-      localStorage.removeItem("chapter1Save");
-
-      resetMaterials(0);
-      showFeedback("Chapter data reset!");
-      popElement(confirmYesChapter);
-      confirmBar.classList.remove("show");
-      setTimeout(() => (confirmBar.style.display = "none"), 300);
-      window.location.href = "./index.html";
-    });
-  }
-
-
-  if (confirmYesFull) {
-    confirmYesFull.addEventListener("click", () => {
-      localStorage.removeItem("chapter1Save");
-      localStorage.removeItem("mainSave");
-
-      resetMaterials(0);
-      showFeedback("All data wiped!");
-      popElement(confirmYesFull);
-      confirmBar.classList.remove("show");
-      setTimeout(() => (confirmBar.style.display = "none"), 300);
-      window.location.href = "../index.html";
-    });
-  }
-
-  if (confirmNo) {
-    confirmNo.addEventListener("click", () => {
-      popElement(confirmNo);
-      confirmBar.classList.remove("show");
-      setTimeout(() => (confirmBar.style.display = "none"), 300);
-    });
-  }
-
-
-  pushMaterialSample(window.state.materials || 0);
-  setInterval(() => pushMaterialSample(window.state.materials || 0), 1000);
+  if (el.confirmBar) el.confirmBar.style.display = "none";
+  showTab(localStorage.getItem("lastTab") || "game");
+  
+  setInterval(() => {
+    const now = Date.now();
+    materialSamples.push({ t: now, m: window.state.materials || 0 });
+    const cutoff = now - 10000;
+    while (materialSamples.length > 1 && materialSamples[0].t < cutoff) materialSamples.shift();
+  }, 1000);
 });

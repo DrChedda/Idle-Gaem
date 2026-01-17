@@ -276,6 +276,21 @@ button:hover { background: var(--accent-2); }
   text-align: center;
 }
 
+/* Version badge in bottom-right to match main site's small "Alpha" badge */
+#version-badge {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 500;
+}
+#version-badge a{
+  font-size: 0.6rem;
+  margin-left: 8px;
+  color: var(--accent-2);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 
 #tab-achievements h2 {
   text-align: center;
@@ -323,6 +338,47 @@ button:hover { background: var(--accent-2); }
   transform: scale(1.1);
 }
 
+/* Research tree styles */
+.research-intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 12px auto;
+  color: var(--muted);
+}
+
+.research-list-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.research-node {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 12px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.research-title { color: var(--accent-1); font-weight: 700; font-size: 1.05rem; }
+.research-desc { color: var(--muted); font-size: 0.95rem; }
+.research-footer { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.research-cost { color: var(--muted); font-weight:700; }
+.research-btn { padding:6px 10px; border-radius:6px; border:none; background:var(--accent-1); color:#fff; cursor:pointer; }
+.research-btn[disabled] { opacity:0.55; cursor:not-allowed; background:#666; }
+
+/* Grid & connector styles */
+.research-grid-wrapper { position: relative; width: 100%; }
+.research-grid { display: grid; grid-template-columns: repeat(7, 140px); grid-auto-rows: 110px; gap: 18px; justify-content: center; padding: 12px; box-sizing: border-box; }
+.research-svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.research-node { min-width: 140px; min-height: 80px; }
+
+
 
 header { position: relative; }
 header nav { margin: 0; }
@@ -346,3 +402,16 @@ header nav a:hover {
   box-shadow: 0 8px 24px #2F8EF714;
 }
 header nav a:focus { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+/* Chapter1 research grid overrides (moved from inline JS) */
+.research-grid-wrapper { display:flex; justify-content:center; position:relative; padding:12px; }
+.research-grid { display:grid; grid-template-columns: repeat(5, 220px); grid-auto-rows: minmax(80px, auto); gap:18px; justify-content:center; align-items:start; z-index:2; }
+.research-node { min-width:220px; padding:12px; box-sizing:border-box; border-radius:8px; z-index:3; position:relative; background: var(--bg-2); border: 1px solid #3a3a3a; color: var(--muted); }
+.research-title { font-size:16px; font-weight:700; margin-bottom:6px; }
+.research-desc { font-size:13px; line-height:1.25; word-break:break-word; }
+.research-footer { margin-top:8px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
+.research-grid-wrapper { position: relative; }
+.research-svg { position:absolute; left:0; top:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+.research-cost { font-size:13px; opacity:0.9; flex:1 1 auto; min-width:0; }
+.research-btn { max-width:120px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:0 0 auto; }
+.research-btn[disabled] { opacity:0.55; cursor:not-allowed; }

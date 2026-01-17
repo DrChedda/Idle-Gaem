@@ -11,8 +11,8 @@ let state = {
   tripleGainCost: 1200,
   boost: false,
   boostCost: 3000,
-  luckyGain: false,
-  luckyGainCost: 10000,
+  unknownUpgrade: false,
+  unknownUpgradeCost: 10000,
   measuredRps: 0
 };
 
@@ -24,13 +24,7 @@ let settings = {
 const BOOST_MULTIPLIER = 3;
 const DOUBLE_MULTIPLIER = 2;
 const TRIPLE_MULTIPLIER = 3;
-const LUCKY_CHANCE = 0.12;
-const LUCKY_MULTIPLIER = 6;
 
-
-function luckyMultiplier() {
-  return state.luckyGain ? (1 + (LUCKY_MULTIPLIER - 1) * LUCKY_CHANCE) : 1;
-}
 
 function perClickWithModifiers() {
   let v = state.perClick;
@@ -45,12 +39,18 @@ function perClickWithModifiers() {
     v *= BOOST_MULTIPLIER;
   }
 
-  v *= luckyMultiplier();
   return v;
 }
 
+let lastCollectTime = 0;
 
 function collect() {
+  const now = performance.now();
+
+  if (now - lastCollectTime < 20) return 0;
+
+  lastCollectTime = now;
+
   const amount = perClickWithModifiers();
   state.resources += amount;
   return amount;
@@ -62,7 +62,7 @@ function buyUpgrade() {
 
   if (state.resources >= cost) {
     state.resources -= cost;
-    state.perClick += 1; // incremental growth only
+    state.perClick += 1;
     state.upgradeCost = Math.floor(state.upgradeCost * 1.55);
     saveGame();
     return true;
@@ -111,10 +111,10 @@ function buyBoost() {
   return false;
 }
 
-function buyLuckyGain() {
-  if (!state.luckyGain && state.resources >= state.luckyGainCost) {
-    state.resources -= state.luckyGainCost;
-    state.luckyGain = true;
+function buyUnknownUpgrade() {
+  if (!state.unknownUpgrade && state.resources >= state.unknownUpgradeCost) {
+    state.resources -= state.unknownUpgradeCost;
+    state.unknownUpgrade = true;
     saveGame();
     return true;
   }

@@ -5,6 +5,9 @@
   <title>Idle Gaem</title>
   
   <link id="theme-stylesheet" rel="stylesheet" href="theme.dark.css">
+  <script>
+
+  </script>
 </head>
 <body>
   <header>
@@ -46,9 +49,19 @@
     </div>
   </div>
 
+  <div id="version-badge">
+    <a>V0.1.2a</a>
+  </div>
+
   <div id="tab-research" class="tab-page" style="display:none;">
     <h2>Research</h2>
-    <div id="research-list">No research available yet.</div>
+    <div id="research-area">
+      <p class="research-intro">Research allows you to unlock upgrades and mechanics for Chapter 1. Spend research points to unlock nodes.</p>
+      <div id="research-header" style="display:flex;gap:12px;align-items:center;justify-content:center;margin-bottom:8px;">
+        <div id="research-points">Research Points: 0</div>
+      </div>
+      <div id="research-list">Error</div>
+    </div>
   </div>
 
   <div id="tab-inventory" class="tab-page" style="display:none;">
@@ -91,13 +104,64 @@
   <div id="feedback" class="feedback"></div>
 
   
-  <script src="js/storage.js"></script>
-  <script src="js/formatNumbers.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/rebirth-one.js"></script>
+  <script src="js/research.js"></script>
   <script src="js/achievements.js"></script>
   <script src="js/animations.js"></script>
-  <script src="js/tabs.js"></script>
-  <script src="js/options.js"></script>
+  
   <script src="js/ui.js"></script>
+  <script src="js/debugger.js"></script>
+  <script>
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        if (document.activeElement.tagName === 'BUTTON') {
+          e.preventDefault();
+          document.activeElement.blur();
+        }
+      }
+    });
+
+  (async function () {
+      const FILES = [
+          "js/common.js",
+          "js/rebirth-one.js",
+          "js/research.js",
+          "js/achievements.js",
+          "js/animations.js",
+          "js/ui.js",
+          "js/debugger.js"
+      ];
+
+      function hashString(str) {
+          let hash = 0;
+          for (let i = 0; i < str.length; i++) {
+              hash = ((hash << 5) - hash) + str.charCodeAt(i);
+              hash |= 0;
+          }
+          return Math.abs(hash).toString(16);
+      }
+
+      function normalize(text) {
+          text = text.replace(/^\uFEFF/, "");
+          text = text.replace(/\r\n/g, "\n");
+          text = text.replace(/\n+$/g, "");
+          return text;
+      }
+
+      let combined = "";
+
+      for (const file of FILES) {
+          const res = await fetch(file, { cache: "no-store" });
+          const text = await res.text();
+          const normalized = normalize(text);
+          const commentPath = file.replace(/^(\.\.\/)+/, "");
+          combined += `/* ${commentPath} */\n${normalized}\n`;
+      }
+
+      window.CURRENT_BUILD_ID = "build-" + hashString(combined);
+  })();
+
+  </script>
 </body>
 </html>
