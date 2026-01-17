@@ -42,8 +42,15 @@ function perClickWithModifiers() {
   return v;
 }
 
+let lastCollectTime = 0;
 
 function collect() {
+  const now = performance.now();
+
+  if (now - lastCollectTime < 20) return 0;
+
+  lastCollectTime = now;
+
   const amount = perClickWithModifiers();
   state.resources += amount;
   return amount;
@@ -55,7 +62,7 @@ function buyUpgrade() {
 
   if (state.resources >= cost) {
     state.resources -= cost;
-    state.perClick += 1; // incremental growth only
+    state.perClick += 1;
     state.upgradeCost = Math.floor(state.upgradeCost * 1.55);
     saveGame();
     return true;
