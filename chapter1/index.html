@@ -143,8 +143,10 @@
     }
 
     function normalize(text) {
-        // Convert all line endings to \n and trim extra spaces
-        return text.replace(/\r\n/g, "\n").trim();
+        text = text.replace(/^\uFEFF/, ""); // Remove BOM
+        text = text.replace(/\r\n/g, "\n"); // Normalize line endings
+        text = text.replace(/\n+$/g, "");   // Trim trailing empty lines
+        return text;
     }
 
     let combined = "";
@@ -153,21 +155,16 @@
         const res = await fetch(file, { cache: "no-store" });
         const text = await res.text();
         const normalized = normalize(text);
-
-        console.log(`--- Fetching file: ${file} ---`);
-        console.log(normalized.slice(0, 200) + (normalized.length > 200 ? "..." : "")); // first 200 chars
-        console.log("Length after normalize:", normalized.length);
-
-        combined += `/* ${file} */\n${normalized}\n`;
+        const commentPath = file.replace(/^(\.\.\/)+/, ""); // Remove ../ prefixes
+        console.log(`Adding file: ${commentPath}, length: ${normalized.length}`);
+        combined += `/* ${commentPath} */\n${normalized}\n`;
     }
 
-    console.log("\n--- Combined content preview ---");
-    console.log(combined.slice(0, 500) + (combined.length > 500 ? "..." : ""));
     console.log("Total combined length:", combined.length);
-
     window.CURRENT_BUILD_ID = "build-" + hashString(combined);
     console.log("Game Build Verified:", window.CURRENT_BUILD_ID);
 })();
+
 
   </script>
 </body>

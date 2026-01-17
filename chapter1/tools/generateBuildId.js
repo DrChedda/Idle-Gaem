@@ -21,8 +21,13 @@ function hashString(str) {
 }
 
 function normalize(text) {
-    // Convert all line endings to \n and trim extra spaces
-    return text.replace(/\r\n/g, "\n").trim();
+    // Remove BOM
+    text = text.replace(/^\uFEFF/, "");
+    // Normalize line endings
+    text = text.replace(/\r\n/g, "\n");
+    // Trim trailing empty lines
+    text = text.replace(/\n+$/g, "");
+    return text;
 }
 
 let combined = "";
@@ -30,17 +35,11 @@ let combined = "";
 for (const file of FILES) {
     const text = fs.readFileSync(path.join(__dirname, file), "utf-8");
     const normalized = normalize(text);
-    
-    console.log(`--- Reading file: ${file} ---`);
-    console.log(normalized.slice(0, 200) + (normalized.length > 200 ? "..." : "")); // first 200 chars
-    console.log("Length after normalize:", normalized.length);
-
-    combined += `/* ${file} */\n${normalized}\n`;
+    const commentPath = file.replace(/^(\.\.\/)+/, ""); // Remove ../ prefixes
+    console.log(`Adding file: ${commentPath}, length: ${normalized.length}`);
+    combined += `/* ${commentPath} */\n${normalized}\n`;
 }
 
-console.log("\n--- Combined content preview ---");
-console.log(combined.slice(0, 500) + (combined.length > 500 ? "..." : ""));
 console.log("Total combined length:", combined.length);
-
 const buildId = "build-" + hashString(combined);
 console.log("Game Build Verified:", buildId);
