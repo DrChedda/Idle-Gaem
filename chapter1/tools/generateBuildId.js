@@ -29,8 +29,18 @@ let combined = "";
 
 for (const file of FILES) {
     const text = fs.readFileSync(path.join(__dirname, file), "utf-8");
-    combined += `/* ${file} */\n${normalize(text)}\n`;
+    const normalized = normalize(text);
+    
+    console.log(`--- Reading file: ${file} ---`);
+    console.log(normalized.slice(0, 200) + (normalized.length > 200 ? "..." : "")); // first 200 chars
+    console.log("Length after normalize:", normalized.length);
+
+    combined += `/* ${file} */\n${normalized}\n`;
 }
+
+console.log("\n--- Combined content preview ---");
+console.log(combined.slice(0, 500) + (combined.length > 500 ? "..." : ""));
+console.log("Total combined length:", combined.length);
 
 const buildId = "build-" + hashString(combined);
 console.log("Game Build Verified:", buildId);
