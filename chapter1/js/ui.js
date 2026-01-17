@@ -89,6 +89,12 @@ window.addEventListener("load", () => {
     
     if (el.materialDisplay) el.materialDisplay.style.display = tabId === "game" ? "block" : "none";
     localStorage.setItem("lastTab", tabId);
+    
+    if (tabId === "research" && typeof buildResearchUI === "function") {
+      requestAnimationFrame(() => {
+        buildResearchUI();
+      });
+    }
   }
 
   const menu = document.querySelector(".top-menu");

@@ -11,17 +11,48 @@
     return RESEARCH_TREE[keyOrId] || Object.values(RESEARCH_TREE).find(n => n.id === keyOrId);
   }
 
-  function updateRPDisplay() {
-    const el = document.getElementById('research-points');
-    if (el) el.textContent = `Research Points: ${fmt(window.state.researchPoints || 0)}`;
+  // UPDATED: Centralized way to update resource displays and button availability
+  function updateResourcesAndButtons() {
+    // 1. Update RP Text
+    const rpEl = document.getElementById('research-points');
+    if (rpEl) rpEl.textContent = `Research Points: ${fmt(window.state.researchPoints || 0)}`;
+
+    // 2. Update Materials Text
+    const matEl = document.getElementById('materials-count');
+    const matVal = Number(window.state.rebirthOne?.materials ?? window.state.materials ?? 0);
+    if (matEl) matEl.textContent = `Materials: ${fmt(matVal)}`;
+
+    // 3. Update Button Enable/Disable states
+    updateButtonStates();
   }
 
-  function isVisible(el){
-    if(!el) return false;
-    try{ return !!(el.offsetParent || el.getClientRects && el.getClientRects().length); }catch(e){return false}
+  function updateButtonStates() {
+    const cr = window.state?.currentResearch;
+    Object.values(RESEARCH_TREE).forEach(node => {
+      const btn = document.querySelector(`.research-node[data-id="${node.id}"] .research-btn`);
+      if (!btn) return;
+
+      const unlocked = !!(window.state?.research?.[node.id]);
+      const inProgress = cr && cr.id === node.id;
+
+      if (unlocked) {
+        btn.disabled = true;
+        btn.textContent = 'Done';
+      } else if (inProgress) {
+        btn.disabled = true;
+        // Text is handled by the countdown interval
+      } else {
+        // Disable if: Prereqs not met OR cannot afford OR another research is busy
+        const prereqsMet = node.prereqs.every(p => !!(window.state?.research?.[p]));
+        const affordable = canAffordNode(node);
+        const researchBusy = !!(cr && cr.id);
+
+        btn.disabled = !prereqsMet || !affordable || researchBusy;
+      }
+    });
   }
 
-const RESEARCH_TREE = {
+  const RESEARCH_TREE = {
     research_basic_mining: {
       id: 'construct_research_lab',
       name: 'Research Lab',
@@ -30,52 +61,12 @@ const RESEARCH_TREE = {
       prereqs: [],
       col: 3, row: 1
     },
-    placeholder1: {
-      id: 'placeholder1',
-      name: 'placeholder1',
-      desc: 'placeholder1',
-      cost: 9999999999999999999999999999999999999999999999999999,
-      prereqs: ['construct_research_lab'],
-      col: 2, row: 2
-    },
-    placeholder2: {
-      id: 'placeholder2',
-      name: 'placeholder2',
-      desc: 'placeholder2',
-      cost: 9999999999999999999999999999999999999999999999999999,
-      prereqs: ['construct_research_lab'],
-      col: 4, row: 2
-    },
-    placeholder3: {
-      id: 'placeholder3',
-      name: 'placeholder3',
-      desc: 'placeholder3',
-      cost: 9999999999999999999999999999999999999999999999999999,
-      prereqs: ['construct_research_lab'],
-      col: 3, row: 2
-    },
-    placeholder4: {
-      id: 'placeholder4',
-      name: 'placeholder4',
-      desc: 'placeholder4',
-      cost: 9999999999999999999999999999999999999999999999999999,
-      prereqs: ['placeholder1', 'placeholder3','placeholder2'],
-      col: 3, row: 3
-    },
-    placeholder5: {
-      id: 'placeholder5',
-      name: 'placeholder5',
-      desc: 'placeholder5',
-      cost: 9999999999999999999999999999999999999999999999999999,
-      prereqs: ['placeholder4'],
-      col: 2, row: 3
-    }
+    placeholder1: { id: 'placeholder1', name: 'placeholder1', desc: 'placeholder1', cost: 1e50, prereqs: ['construct_research_lab'], col: 2, row: 2 },
+    placeholder2: { id: 'placeholder2', name: 'placeholder2', desc: 'placeholder2', cost: 1e50, prereqs: ['construct_research_lab'], col: 4, row: 2 },
+    placeholder3: { id: 'placeholder3', name: 'placeholder3', desc: 'placeholder3', cost: 1e50, prereqs: ['construct_research_lab'], col: 3, row: 2 },
+    placeholder4: { id: 'placeholder4', name: 'placeholder4', desc: 'placeholder4', cost: 1e50, prereqs: ['placeholder1', 'placeholder3', 'placeholder2'], col: 3, row: 3 },
+    placeholder5: { id: 'placeholder5', name: 'placeholder5', desc: 'placeholder5', cost: 1e50, prereqs: ['placeholder4'], col: 2, row: 3 }
   };
-
-  function getUnlocked(id) { return !!(window.state?.research?.[id]); }
-  function setUnlocked(id) { ensureState(); window.state.research[id] = true; }
-
-  function canAfford(cost) { return typeof window.state?.researchPoints === 'number' && window.state.researchPoints >= cost; }
 
   function canAffordNode(node) {
     if (!node) return false;
@@ -83,64 +74,41 @@ const RESEARCH_TREE = {
       const mats = Number(window.state?.rebirthOne?.materials ?? window.state?.materials ?? 0);
       return !Number.isNaN(mats) && mats >= node.cost;
     }
-    return canAfford(node.cost);
-  }
-
-  function notify(msg, duration) {
-    if (typeof window.showFeedback === 'function') return window.showFeedback(msg, duration);
-    if (typeof showFeedback === 'function') return showFeedback(msg, duration);
-    try { console.log('FEEDBACK:', msg); } catch (e) {}
+    return (window.state?.researchPoints || 0) >= node.cost;
   }
 
   function purchaseResearch(id) {
     const node = findNode(id);
-    if (!node || getUnlocked(node.id || id)) return;
-    for (const p of node.prereqs || []) if (!getUnlocked(p)) return notify('Prerequisite not unlocked');
-    if (!canAffordNode(node)) return node.id === 'construct_research_lab' ? notify('Not enough materials') : notify('Not enough research points');
+    if (!node || !!(window.state?.research?.[node.id])) return;
 
-  if (node.id === 'construct_research_lab') {
+    if (!canAffordNode(node)) return;
+
+    if (node.id === 'construct_research_lab') {
       if (typeof window.state?.rebirthOne?.materials !== 'undefined') {
-        window.state.rebirthOne.materials = Number(window.state.rebirthOne.materials || 0) - node.cost;
-      } else if (typeof window.state?.materials !== 'undefined') {
-        window.state.materials = Number(window.state.materials || 0) - node.cost;
+        window.state.rebirthOne.materials -= node.cost;
       } else {
-        window.state.rebirthOne = window.state.rebirthOne || {};
-        window.state.rebirthOne.materials = -node.cost;
+        window.state.materials = (window.state.materials || 0) - node.cost;
       }
-      const matEl = document.getElementById('materials-count') || document.getElementById('research-points');
-      const matVal = Number(window.state.rebirthOne?.materials ?? window.state.materials ?? 0);
-      if (matEl) matEl.textContent = `Materials: ${fmt(matVal)}`;
       startResearchProcess(node.id, 60000);
+      updateResourcesAndButtons();
       return;
     }
 
     ensureState();
     window.state.researchPoints -= node.cost;
-    updateRPDisplay();
-    setUnlocked(id);
-    notify(`Research completed: ${node.name}`);
+    window.state.research[id] = true;
+    updateResourcesAndButtons();
     if (typeof saveGame === 'function') saveGame();
     buildResearchUI();
-    if (typeof updateAllUI === 'function') updateAllUI();
   }
 
   function startResearchProcess(id, durationMs) {
     ensureState();
-    if (window.state.currentResearch) return notify('Another research is already in progress');
+    if (window.state.currentResearch) return;
     window.state.currentResearch = { id: id, finish: Date.now() + (durationMs || 60000) };
     if (typeof saveGame === 'function') saveGame();
-    notify(`Research started: ${findNode(id)?.name || id}`);
     buildResearchUI();
     ensureResearchProgressChecker();
-  }
-
-  function completeResearch(id) {
-    setUnlocked(id);
-    if (window.state?.currentResearch?.id === id) delete window.state.currentResearch;
-    if (typeof saveGame === 'function') saveGame();
-    notify(`Research completed: ${findNode(id)?.name || id}`);
-    buildResearchUI();
-    if (typeof updateAllUI === 'function') updateAllUI();
   }
 
   function ensureResearchProgressChecker() {
@@ -148,9 +116,20 @@ const RESEARCH_TREE = {
     window._research_progress_interval = setInterval(() => {
       const cr = window.state?.currentResearch;
       if (cr) {
-        if (Date.now() >= cr.finish) completeResearch(cr.id);
-        else { updateRPDisplay(); if (document.getElementById('research-list')) buildResearchUI(); }
+        const now = Date.now();
+        if (now >= cr.finish) {
+          window.state.research[cr.id] = true;
+          delete window.state.currentResearch;
+          buildResearchUI();
+        } else {
+          const btn = document.querySelector(`.research-node[data-id="${cr.id}"] .research-btn`);
+          if (btn) {
+            btn.textContent = `In progress (${Math.ceil((cr.finish - now) / 1000)}s)`;
+          }
+        }
       }
+      // Every second, check if we can now afford other things (e.g. materials increased)
+      updateResourcesAndButtons();
     }, 1000);
   }
 
@@ -158,10 +137,9 @@ const RESEARCH_TREE = {
     if (window._research_rp_interval) return;
     window._research_rp_interval = setInterval(() => {
       ensureState();
-      if (!getUnlocked('construct_research_lab')) return;
+      if (!window.state.research['construct_research_lab']) return;
       window.state.researchPoints = (window.state.researchPoints || 0) + 1;
-      updateRPDisplay();
-      if (document.getElementById('research-list')) buildResearchUI();
+      updateResourcesAndButtons();
       if (typeof saveGame === 'function') saveGame();
     }, 60000);
   }
@@ -173,56 +151,26 @@ const RESEARCH_TREE = {
 
     const grid = document.createElement('div');
     grid.className = 'research-grid';
-
     const elemMap = {};
 
     Object.values(RESEARCH_TREE).forEach(node => {
       const box = document.createElement('div');
       box.className = 'research-node';
       box.dataset.id = node.id;
-      const unlocked = getUnlocked(node.id);
+      
+      const unlocked = !!(window.state?.research?.[node.id]);
 
-      const title = document.createElement('div');
-      title.className = 'research-title';
-      title.textContent = node.name + (unlocked ? ' (Unlocked)' : '');
-      box.appendChild(title);
+      box.innerHTML = `
+        <div class="research-title">${node.name}${unlocked ? ' (Unlocked)' : ''}</div>
+        <div class="research-desc">${node.desc}</div>
+        <div class="research-footer">
+          <span class="research-cost">Cost: ${fmt(node.cost)} ${node.id === 'construct_research_lab' ? 'Materials' : 'RP'}</span>
+          <button class="research-btn">${node.id === 'construct_research_lab' ? 'Build' : 'Research'}</button>
+        </div>
+      `;
 
-      const desc = document.createElement('div');
-      desc.className = 'research-desc';
-      desc.textContent = node.desc;
-      box.appendChild(desc);
-
-      const footer = document.createElement('div');
-      footer.className = 'research-footer';
-      const cost = document.createElement('span');
-      cost.className = 'research-cost';
-      if (node.id === 'construct_research_lab') {
-        cost.textContent = `Cost: ${fmt(node.cost)} materials`;
-      } else {
-        cost.textContent = `Cost: ${fmt(node.cost)} RP`;
-      }
-      footer.appendChild(cost);
-
-      const btn = document.createElement('button');
-      btn.className = 'research-btn';
-      const cr = window.state?.currentResearch;
-      const inProgress = cr && cr.id;
-      if (unlocked) {
-        btn.textContent = 'Done';
-        btn.disabled = true;
-      } else if (inProgress && inProgress === node.id) {
-        const remainingMs = Math.max(0, (cr.finish || 0) - Date.now());
-        const remainingSec = Math.ceil(remainingMs / 1000);
-        btn.textContent = `In progress (${remainingSec}s)`;
-        btn.disabled = true;
-      } else {
-        btn.textContent = node.id === 'construct_research_lab' ? 'Build' : 'Research';
-        btn.disabled = !node.prereqs.every(p => getUnlocked(p)) || !canAffordNode(node) || (cr && cr.id && cr.id !== node.id);
-      }
+      const btn = box.querySelector('.research-btn');
       btn.addEventListener('click', () => purchaseResearch(node.id));
-      footer.appendChild(btn);
-
-      box.appendChild(footer);
 
       if (node.col) box.style.gridColumnStart = node.col;
       if (node.row) box.style.gridRowStart = node.row;
@@ -230,31 +178,27 @@ const RESEARCH_TREE = {
       grid.appendChild(box);
       elemMap[node.id] = box;
     });
-  const wrapper = document.createElement('div');
-  wrapper.className = 'research-grid-wrapper';
 
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.classList.add('research-svg');
-  svg.setAttribute('aria-hidden', 'true');
-  svg.setAttribute('preserveAspectRatio', 'none');
-
-  wrapper.appendChild(svg);
-  wrapper.appendChild(grid);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'research-grid-wrapper';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.classList.add('research-svg');
+    wrapper.appendChild(svg);
+    wrapper.appendChild(grid);
     container.appendChild(wrapper);
 
     function drawConnectors() {
       while (svg.firstChild) svg.removeChild(svg.firstChild);
-      const w = Math.max(1, Math.round(wrapper.clientWidth));
-      const h = Math.max(1, Math.round(wrapper.clientHeight));
-      svg.setAttribute('width', w);
-      svg.setAttribute('height', h);
+      svg.setAttribute('width', wrapper.clientWidth);
+      svg.setAttribute('height', wrapper.clientHeight);
       const svgRect = wrapper.getBoundingClientRect();
+
       Object.values(RESEARCH_TREE).forEach(node => {
         const targetEl = elemMap[node.id];
         if (!targetEl) return;
-        const targetRect = targetEl.getBoundingClientRect();
-  const tx = targetRect.left + targetRect.width / 2 - svgRect.left;
-  const ty = targetRect.top + targetRect.height / 2 - svgRect.top;
+        const tRect = targetEl.getBoundingClientRect();
+        const tx = tRect.left + tRect.width / 2 - svgRect.left;
+        const ty = tRect.top + tRect.height / 2 - svgRect.top;
 
         (node.prereqs || []).forEach(pid => {
           const pEl = elemMap[pid];
@@ -264,81 +208,26 @@ const RESEARCH_TREE = {
           const py = pRect.top + pRect.height / 2 - svgRect.top;
 
           const line = document.createElementNS(svg.namespaceURI, 'line');
-          line.setAttribute('x1', px);
-          line.setAttribute('y1', py);
-          line.setAttribute('x2', tx);
-          line.setAttribute('y2', ty);
-          const prereqUnlocked = getUnlocked(pid);
-          const targetUnlocked = getUnlocked(node.id);
-          line.setAttribute('stroke', prereqUnlocked ? '#6ec1ff' : '#777');
-          const strokeWidth = Math.max(2, Math.round(Math.min(w, h) / 150));
-          line.setAttribute('stroke-width', String(strokeWidth));
-          line.setAttribute('stroke-linecap', 'round');
-          line.setAttribute('opacity', targetUnlocked ? '0.95' : (prereqUnlocked ? '0.8' : '0.6'));
+          line.setAttribute('x1', px); line.setAttribute('y1', py);
+          line.setAttribute('x2', tx); line.setAttribute('y2', ty);
+          line.setAttribute('stroke', window.state.research[pid] ? '#6ec1ff' : '#777');
+          line.setAttribute('stroke-width', '2');
           svg.appendChild(line);
         });
       });
     }
 
-    if (window._research_resize_observer && typeof window._research_resize_observer.disconnect === 'function') {
-      try { window._research_resize_observer.disconnect(); } catch (e) { /* ignore */ }
-    }
-    const ro = new (window.ResizeObserver || window.WebKitResizeObserver || function () { this.observe = function(){}; this.disconnect = function(){}; })((entries) => {
-      setTimeout(drawConnectors, 30);
-    });
-    ro.observe(wrapper);
-    window._research_resize_observer = ro;
-    setTimeout(drawConnectors, 60);
-    window.addEventListener('resize', drawConnectors);
-    ensureResearchProgressChecker();
+    new ResizeObserver(() => requestAnimationFrame(drawConnectors)).observe(wrapper);
+    requestAnimationFrame(drawConnectors);
+    updateResourcesAndButtons();
   }
 
   function initResearch() {
-    if (!window.state) window.state = {};
-    window.state.research = window.state.research || {};
-    if (typeof window.state.researchPoints !== 'number') window.state.researchPoints = 0;
-
-    for (const id in RESEARCH_TREE) {
-      if (window.state.research[id]) RESEARCH_TREE[id].unlocked = true;
-    }
-
+    ensureState();
     buildResearchUI();
-
-    const rpEl = document.getElementById('research-points');
-    function refreshRP() {
-      if (rpEl) rpEl.textContent = `Research Points: ${fmt(window.state.researchPoints || 0)}`;
-    }
-    refreshRP();
     startRPGenerator();
-    const gainBtn = document.getElementById('gain-rp-btn');
-    if (gainBtn && gainBtn.parentNode) gainBtn.parentNode.removeChild(gainBtn);
-
-    window.RESEARCH = {
-      tree: RESEARCH_TREE,
-      purchase: purchaseResearch,
-      buildUI: buildResearchUI
-    };
-
-    let _lastResearchRefresh = 0;
-    function tryRefreshUI(){
-      const now = Date.now();
-      if(now - _lastResearchRefresh < 250) return;
-      _lastResearchRefresh = now;
-      const rl = document.getElementById('research-list');
-      if(rl && isVisible(rl)) buildResearchUI();
-    }
-    function handleTabChange(e) {
-        if (e.target && e.target.getAttribute('data-tab') === 'research') {
-            buildResearchUI();
-        }
-    }
-    document.addEventListener('click', handleTabChange);
-    document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) tryRefreshUI(); });
-    window.addEventListener('focus', tryRefreshUI);
-
-    if (typeof updateResearchVisibility === 'function') updateResearchVisibility();
+    ensureResearchProgressChecker();
   }
 
-  window.addEventListener('load', () => initResearch());
-
+  window.addEventListener('load', initResearch);
 })();
