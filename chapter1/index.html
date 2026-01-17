@@ -122,49 +122,45 @@
       }
     });
 
-(async function () {
-    const FILES = [
-        "js/common.js",
-        "js/rebirth-one.js",
-        "js/research.js",
-        "js/achievements.js",
-        "js/animations.js",
-        "js/ui.js",
-        "js/debugger.js"
-    ];
+  (async function () {
+      const FILES = [
+          "js/common.js",
+          "js/rebirth-one.js",
+          "js/research.js",
+          "js/achievements.js",
+          "js/animations.js",
+          "js/ui.js",
+          "js/debugger.js"
+      ];
 
-    function hashString(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            hash = ((hash << 5) - hash) + str.charCodeAt(i);
-            hash |= 0;
-        }
-        return Math.abs(hash).toString(16);
-    }
+      function hashString(str) {
+          let hash = 0;
+          for (let i = 0; i < str.length; i++) {
+              hash = ((hash << 5) - hash) + str.charCodeAt(i);
+              hash |= 0;
+          }
+          return Math.abs(hash).toString(16);
+      }
 
-    function normalize(text) {
-        text = text.replace(/^\uFEFF/, ""); // Remove BOM
-        text = text.replace(/\r\n/g, "\n"); // Normalize line endings
-        text = text.replace(/\n+$/g, "");   // Trim trailing empty lines
-        return text;
-    }
+      function normalize(text) {
+          text = text.replace(/^\uFEFF/, "");
+          text = text.replace(/\r\n/g, "\n");
+          text = text.replace(/\n+$/g, "");
+          return text;
+      }
 
-    let combined = "";
+      let combined = "";
 
-    for (const file of FILES) {
-        const res = await fetch(file, { cache: "no-store" });
-        const text = await res.text();
-        const normalized = normalize(text);
-        const commentPath = file.replace(/^(\.\.\/)+/, ""); // Remove ../ prefixes
-        console.log(`Adding file: ${commentPath}, length: ${normalized.length}`);
-        combined += `/* ${commentPath} */\n${normalized}\n`;
-    }
+      for (const file of FILES) {
+          const res = await fetch(file, { cache: "no-store" });
+          const text = await res.text();
+          const normalized = normalize(text);
+          const commentPath = file.replace(/^(\.\.\/)+/, "");
+          combined += `/* ${commentPath} */\n${normalized}\n`;
+      }
 
-    console.log("Total combined length:", combined.length);
-    window.CURRENT_BUILD_ID = "build-" + hashString(combined);
-    console.log("Game Build Verified:", window.CURRENT_BUILD_ID);
-})();
-
+      window.CURRENT_BUILD_ID = "build-" + hashString(combined);
+  })();
 
   </script>
 </body>

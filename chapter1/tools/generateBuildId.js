@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 const FILES = [
     "../js/common.js",
@@ -21,11 +21,8 @@ function hashString(str) {
 }
 
 function normalize(text) {
-    // Remove BOM
     text = text.replace(/^\uFEFF/, "");
-    // Normalize line endings
     text = text.replace(/\r\n/g, "\n");
-    // Trim trailing empty lines
     text = text.replace(/\n+$/g, "");
     return text;
 }
@@ -35,11 +32,9 @@ let combined = "";
 for (const file of FILES) {
     const text = fs.readFileSync(path.join(__dirname, file), "utf-8");
     const normalized = normalize(text);
-    const commentPath = file.replace(/^(\.\.\/)+/, ""); // Remove ../ prefixes
-    console.log(`Adding file: ${commentPath}, length: ${normalized.length}`);
+    const commentPath = file.replace(/^(\.\.\/)+/, "");
     combined += `/* ${commentPath} */\n${normalized}\n`;
 }
 
-console.log("Total combined length:", combined.length);
 const buildId = "build-" + hashString(combined);
-console.log("Game Build Verified:", buildId);
+console.log(buildId);
