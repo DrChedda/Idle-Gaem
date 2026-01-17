@@ -123,38 +123,42 @@
     });
 
   (async function () {
+      const FILES = [
+          "js/common.js",
+          "js/rebirth-one.js",
+          "js/research.js",
+          "js/achievements.js",
+          "js/animations.js",
+          "js/ui.js",
+          "js/debugger.js"
+      ];
 
-    const FILES = [
-      "js/common.js",
-      "js/rebirth-one.js",
-      "js/research.js",
-      "js/achievements.js",
-      "js/animations.js",
-      "js/ui.js",
-      "js/debugger.js"
-    ];
-
-    function hashString(str) {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-        hash |= 0;
+      function hashString(str) {
+          let hash = 0;
+          for (let i = 0; i < str.length; i++) {
+              hash = ((hash << 5) - hash) + str.charCodeAt(i);
+              hash |= 0;
+          }
+          return Math.abs(hash).toString(16);
       }
-      return Math.abs(hash).toString(16);
-    }
 
-    let combined = "";
+      function normalize(text) {
+          // Convert all line endings to \n and trim extra spaces
+          return text.replace(/\r\n/g, "\n").trim();
+      }
 
-    for (const file of FILES) {
-      const res = await fetch(file, { cache: "no-store" });
-      const text = await res.text();
-      combined += `/* ${file} */\n` + text + "\n";
-    }
+      let combined = "";
 
-    window.CURRENT_BUILD_ID = "build-" + hashString(combined);
+      for (const file of FILES) {
+          const res = await fetch(file, { cache: "no-store" });
+          const text = await res.text();
+          combined += `/* ${file} */\n${normalize(text)}\n`;
+      }
 
-    console.log("Game Build Verified:", window.CURRENT_BUILD_ID);
+      window.CURRENT_BUILD_ID = "build-" + hashString(combined);
+      console.log("Game Build Verified:", window.CURRENT_BUILD_ID);
   })();
+
   </script>
 </body>
 </html>
