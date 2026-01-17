@@ -6,22 +6,7 @@
   
   <link id="theme-stylesheet" rel="stylesheet" href="theme.dark.css">
   <script>
-      window.generateBuildID = function() {
-          const gameCode = document.documentElement.innerHTML;
-          let hash = 0;
-          for (let i = 0; i < gameCode.length; i++) {
-              const char = gameCode.charCodeAt(i);
-              hash = ((hash << 5) - hash) + char;
-              hash = hash & hash;
-          }
-          return "build-" + Math.abs(hash).toString(16);
-      };
-      
-      window.CURRENT_BUILD_ID = "Loading...";
-      document.addEventListener('DOMContentLoaded', () => {
-          window.CURRENT_BUILD_ID = window.generateBuildID();
-          console.log("Game Build Verified:", window.CURRENT_BUILD_ID);
-      });
+
   </script>
 </head>
 <body>
@@ -136,6 +121,23 @@
         }
       }
     });
+
+      window.generateBuildID = function() {
+          const gameCode = document.documentElement.innerHTML;
+          let hash = 0;
+          for (let i = 0; i < gameCode.length; i++) {
+              const char = gameCode.charCodeAt(i);
+              hash = ((hash << 5) - hash) + char;
+              hash = hash & hash;
+          }
+          return "build-" + Math.abs(hash).toString(16);
+      };
+      
+      window.CURRENT_BUILD_ID = "Loading...";
+      document.addEventListener('DOMContentLoaded', () => {
+          window.CURRENT_BUILD_ID = window.generateBuildID();
+          console.log("Game Build Verified:", window.CURRENT_BUILD_ID);
+      });    
   </script>
 </body>
 </html>
