@@ -314,6 +314,17 @@ window.addEventListener("load", () => {
         });
     }
 
+    document.addEventListener('click', (e) => {
+        const tabName = e.target.getAttribute('data-tab');
+        if (tabName === 'game') {
+            const el = document.getElementById("material-display");
+            if (el && window.state) {
+                el.textContent = `Materials: ${fmt(window.state.materials)}`;
+                lastMaterials = window.state.materials; 
+            }
+        }
+    });
+
     const listeners = [
         { id: "crate-btn", type: "basic" },
         { id: "advanced-crate-btn", type: "advanced" },
