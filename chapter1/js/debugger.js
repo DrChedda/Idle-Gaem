@@ -75,9 +75,18 @@
         }
     };
 
-    function buildDebugMenu() {
+function buildDebugMenu() {
+        const buildId = window.CURRENT_BUILD_ID || "Unknown";
+
         debugMenu.innerHTML = `
-            <div style="margin-bottom: 5px;"><strong style="color:#fff;">DEBUG MENU - CHAPTER 1</strong></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <strong style="color:#fff;">DEBUG MENU - CHAPTER 1</strong>
+                <span style="font-size: 10px; color: #ffffff; cursor: pointer; border: 1px solid #444; padding: 0 4px; borderRadius: 3px;" 
+                      title="Click to copy Build ID" 
+                      onclick="navigator.clipboard.writeText('${buildId}'); showFeedback('ID Copied!')">
+                    ${buildId}
+                </span>
+            </div>
             
             <div style="border-top: 1px solid #555; margin: 5px 0;"></div>
             <strong>RESOURCES</strong><br>
