@@ -48,11 +48,31 @@
     window.setPickaxeCount = function() {
         const name = prompt("Enter Pickaxe name exactly (e.g., Basic Pickaxe):");
         if (!name) return;
-        const val = prompt(`Enter count for ${name}:`);
-        if (val !== null && !isNaN(parseInt(val))) {
-            if (!window.state.items) window.state.items = {};
-            window.state.items[name] = parseInt(val);
-            if (typeof updateAllUI === 'function') updateAllUI();
+
+        if (!window.state.items || !(name in window.state.items)) {
+            alert(`Item "${name}" not found in your inventory.`);
+            return;
+        }
+        const val = prompt(`Enter new count for ${name} (Enter 0 to remove):`);
+        
+        if (val !== null && val.trim() !== "" && !isNaN(val)) {
+            const count = parseInt(val);
+
+            if (count <= 0) {
+                delete window.state.items[name];
+                alert(`${name} has been removed.`);
+                saveGame();
+                calculatePerClick();
+            } else {
+                window.state.items[name] = count;
+                alert(`${name} count updated to ${count}.`);
+            }
+
+            updateAllUI();
+            calculatePerClick();
+            
+        } else {
+            alert("Invalid input. Please enter a number.");
         }
     };
 

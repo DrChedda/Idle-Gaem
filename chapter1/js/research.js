@@ -11,18 +11,13 @@
     return RESEARCH_TREE[keyOrId] || Object.values(RESEARCH_TREE).find(n => n.id === keyOrId);
   }
 
-  // UPDATED: Centralized way to update resource displays and button availability
   function updateResourcesAndButtons() {
-    // 1. Update RP Text
     const rpEl = document.getElementById('research-points');
     if (rpEl) rpEl.textContent = `Research Points: ${fmt(window.state.researchPoints || 0)}`;
 
-    // 2. Update Materials Text
     const matEl = document.getElementById('materials-count');
     const matVal = Number(window.state.rebirthOne?.materials ?? window.state.materials ?? 0);
     if (matEl) matEl.textContent = `Materials: ${fmt(matVal)}`;
-
-    // 3. Update Button Enable/Disable states
     updateButtonStates();
   }
 
@@ -40,9 +35,7 @@
         btn.textContent = 'Done';
       } else if (inProgress) {
         btn.disabled = true;
-        // Text is handled by the countdown interval
       } else {
-        // Disable if: Prereqs not met OR cannot afford OR another research is busy
         const prereqsMet = node.prereqs.every(p => !!(window.state?.research?.[p]));
         const affordable = canAffordNode(node);
         const researchBusy = !!(cr && cr.id);
@@ -61,10 +54,17 @@
       prereqs: [],
       col: 3, row: 1
     },
-    placeholder1: { id: 'placeholder1', name: 'placeholder1', desc: 'placeholder1', cost: 1e50, prereqs: ['construct_research_lab'], col: 2, row: 2 },
+    materials_counter: {
+      id: 'materials_counter',
+      name: 'Materials/s Counter',
+      desc: 'Materials per second counter.',
+      cost: 1,
+      prereqs: ['construct_research_lab'],
+      col: 2, row: 2
+    },
     placeholder2: { id: 'placeholder2', name: 'placeholder2', desc: 'placeholder2', cost: 1e50, prereqs: ['construct_research_lab'], col: 4, row: 2 },
     placeholder3: { id: 'placeholder3', name: 'placeholder3', desc: 'placeholder3', cost: 1e50, prereqs: ['construct_research_lab'], col: 3, row: 2 },
-    placeholder4: { id: 'placeholder4', name: 'placeholder4', desc: 'placeholder4', cost: 1e50, prereqs: ['placeholder1', 'placeholder3', 'placeholder2'], col: 3, row: 3 },
+    placeholder4: { id: 'placeholder4', name: 'placeholder4', desc: 'placeholder4', cost: 1e50, prereqs: ['materials_counter', 'placeholder3', 'placeholder2'], col: 3, row: 3 },
     placeholder5: { id: 'placeholder5', name: 'placeholder5', desc: 'placeholder5', cost: 1e50, prereqs: ['placeholder4'], col: 2, row: 3 }
   };
 
@@ -90,6 +90,18 @@
         window.state.materials = (window.state.materials || 0) - node.cost;
       }
       startResearchProcess(node.id, 60000);
+      updateResourcesAndButtons();
+      return;
+    }
+
+    if (node.id === 'materials_counter') {
+      if (typeof window.state?.rebirthOne?.researchPoints !== 'undefined') {
+        window.state.rebirthOne.researchPoints -= node.cost;
+      }
+      else {
+        window.state.researchPoints -= node.cost;
+      }
+      startResearchProcess(node.id, 120000);
       updateResourcesAndButtons();
       return;
     }
@@ -128,7 +140,6 @@
           }
         }
       }
-      // Every second, check if we can now afford other things (e.g. materials increased)
       updateResourcesAndButtons();
     }, 1000);
   }
