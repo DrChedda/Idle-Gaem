@@ -14,10 +14,16 @@
   function updateResourcesAndButtons() {
     const rpEl = document.getElementById('research-points');
     if (rpEl) rpEl.textContent = `Research Points: ${fmt(window.state.researchPoints || 0)}`;
-
-    const matEl = document.getElementById('materials-count');
-    const matVal = Number(window.state.rebirthOne?.materials ?? window.state.materials ?? 0);
-    if (matEl) matEl.textContent = `Materials: ${fmt(matVal)}`;
+    const matEl = document.getElementById('materials-per-second-display');
+    const hasMaterialsCounter = !!(window.state?.research?.['materials_counter']);
+    if (matEl) {
+      if (hasMaterialsCounter) {
+        matEl.style.display = '';
+        matEl.textContent = `Materials/s: ${fmt(window.state.measuredRps || 0)}`;
+      } else {
+        matEl.style.display = 'none';
+      }
+    }
     updateButtonStates();
   }
 

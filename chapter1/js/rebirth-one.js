@@ -92,6 +92,7 @@ const round2 = (num) => {
 
 let lastMaterials = window.state.materials;
 let lastCrateClick = 0;
+let rpsPrevMaterials = window.state.materials;
 
 function animateMaterialChange(newVal) {
     const el = document.getElementById("material-display");
@@ -199,6 +200,9 @@ function updateAllUI() {
     if (el && Math.abs(lastMaterials - window.state.materials) < 0.1) {
         el.textContent = `Materials: ${fmt(window.state.materials)}`;
     }
+
+    const rpsEl = document.getElementById("materials-per-second-display");
+    if (rpsEl) rpsEl.textContent = `Materials/s: ${fmt(window.state.measuredRps || 0)}`;
 }
 
 function updateCrateButtons() {
@@ -334,7 +338,7 @@ window.addEventListener("load", () => {
         const btn = document.getElementById(l.id);
         if (btn) btn.addEventListener("click", () => {
             const now = Date.now();
-            if (now - lastCrateClick < 20) return; // ignore clicks faster than 20ms
+            if (now - lastCrateClick < 20) return;
             lastCrateClick = now;
             handleCrateOpen(l.type);
         });
@@ -369,6 +373,8 @@ window.addEventListener("load", () => {
         confirmYesChapter.addEventListener("click", () => {
             localStorage.removeItem("rebirthOne");
             window.state = JSON.parse(JSON.stringify(window.DEFAULT_STATE));
+
+            localStorage.setItem("lastTab", "game");
             
             animateMaterialChange(0);
             showFeedback("Chapter data reset!");
@@ -397,6 +403,19 @@ window.addEventListener("load", () => {
             closeConfirmBar(confirmNo);
         });
     }
+
+    // measure materials per second (RPS) once per second
+    let rpsPrev = window.state.materials || 0;
+    setInterval(() => {
+        try {
+            const nowMaterials = window.state.materials || 0;
+            const delta = nowMaterials - rpsPrev;
+            rpsPrev = nowMaterials;
+            window.state.measuredRps = round2(delta);
+            updateAllUI();
+        } catch (e) {
+        }
+    }, 1000);
 
     calculatePerClick();
     updateAllUI();

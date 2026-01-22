@@ -6,7 +6,7 @@ window.addEventListener("load", () => {
 
     if (!window.state.seenChapterMessage) {
       const msg1 = document.getElementById("chapterMessage");
-      const msg2 = document.getElementById("restartMessage");
+      const msg2 = document.getElementById("chapter1Message");
 
       if (msg1 && msg2) {
         msg1.classList.add("show");

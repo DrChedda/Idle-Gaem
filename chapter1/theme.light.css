@@ -87,7 +87,7 @@ html, body {
 #collect-btn.pop { transform: scale(1.05); }
 
 
-#chapterMessage, #restartMessage {
+#chapterMessage, #chapter1Message {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -105,12 +105,12 @@ html, body {
 }
 #chapterMessage.show { top: 50px; opacity: 1; }
 
-#restartMessage {
+#chapter1Message {
   top: -100px;
   font-size: 1.5rem;
   color: var(--accent-1);
 }
-#restartMessage.show { top: 120px; opacity: 1; }
+#chapter1Message.show { top: 120px; opacity: 1; }
 
 
 button {
