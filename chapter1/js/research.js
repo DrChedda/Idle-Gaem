@@ -68,9 +68,9 @@
       prereqs: ['construct_research_lab'],
       col: 2, row: 2
     },
-    placeholder2: { id: 'placeholder2', name: 'placeholder2', desc: 'placeholder2', cost: 1e50, prereqs: ['construct_research_lab'], col: 4, row: 2 },
-    placeholder3: { id: 'placeholder3', name: 'placeholder3', desc: 'placeholder3', cost: 1e50, prereqs: ['construct_research_lab'], col: 3, row: 2 },
-    placeholder4: { id: 'placeholder4', name: 'placeholder4', desc: 'placeholder4', cost: 1e50, prereqs: ['materials_counter', 'placeholder3', 'placeholder2'], col: 3, row: 3 },
+    improved_mining: { id: 'improved_mining', name: 'Improved Mining', desc: 'Improved mining efficiency. (+1 Materials per click for every pickaxe)', cost: 1e50, prereqs: ['construct_research_lab'], col: 4, row: 2 },
+    automation_l1: { id: 'automation_l1', name: 'Automation', desc: 'Automate mining. 10 Materials/s', cost: 1e50, prereqs: ['construct_research_lab'], col: 3, row: 2 },
+    placeholder4: { id: 'placeholder4', name: 'placeholder4', desc: 'placeholder4', cost: 1e50, prereqs: ['materials_counter', 'automation_l1', 'improved_mining'], col: 3, row: 3 },
     placeholder5: { id: 'placeholder5', name: 'placeholder5', desc: 'placeholder5', cost: 1e50, prereqs: ['placeholder4'], col: 2, row: 3 }
   };
 
