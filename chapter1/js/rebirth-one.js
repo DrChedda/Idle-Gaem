@@ -404,18 +404,28 @@ window.addEventListener("load", () => {
         });
     }
 
-    // measure materials per second (RPS) once per second
-    let rpsPrev = window.state.materials || 0;
-    setInterval(() => {
-        try {
-            const nowMaterials = window.state.materials || 0;
-            const delta = nowMaterials - rpsPrev;
-            rpsPrev = nowMaterials;
-            window.state.measuredRps = round2(delta);
-            updateAllUI();
-        } catch (e) {
-        }
-    }, 1000);
+    (function setupRpsSmoother() {
+        const samples = [];
+        const maxSamples = 5;
+        let prev = window.state.materials || 0;
+
+        setInterval(() => {
+            try {
+                const now = window.state.materials || 0;
+                const delta = now - prev;
+                prev = now;
+
+                samples.push(delta);
+                if (samples.length > maxSamples) samples.shift();
+
+                const sum = samples.reduce((a, b) => a + b, 0);
+                const avg = samples.length ? (sum / samples.length) : 0;
+                window.state.measuredRps = round2(avg);
+                updateAllUI();
+            } catch (e) {
+            }
+        }, 1000);
+    })();
 
     calculatePerClick();
     updateAllUI();

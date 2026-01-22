@@ -62,6 +62,12 @@ html, body {
   font-weight: 600;
 }
 
+#materials-per-second-display {
+  margin-top: 10px; 
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
 
 #game-container {
   display: flex;

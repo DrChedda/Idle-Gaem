@@ -96,9 +96,6 @@ window.addEventListener("DOMContentLoaded", () => {
     if (themeStylesheet) {
       themeStylesheet.href = theme === "light" ? "theme.light.css" : "theme.dark.css";
     }
-    if (themeLabel) {
-      themeLabel.textContent = theme === "light" ? "Light Mode" : "Dark Mode";
-    }
 
     window.settings.theme = theme;
     localStorage.setItem("theme", theme);
