@@ -475,7 +475,7 @@ function updateMaterialsPerSecond() {
     lastUpdateTime = now;
 
     if (window.state.research?.automation_l1) {
-        window.state.materialsPerSecond = 10;
+        window.state.materialsPerSecond = 100;
     }
     if (window.state.materialsPerSecond > 0) {
         window.state.materials += window.state.materialsPerSecond * deltaSeconds;

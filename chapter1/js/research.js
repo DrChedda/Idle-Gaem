@@ -82,7 +82,7 @@
 		automation_l1: {
 			id: 'automation_l1',
 			name: 'Automation',
-			desc: 'Automate mining. 10 Materials/s',
+			desc: 'Automate mining. 100 Materials/s',
 			cost: 5,
 			prereqs: ['construct_research_lab'],
 			col: 3,
