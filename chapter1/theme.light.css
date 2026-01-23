@@ -283,7 +283,6 @@ button:hover { background: var(--accent-2); }
   text-align: center;
 }
 
-/* Version badge in bottom-right to match main site's small "Alpha" badge */
 #version-badge {
   position: fixed;
   right: 12px;
@@ -379,7 +378,6 @@ button:hover { background: var(--accent-2); }
 .research-btn { padding:6px 10px; border-radius:6px; border:none; background:var(--accent-1); color:#fff; cursor:pointer; }
 .research-btn[disabled] { opacity:0.55; cursor:not-allowed; background:#999; }
 
-/* Grid & connector styles */
 .research-grid-wrapper { position: relative; width: 100%; }
 .research-grid { display: grid; grid-template-columns: repeat(7, 140px); grid-auto-rows: 110px; gap: 18px; justify-content: center; padding: 12px; box-sizing: border-box; }
 .research-svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }

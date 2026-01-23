@@ -282,7 +282,6 @@ button:hover { background: var(--accent-2); }
   text-align: center;
 }
 
-/* Version badge in bottom-right to match main site's small "Alpha" badge */
 #version-badge {
   position: fixed;
   right: 12px;
@@ -444,7 +443,6 @@ header nav a:hover {
 }
 header nav a:focus { outline: 2px solid var(--accent-2); outline-offset: 2px; }
 
-/* Chapter1 research grid overrides (moved from inline JS) */
 .research-grid-wrapper { display:flex; justify-content:center; position:relative; padding:12px; }
 .research-grid { display:grid; grid-template-columns: repeat(5, 220px); grid-auto-rows: minmax(80px, auto); gap:18px; justify-content:center; align-items:start; z-index:2; }
 .research-node { min-width:220px; padding:12px; box-sizing:border-box; border-radius:8px; z-index:3; position:relative; background: var(--bg-2); border: 1px solid #3a3a3a; color: var(--muted); }
