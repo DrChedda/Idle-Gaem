@@ -148,6 +148,12 @@ button:hover { background: var(--accent-2); }
 }
 .tab-page.hidden { display: none; }
 
+#tab-inventory h2 {
+  text-align: center;
+  color: var(--accent-1);
+  margin-bottom: 20px;
+}
+
 
 .confirm-bar {
   position: fixed;
@@ -343,7 +349,12 @@ button:hover { background: var(--accent-2); }
   transform: scale(1.1);
 }
 
-/* Research tree styles */
+#tab-research h2 {
+  text-align: center;
+  color: var(--accent-1);
+  margin-bottom: 20px;
+}
+
 .research-intro {
   text-align: center;
   max-width: 800px;

@@ -12,7 +12,10 @@ const DEFAULT_STATE = {
 		advanced: 0,
 		epic: 0
 	},
-	items: {},
+	items: {
+		pickaxes: {},
+		other: {},
+	},
 	achievements: {}
 };
 
@@ -169,8 +172,12 @@ function saveGame() {
 
 function calculatePerClick() {
 	let base = 1;
-	for (const [key, amount] of Object.entries(window.state.items)) {
-		if (PICKAXES[key]) base += PICKAXES[key] * amount;
+	const pickaxesOwned = window.state.items.pickaxes || {};
+
+	for (const [key, amount] of Object.entries(pickaxesOwned)) {
+		if (PICKAXES[key]) { 
+			base += PICKAXES[key] * amount;
+		}
 	}
 	window.state.perClick = round2(base);
 }
@@ -189,7 +196,8 @@ function handleCrateOpen(type) {
 	const pickaxeType = result ? result.item : "Nothing";
 
 	if (pickaxeType !== "Nothing") {
-		window.state.items[pickaxeType] = (window.state.items[pickaxeType] || 0) + 1;
+		if (!window.state.items.pickaxes) window.state.items.pickaxes = {};
+		window.state.items.pickaxes[pickaxeType] = (window.state.items.pickaxes[pickaxeType] || 0) + 1;
 		showFeedback(`You got a ${pickaxeType}! +${fmt(PICKAXES[pickaxeType])} per click`);
 	} else {
 		showFeedback("You got nothing!");
@@ -262,7 +270,7 @@ function updatePickaxeTab() {
 	const container = document.getElementById("pickaxe-list");
 	if (!container) return;
 
-	const pickaxeEntries = Object.entries(window.state.items).filter(([key]) => key.includes("Pickaxe"));
+	const pickaxeEntries = Object.entries(window.state.items.pickaxes || {});
 
 	if (pickaxeEntries.length === 0) {
 		container.textContent = "No pickaxes yet.";
