@@ -74,7 +74,7 @@
 			id: 'improved_mining',
 			name: 'Improved Mining',
 			desc: 'Improved mining efficiency. (+1 Materials per click for every pickaxe)',
-			cost: 1e50,
+			cost: 5,
 			prereqs: ['construct_research_lab'],
 			col: 4,
 			row: 2
@@ -105,8 +105,26 @@
 			prereqs: ['placeholder4'],
 			col: 2,
 			row: 3
-		}
-	};
+		},
+    placeholder6: {
+      id: 'placeholder6',
+      name: 'placeholder6',
+      desc: 'placeholder6',
+      cost: 1e50,
+      prereqs: ['placeholder4'],
+      col: 4,
+      row: 3
+    },
+    placeholder7: {
+      id: 'placeholder7',
+      name: 'placeholder7',
+      desc: 'placeholder7 (TESTING SCROLL)',
+      cost: 1e50,
+      prereqs: ['placeholder4'],
+      col: 3,
+      row: 6
+    }
+  };
 
 	function canAffordNode(node) {
 		if (!node) return false;

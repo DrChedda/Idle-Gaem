@@ -171,15 +171,25 @@ function saveGame() {
 }
 
 function calculatePerClick() {
-	let base = 1;
-	const pickaxesOwned = window.state.items.pickaxes || {};
+    let base = 1;
+    const pickaxesOwned = window.state.items.pickaxes || {};
+    
+    for (const [key, amount] of Object.entries(pickaxesOwned)) {
+        if (PICKAXES[key]) { 
+            base += PICKAXES[key] * amount;
+        }
+    }
 
-	for (const [key, amount] of Object.entries(pickaxesOwned)) {
-		if (PICKAXES[key]) { 
-			base += PICKAXES[key] * amount;
-		}
-	}
-	window.state.perClick = round2(base);
+    if (window.state.research?.improved_mining) {
+        let totalPickaxeCount = 0;
+        
+        for (const amount of Object.values(pickaxesOwned)) {
+            totalPickaxeCount += amount;
+        }
+        base += totalPickaxeCount;
+    }
+
+    window.state.perClick = round2(base);
 }
 
 function handleCrateOpen(type) {
