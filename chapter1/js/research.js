@@ -11,21 +11,32 @@
 		return RESEARCH_TREE[keyOrId] || Object.values(RESEARCH_TREE).find(n => n.id === keyOrId);
 	}
 
-	function updateResourcesAndButtons() {
-		const rpEl = document.getElementById('research-points');
-		if (rpEl) rpEl.textContent = `Research Points: ${fmt(window.state.researchPoints || 0)}`;
-		const matEl = document.getElementById('materials-per-second-display');
-		const hasMaterialsCounter = !!(window.state?.research?.['materials_counter']);
-		if (matEl) {
-			if (hasMaterialsCounter) {
-				matEl.style.display = '';
-				matEl.textContent = `Materials/s: ${fmt(window.state.measuredRps || 0)}`;
-			} else {
-				matEl.style.display = 'none';
-			}
-		}
-		updateButtonStates();
-	}
+  function updateResourcesAndButtons() {
+    const rpEl = document.getElementById('research-points');
+    if (rpEl) {
+      let displayValue = `Research Points: ${fmt(window.state.researchPoints || 0)}`;
+      
+      if (window.state.research?.['construct_research_lab'] && window.state.nextRPGain) {
+        const now = Date.now();
+        const secondsLeft = Math.max(0, Math.ceil((window.state.nextRPGain - now) / 1000));
+        displayValue += ` (${secondsLeft}s)`;
+      }
+      
+      rpEl.textContent = displayValue;
+    }
+
+    const matEl = document.getElementById('materials-per-second-display');
+    const hasMaterialsCounter = !!(window.state?.research?.['materials_counter']);
+    if (matEl) {
+      if (hasMaterialsCounter) {
+        matEl.style.display = '';
+        matEl.textContent = `Materials/s: ${fmt(window.state.measuredRps || 0)}`;
+      } else {
+        matEl.style.display = 'none';
+      }
+    }
+    updateButtonStates();
+  }
 
 	function updateButtonStates() {
 		const cr = window.state?.currentResearch;
@@ -226,16 +237,28 @@
 		}, 1000);
 	}
 
-	function startRPGenerator() {
-		if (window._research_rp_interval) return;
-		window._research_rp_interval = setInterval(() => {
-			ensureState();
-			if (!window.state.research['construct_research_lab']) return;
-			window.state.researchPoints = (window.state.researchPoints || 0) + 1;
-			updateResourcesAndButtons();
-			if (typeof saveGame === 'function') saveGame();
-		}, 60000);
-	}
+  function startRPGenerator() {
+    if (window._research_rp_interval) return;
+
+    if (!window.state.nextRPGain) {
+      window.state.nextRPGain = Date.now() + 60000;
+    }
+
+    window._research_rp_interval = setInterval(() => {
+      ensureState();
+      if (!window.state.research['construct_research_lab']) return;
+
+      const now = Date.now();
+      if (now >= window.state.nextRPGain) {
+        window.state.researchPoints = (window.state.researchPoints || 0) + 1;
+        window.state.nextRPGain = now + 60000;
+        
+        if (typeof saveGame === 'function') saveGame();
+      }
+      
+      updateResourcesAndButtons();
+    }, 1000); 
+  }
 
 	function buildResearchUI() {
 		const container = document.getElementById('research-list');
