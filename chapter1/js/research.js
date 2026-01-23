@@ -140,7 +140,7 @@
 			} else {
 				window.state.researchPoints -= node.cost;
 			}
-			startResearchProcess(node.id, 120000);
+			startResearchProcess(node.id, 60000);
 			updateResourcesAndButtons();
 			return;
 		}
@@ -162,7 +162,7 @@
       } else {
         window.state.researchPoints -= node.cost;
       }
-      startResearchProcess(node.id, 180000);
+      startResearchProcess(node.id, 120000);
       updateResourcesAndButtons();
       return;
     }
