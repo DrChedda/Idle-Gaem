@@ -121,7 +121,7 @@
     };
 
     window.setPickaxeCount = function() {
-        const name = prompt("Enter Pickaxe name exactly (e.g., Wooden Pickaxe):");
+        const name = prompt("Enter Pickaxe name exactly (e.g., Cardboard Pickaxe):");
         if (!name) return;
 
         const targetPath = (window.state.items && window.state.items.pickaxes) ? window.state.items.pickaxes : window.state.items;

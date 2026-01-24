@@ -84,7 +84,7 @@
 		improved_mining: {
 			id: 'improved_mining',
 			name: 'Improved Mining',
-			desc: 'Improved mining efficiency. (+1 Materials per click for every pickaxe)',
+			desc: 'Improved mining efficiency. (+1 Materials/click for every pickaxe)',
 			cost: 5,
 			prereqs: ['construct_research_lab'],
 			col: 4,
@@ -92,7 +92,7 @@
 		},
 		automation_l1: {
 			id: 'automation_l1',
-			name: 'Automation',
+			name: 'Automation Level 1',
 			desc: 'Automate mining. 100 Materials/s',
 			cost: 5,
 			prereqs: ['construct_research_lab'],

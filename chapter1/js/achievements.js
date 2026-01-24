@@ -75,7 +75,7 @@ const achievements = {
 		name: "Tool Collector",
 		desc: "Acquire your first pickaxe",
 		unlock: "",
-		condition: () => Object.keys(window.state.items).some(key => key.includes("Pickaxe")),
+		condition: () => Object.keys(window.state.items.pickaxes).some(key => key.includes("Pickaxe")),
 		unlocked: false,
 		icon: "🔨",
 		hidden: false
@@ -84,7 +84,7 @@ const achievements = {
 		name: "Diamond Miner",
 		desc: "Get a Diamond Pickaxe",
 		unlock: "",
-		condition: () => (window.state.items["Diamond Pickaxe"] || 0) >= 1,
+		condition: () => (window.state.items.pickaxes["Diamond Pickaxe"] || 0) >= 1,
 		unlocked: false,
 		icon: "💎",
 		hidden: false
@@ -93,7 +93,7 @@ const achievements = {
 		name: "Divine Tool",
 		desc: "Get an Obsidian Pickaxe",
 		unlock: "",
-		condition: () => (window.state.items["Obsidian Pickaxe"] || 0) >= 1,
+		condition: () => (window.state.items.pickaxes["Obsidian Pickaxe"] || 0) >= 1,
 		unlocked: false,
 		icon: "👑",
 		hidden: false
@@ -102,7 +102,7 @@ const achievements = {
 		name: "Unholy Power",
 		desc: "Get a Titanium Pickaxe",
 		unlock: "",
-		condition: () => (window.state.items["Titanium Pickaxe"] || 0) >= 1,
+		condition: () => (window.state.items.pickaxes["Titanium Pickaxe"] || 0) >= 1,
 		unlocked: false,
 		icon: "😈",
 		hidden: false
@@ -111,16 +111,16 @@ const achievements = {
 		name: "Ultimate Secret",
 		desc: "Get the Neutronium Pickaxe",
 		unlock: "",
-		condition: () => (window.state.items["Neutronium Pickaxe"] || 0) >= 1,
+		condition: () => (window.state.items.pickaxes["Neutronium Pickaxe"] || 0) >= 1,
 		unlocked: false,
 		icon: "🤫",
 		hidden: true
 	},
 	"ten_wooden": {
 		name: "Wood Enthusiast",
-		desc: "Own 10 Wooden Pickaxes",
+		desc: "Own 10 Cardboard Pickaxes",
 		unlock: "",
-		condition: () => (window.state.items["Wooden Pickaxe"] || 0) >= 10,
+		condition: () => (window.state.items.pickaxes["Cardboard Pickaxe"] || 0) >= 10,
 		unlocked: false,
 		icon: "🌳",
 		hidden: false
@@ -129,7 +129,7 @@ const achievements = {
 		name: "Diamond Collector",
 		desc: "Own 5 Diamond Pickaxes",
 		unlock: "",
-		condition: () => (window.state.items["Diamond Pickaxe"] || 0) >= 5,
+		condition: () => (window.state.items.pickaxes["Diamond Pickaxe"] || 0) >= 5,
 		unlocked: false,
 		icon: "💎",
 		hidden: false

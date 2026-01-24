@@ -20,7 +20,7 @@ const DEFAULT_STATE = {
 };
 
 const PICKAXES = {
-	"Wooden Pickaxe": 0.2,
+	"Cardboard Pickaxe": 0.2,
 	"Iron Pickaxe": 0.5,
 	"Diamond Pickaxe": 2,
 	"Emerald Pickaxe": 4,
@@ -36,7 +36,7 @@ const CRATE_CONFIG = {
         multiplier: 1.7,
         loot: [
             { threshold: 0.4, item: "Nothing" },
-            { threshold: 0.6, item: "Wooden Pickaxe" },
+            { threshold: 0.6, item: "Cardboard Pickaxe" },
             { threshold: 0.75, item: "Iron Pickaxe" },
             { threshold: 0.94, item: "Diamond Pickaxe" },
             { threshold: 0.999, item: "Emerald Pickaxe" },
@@ -49,7 +49,7 @@ const CRATE_CONFIG = {
         multiplier: 1.6,
         loot: [
             { threshold: 0.1, item: "Nothing" },
-            { threshold: 0.25, item: "Wooden Pickaxe" },
+            { threshold: 0.25, item: "Cardboard Pickaxe" },
             { threshold: 0.45, item: "Iron Pickaxe" },
             { threshold: 0.65, item: "Diamond Pickaxe" },
             { threshold: 0.99, item: "Emerald Pickaxe" },
@@ -63,7 +63,7 @@ const CRATE_CONFIG = {
         multiplier: 1.5,
         loot: [
             { threshold: 0.05, item: "Nothing" },
-            { threshold: 0.15, item: "Wooden Pickaxe" },
+            { threshold: 0.15, item: "Cardboard Pickaxe" },
             { threshold: 0.3, item: "Iron Pickaxe" },
             { threshold: 0.5, item: "Diamond Pickaxe" },
             { threshold: 0.85, item: "Emerald Pickaxe" },
