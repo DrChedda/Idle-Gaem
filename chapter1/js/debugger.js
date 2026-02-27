@@ -1,6 +1,6 @@
 (function() {
-    const DEBUG_CODE = "OTg2MjU=";
-	const getAccessKey = (str) => atob(str);
+    const E = "OTg2MjU=";
+	const B = (str) => atob(str);
 
     const codeGui = document.createElement("div");
     Object.assign(codeGui.style, {
@@ -77,7 +77,7 @@
 
     function validateCode() {
         const input = document.getElementById("debug-pass");
-		const accessKey = getAccessKey(DEBUG_CODE);
+		const accessKey = B(E);
 
         if (input.value === accessKey) {
 			codeGui.style.display = "none";
