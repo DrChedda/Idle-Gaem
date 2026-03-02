@@ -125,11 +125,6 @@
         if (!name) return;
 
         const targetPath = (window.state.items && window.state.items.pickaxes) ? window.state.items.pickaxes : window.state.items;
-
-        if (!targetPath || (!(name in targetPath) && name !== "")) {
-            alert(`Item "${name}" not found in inventory.`);
-            return;
-        }
         
         const val = prompt(`Enter new count for ${name} (Enter 0 to remove):`);
         if (val !== null && val.trim() !== "" && !isNaN(val)) {
